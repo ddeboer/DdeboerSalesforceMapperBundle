@@ -46,6 +46,7 @@ $ composer.phar update
 ### 3. Finally, add the bundle to your kernel:
 
 Add the following to `AppKernel.php`:
+
 ```
     public function registerBundles()
     {
@@ -104,7 +105,7 @@ $account->setName('Name change!');
 $mapper->save($account);
 ```
 
-##= Custom objects and properties
+### Custom objects and properties
 
 In the `Model` folder you will find several standard Salesforce objects. As this
 is a generic client bundle, this directory does not contain custom objects, nor
