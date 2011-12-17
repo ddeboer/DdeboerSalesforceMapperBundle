@@ -1,0 +1,23 @@
+{
+    "name": "ddeboer/salesforce-mapper-bundle",
+    "type": "symfony-bundle",
+    "description": "A Salesforce API mapper",
+    "keywords": [ "salesforce", "soap", "web service" ],
+    "homepage": "https://github.com/Ddeboer/DdeboerSalesforceMapperBundle/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David de Boer",
+            "email": "david@ddeboer.nl"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "ddeboer/salesforce-client-bundle": "*",
+        "doctrine/common": "*"
+    },
+    "autoload": {
+        "psr-0": { "Ddeboer\\Salesforce\\MapperBundle": "" }
+    },
+    "target-dir": "Ddeboer/Salesforce/MapperBundle"
+}

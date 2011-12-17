@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="ddeboer_salesforce_mapper" class="Ddeboer\Salesforce\MapperBundle\Mapper">
+            <argument type="service" id="ddeboer_salesforce_client" />
+            <argument type="service" id="ddeboer_salesforce_mapper.annotation_reader" />
+            <argument type="service" id="ddeboer_salesforce_mapper.cache" />
+        </service>
+
+        <service id="ddeboer_salesforce_mapper.bulk_saver" class="Ddeboer\Salesforce\MapperBundle\MappedBulkSaver">
+            <argument type="service" id="ddeboer_salesforce_mapper" />
+        </service>
+
+        <service id="ddeboer_salesforce_mapper.annotation_reader" class="Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
+        <service id="ddeboer_salesforce_mapper.file_cache" class="Ddeboer\Salesforce\MapperBundle\Cache\FileCache">
+            <argument>%kernel.cache_dir%/salesforce</argument>
+        </service>
+    </services>
+</container>
