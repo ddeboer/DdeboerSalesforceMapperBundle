@@ -63,6 +63,7 @@ Usage
 -----
 
 Once installed, the bundle offers several services:
+
 * a mapper: `ddeboer_salesforce_mapper`
 * a bulk saver: `ddeboer_salesforce_mapper.bulk_saver`.
 
