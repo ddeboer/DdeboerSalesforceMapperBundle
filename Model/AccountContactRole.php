@@ -15,7 +15,7 @@ class AccountContactRole extends AbstractModel
 {
     /**
      * @var Account
-     * @Salesforce\Relation(field="Account", class="Ddeboer\Salesforce\MapperBundle\Model\Account")
+     * @Salesforce\Relation(name="Account", class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
     protected $account;
     
@@ -27,7 +27,7 @@ class AccountContactRole extends AbstractModel
     
     /**
      * @var Contact
-     * @Salesforce\Relation(field="Contact", class="Ddeboer\Salesforce\MapperBundle\Model\Contact")
+     * @Salesforce\Relation(name="Contact", class="Ddeboer\Salesforce\MapperBundle\Model\Contact")
      */
     protected $contact;
     
