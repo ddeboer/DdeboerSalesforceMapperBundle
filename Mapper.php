@@ -289,10 +289,13 @@ class Mapper
                 $reflProperty = $reflClass->getProperty($property);
                 $reflProperty->setAccessible(true);
                 $value = $reflProperty->getValue($model);
-                if (null === $value || (is_string($value) && $value === '')) {
-                    $sObject->fieldsToNull[] = $mapping->name;
-                } else {
 
+                if (null === $value || (is_string($value) && $value === '')) {
+                    // Do not set fieldsToNull on create
+                    if ($model->getId()) {
+                        $sObject->fieldsToNull[] = $mapping->name;
+                    }
+                } else {
                     $sObject->{$mapping->name} = $value;
                 }
             }
