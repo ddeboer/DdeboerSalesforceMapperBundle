@@ -3,6 +3,7 @@
 namespace Ddeboer\Salesforce\MapperBundle;
 
 use Ddeboer\Salesforce\ClientBundle\BulkSaver;
+use Ddeboer\Salesforce\ClientBundle\Response\SaveResult;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 
 /**
@@ -23,10 +24,17 @@ class MappedBulkSaver
      */
     private $mapper;
 
-    public function __construct(BulkSaver $bulkSaver, Mapper $mapper)
+    /**
+     * @var AnnotationReader
+     */
+    private $annotationReader;
+
+    public function __construct(BulkSaver $bulkSaver, Mapper $mapper,
+        AnnotationReader $annotationReader)
     {
         $this->bulkSaver = $bulkSaver;
         $this->mapper = $mapper;
+        $this->annotationReader = $annotationReader;
     }
 
     /**
@@ -44,9 +52,8 @@ class MappedBulkSaver
     public function save($model, $matchField = null)
     {
         $record = $this->mapper->mapToSalesforceObject($model);
-        $objectType = $this->mapper->getSalesforceObjectType($model);
-
-        $this->bulkSaver->save($record, $objectType, $matchField);
+        $objectMapping = $this->annotationReader->getSalesforceObject($model);
+        $this->bulkSaver->save($record, $objectMapping->name, $matchField);
 
         return $this;
     }
@@ -74,12 +81,10 @@ class MappedBulkSaver
     /**
      * Issue all queued creates, deletes, updates and upserts to Salesforce
      *
-     * @return MappedBulkSaver
+     * @return SaveResult[]
      */
     public function flush()
     {
-        $this->bulkSaver->flush();
-
-        return $this;
+        return $this->bulkSaver->flush();
     }
 }
