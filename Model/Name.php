@@ -99,22 +99,22 @@ class Name
 
     public function getAlias()
     {
-        return $this->Alias;
+        return $this->alias;
     }
 
     public function setAlias($alias)
     {
-        $this->Alias = $alias;
+        $this->alias = $alias;
     }
 
     public function getEmail()
     {
-        return $this->Email;
+        return $this->email;
     }
 
     public function setEmail($email)
     {
-        $this->Email = $email;
+        $this->email = $email;
     }
 
     public function getFirstName()
@@ -149,57 +149,57 @@ class Name
 
     public function getName()
     {
-        return $this->Name;
+        return $this->name;
     }
 
     public function getPhone()
     {
-        return $this->Phone;
+        return $this->phone;
     }
 
     public function setPhone($phone)
     {
-        $this->Phone = $phone;
+        $this->phone = $phone;
     }
 
     public function getProfileId()
     {
-        return $this->ProfileId;
+        return $this->profileId;
     }
 
     public function setProfileId($profileId)
     {
-        $this->ProfileId = $profileId;
+        $this->profileId = $profileId;
     }
 
     public function getProfile()
     {
-        return $this->Profile;
+        return $this->profile;
     }
 
     public function setProfile($profile)
     {
-        $this->Profile = $profile;
+        $this->profile = $profile;
     }
 
     public function getTitle()
     {
-        return $this->Title;
+        return $this->title;
     }
 
     public function setTitle($title)
     {
-        $this->Title = $title;
+        $this->title = $title;
     }
 
     public function getType()
     {
-        return $this->Type;
+        return $this->type;
     }
 
     public function setType($type)
     {
-        $this->Type = $type;
+        $this->type = $type;
     }
 
     public function getUserRole()

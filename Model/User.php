@@ -680,32 +680,32 @@ class User
 
     public function getManager()
     {
-        return $this->Manager;
+        return $this->manager;
     }
 
     public function setManager($manager)
     {
-        $this->Manager = $manager;
+        $this->manager = $manager;
     }
 
     public function getManagerId()
     {
-        return $this->ManagerId;
+        return $this->managerId;
     }
 
     public function setManagerId($managerId)
     {
-        $this->ManagerId = $managerId;
+        $this->managerId = $managerId;
     }
 
     public function getMobilePhone()
     {
-        return $this->MobilePhone;
+        return $this->mobilePhone;
     }
 
     public function setMobilePhone($mobilePhone)
     {
-        $this->MobilePhone = $mobilePhone;
+        $this->mobilePhone = $mobilePhone;
     }
 
     public function getOfflinePdaTrialExpirationDate()

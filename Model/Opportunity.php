@@ -284,113 +284,113 @@ class Opportunity extends AbstractModel
 
     public function getAccount()
     {
-        return $this->Account;
+        return $this->account;
     }
 
     public function setAccount(Account $account)
     {
-        $this->Account = $account;
-        $this->AccountId = $account->getId();
+        $this->account = $account;
+        $this->accountId = $account->getId();
     }
 
     public function getAccountId()
     {
-        return $this->AccountId;
+        return $this->accountId;
     }
 
     public function setAccountId($accountId)
     {
-        $this->AccountId = $accountId;
+        $this->accountId = $accountId;
     }
 
     public function getAccountPartners()
     {
-        return $this->AccountPartners;
+        return $this->accountPartners;
     }
 
     public function setAccountPartners($accountPartners)
     {
-        $this->AccountPartners = $accountPartners;
+        $this->accountPartners = $accountPartners;
     }
 
     public function getActivityHistories()
     {
-        return $this->ActivityHistories;
+        return $this->activityHistories;
     }
 
     public function setActivityHistories($activityHistories)
     {
-        $this->ActivityHistories = $activityHistories;
+        $this->activityHistories = $activityHistories;
     }
 
     public function getAmount()
     {
-        return $this->Amount;
+        return $this->amount;
     }
 
     public function setAmount($amount)
     {
-        $this->Amount = $amount;
+        $this->amount = $amount;
     }
 
     public function getAttachments()
     {
-        return $this->Attachments;
+        return $this->attachments;
     }
 
     public function setAttachments($attachments)
     {
-        $this->Attachments = $attachments;
+        $this->attachments = $attachments;
     }
 
     public function getCampaign()
     {
-        return $this->Campaign;
+        return $this->campaign;
     }
 
     public function setCampaign($campaign)
     {
-        $this->Campaign = $campaign;
+        $this->campaign = $campaign;
     }
 
     public function getCampaignId()
     {
-        return $this->CampaignId;
+        return $this->campaignId;
     }
 
     public function setCampaignId($campaignId)
     {
-        $this->CampaignId = $campaignId;
+        $this->campaignId = $campaignId;
     }
 
     public function getCloseDate()
     {
-        return $this->CloseDate;
+        return $this->closeDate;
     }
 
     public function setCloseDate($closeDate)
     {
-        $this->CloseDate = $closeDate;
+        $this->closeDate = $closeDate;
     }
 
     public function getDescription()
     {
-        return $this->Description;
+        return $this->description;
     }
 
     public function setDescription($description)
     {
-        $this->Description = $description;
+        $this->description = $description;
     }
 
     public function getEvents()
     {
-        return $this->Events;
+        return $this->events;
     }
 
     public function setEvents($events)
     {
-        $this->Events = $events;
+        $this->events = $events;
     }
 
     public function getFeedSubscriptionsForEntity()
@@ -510,252 +510,252 @@ class Opportunity extends AbstractModel
 
     public function getName()
     {
-        return $this->Name;
+        return $this->name;
     }
 
     public function setName($name)
     {
-        $this->Name = $name;
+        $this->name = $name;
     }
 
     public function getNextStep()
     {
-        return $this->NextStep;
+        return $this->nextStep;
     }
 
     public function setNextStep($nextStep)
     {
-        $this->NextStep = $nextStep;
+        $this->nextStep = $nextStep;
     }
 
     public function getNotes()
     {
-        return $this->Notes;
+        return $this->notes;
     }
 
     public function setNotes($notes)
     {
-        $this->Notes = $notes;
+        $this->notes = $notes;
     }
 
     public function getNotesAndAttachments()
     {
-        return $this->NotesAndAttachments;
+        return $this->notesAndAttachments;
     }
 
     public function setNotesAndAttachments($notesAndAttachments)
     {
-        $this->NotesAndAttachments = $notesAndAttachments;
+        $this->notesAndAttachments = $notesAndAttachments;
     }
 
     public function getOpenActivities()
     {
-        return $this->OpenActivities;
+        return $this->openActivities;
     }
 
     public function setOpenActivities($openActivities)
     {
-        $this->OpenActivities = $openActivities;
+        $this->openActivities = $openActivities;
     }
 
     public function getOpportunityCompetitors()
     {
-        return $this->OpportunityCompetitors;
+        return $this->opportunityCompetitors;
     }
 
     public function setOpportunityCompetitors($opportunityCompetitors)
     {
-        $this->OpportunityCompetitors = $opportunityCompetitors;
+        $this->opportunityCompetitors = $opportunityCompetitors;
     }
 
     public function getOpportunityContactRoles()
     {
-        return $this->OpportunityContactRoles;
+        return $this->opportunityContactRoles;
     }
 
     public function setOpportunityContactRoles($opportunityContactRoles)
     {
-        $this->OpportunityContactRoles = $opportunityContactRoles;
+        $this->opportunityContactRoles = $opportunityContactRoles;
     }
 
     public function getOpportunityHistories()
     {
-        return $this->OpportunityHistories;
+        return $this->opportunityHistories;
     }
 
     public function setOpportunityHistories($opportunityHistories)
     {
-        $this->OpportunityHistories = $opportunityHistories;
+        $this->opportunityHistories = $opportunityHistories;
     }
 
     public function getOpportunityLineItems()
     {
-        return $this->OpportunityLineItems;
+        return $this->opportunityLineItems;
     }
 
     public function setOpportunityLineItems($opportunityLineItems)
     {
-        $this->OpportunityLineItems = $opportunityLineItems;
+        $this->opportunityLineItems = $opportunityLineItems;
     }
 
     public function getOpportunityPartnersFrom()
     {
-        return $this->OpportunityPartnersFrom;
+        return $this->opportunityPartnersFrom;
     }
 
     public function setOpportunityPartnersFrom($opportunityPartnersFrom)
     {
-        $this->OpportunityPartnersFrom = $opportunityPartnersFrom;
+        $this->opportunityPartnersFrom = $opportunityPartnersFrom;
     }
 
     public function getOwner()
     {
-        return $this->Owner;
+        return $this->owner;
     }
 
     public function setOwner(User $owner)
     {
-        $this->Owner = $owner;
-        $this->OwnerId = $owner->getId();
+        $this->owner = $owner;
+        $this->ownerId = $owner->getId();
     }
 
     public function getOwnerId()
     {
-        return $this->OwnerId;
+        return $this->ownerId;
     }
 
     public function setOwnerId($ownerId)
     {
-        $this->OwnerId = $ownerId;
+        $this->ownerId = $ownerId;
     }
 
     public function getPartners()
     {
-        return $this->Partners;
+        return $this->partners;
     }
 
     public function setPartners($partners)
     {
-        $this->Partners = $partners;
+        $this->partners = $partners;
     }
 
     public function getPricebook2()
     {
-        return $this->Pricebook2;
+        return $this->pricebook2;
     }
 
     public function setPricebook2($pricebook2)
     {
-        $this->Pricebook2 = $pricebook2;
+        $this->pricebook2 = $pricebook2;
     }
 
     public function getPricebook2Id()
     {
-        return $this->Pricebook2Id;
+        return $this->pricebook2Id;
     }
 
     public function setPricebook2Id($pricebook2Id)
     {
-        $this->Pricebook2Id = $pricebook2Id;
+        $this->pricebook2Id = $pricebook2Id;
     }
 
     public function getProbability()
     {
-        return $this->Probability;
+        return $this->probability;
     }
 
     public function setProbability($probability)
     {
-        $this->Probability = $probability;
+        $this->probability = $probability;
     }
 
     public function getProcessInstances()
     {
-        return $this->ProcessInstances;
+        return $this->processInstances;
     }
 
     public function setProcessInstances($processInstances)
     {
-        $this->ProcessInstances = $processInstances;
+        $this->processInstances = $processInstances;
     }
 
     public function getProcessSteps()
     {
-        return $this->ProcessSteps;
+        return $this->processSteps;
     }
 
     public function setProcessSteps($processSteps)
     {
-        $this->ProcessSteps = $processSteps;
+        $this->processSteps = $processSteps;
     }
 
     public function getRecordType()
     {
-        return $this->RecordType;
+        return $this->recordType;
     }
 
     public function setRecordType($recordType)
     {
-        $this->RecordType = $recordType;
+        $this->recordType = $recordType;
     }
 
     public function getRecordTypeId()
     {
-        return $this->RecordTypeId;
+        return $this->recordTypeId;
     }
 
     public function setRecordTypeId($recordTypeId)
     {
-        $this->RecordTypeId = $recordTypeId;
+        $this->recordTypeId = $recordTypeId;
     }
 
     public function getShares()
     {
-        return $this->Shares;
+        return $this->shares;
     }
 
     public function setShares($shares)
     {
-        $this->Shares = $shares;
+        $this->shares = $shares;
     }
 
     public function getStageName()
     {
-        return $this->StageName;
+        return $this->stageName;
     }
 
     public function setStageName($stageName)
     {
-        $this->StageName = $stageName;
+        $this->stageName = $stageName;
     }
 
     public function getTags()
     {
-        return $this->Tags;
+        return $this->tags;
     }
 
     public function setTags($tags)
     {
-        $this->Tags = $tags;
+        $this->tags = $tags;
     }
 
     public function getTasks()
     {
-        return $this->Tasks;
+        return $this->tasks;
     }
 
     public function setTasks($tasks)
     {
-        $this->Tasks = $tasks;
+        $this->tasks = $tasks;
     }
 
     public function getType()
     {
-        return $this->Type;
+        return $this->type;
     }
 
     public function setType($type)
     {
-        $this->Type = $type;
+        $this->type = $type;
     }
 }

@@ -116,11 +116,11 @@ class AccountContactRole extends AbstractModel
 
     public function getRole()
     {
-        return $this->Role;
+        return $this->role;
     }
 
     public function setRole($role)
     {
-        $this->Role = $role;
+        $this->role = $role;
     }
 }
