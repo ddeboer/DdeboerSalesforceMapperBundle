@@ -225,7 +225,7 @@ class Task extends AbstractModel
         return $this->account;
     }
 
-    public function setAccount(Account $account)
+    public function setAccount($account)
     {
         $this->account = $account;
         $this->accountId = $account->getId();
@@ -547,7 +547,7 @@ class Task extends AbstractModel
         return $this->what;
     }
 
-    public function setWhat(AbstractModel $what)
+    public function setWhat($what)
     {
         $this->what = $what;
         $this->whatId = $what->getId();
@@ -568,7 +568,7 @@ class Task extends AbstractModel
         return $this->who;
     }
 
-    public function setWho(AbstractModel $who)
+    public function setWho($who)
     {
         $this->who = $who;
         $this->whoId = $who->getId();

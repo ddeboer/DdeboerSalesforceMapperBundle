@@ -9,7 +9,7 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
  * 
  * @Salesforce\Object(name="User")
  */
-class User 
+class User extends AbstractModel
 {
     /**
      * @var stirng

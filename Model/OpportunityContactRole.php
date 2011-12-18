@@ -93,7 +93,7 @@ class OpportunityContactRole extends AbstractModel
         return $this->opportunity;
     }
 
-    public function setOpportunity(Opportunity $opportunity)
+    public function setOpportunity($opportunity)
     {
         $this->opportunity = $opportunity;
         $this->opportunityId = $opportunity->getId();

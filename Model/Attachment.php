@@ -147,6 +147,7 @@ class Attachment extends AbstractModel
     public function setOwner($owner)
     {
         $this->owner = $owner;
+        $this->ownerId = $owner->getId();
     }
 
     public function getOwnerId()

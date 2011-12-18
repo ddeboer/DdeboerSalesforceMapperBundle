@@ -62,7 +62,7 @@ class AccountContactRole extends AbstractModel
         return $this->account;
     }
 
-    public function setAccount(Account $account)
+    public function setAccount($account)
     {
         $this->account = $account;
         $this->accountId = $account->getId();
@@ -83,7 +83,7 @@ class AccountContactRole extends AbstractModel
         return $this->contact;
     }
 
-    public function setContact(Contact $contact)
+    public function setContact($contact)
     {
         $this->contact = $contact;
         $this->contactId = $contact->getId();
