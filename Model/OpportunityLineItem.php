@@ -12,24 +12,24 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 class OpportunityLineItem extends AbstractModel
 {
     /**
-     * @var xsdstring
+     * @var string
      * @Salesforce\Field(name="Description")
      */
     protected $description;
     
     /**
-     * @var xsdboolean
+     * @var boolean
      */
     protected $isDeleted;
     
     /**
-     * @var xsddouble
+     * @var double
      * @Salesforce\Field(name="ListPrice")
      */
     protected $listPrice;
     
     /**
-     * @var ensOpportunity
+     * @var Opportunity
      * @Salesforce\Relation(field="Opportunity", class="Ddeboer\Salesforce\MapperBundle\Model\Opportunity")
      */
     protected $opportunity;
@@ -63,7 +63,7 @@ class OpportunityLineItem extends AbstractModel
     protected $serviceDate;
     
     /**
-     * @var xsdint
+     * @var int
      */
     protected $sortOrder;
     
