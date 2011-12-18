@@ -12,6 +12,7 @@
         </service>
 
         <service id="ddeboer_salesforce_mapper.bulk_saver" class="Ddeboer\Salesforce\MapperBundle\MappedBulkSaver">
+            <argument type="service" id="ddeboer_salesforce_client.bulk_saver" />
             <argument type="service" id="ddeboer_salesforce_mapper" />
         </service>
 
