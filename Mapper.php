@@ -2,7 +2,7 @@
 
 namespace Ddeboer\Salesforce\MapperBundle;
 
-use Ddeboer\Salesforce\ClientBundle\Client;
+use Ddeboer\Salesforce\ClientBundle\ClientInterface;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
@@ -28,7 +28,7 @@ class Mapper
     /**
      * Salesforce client
      * 
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
 
@@ -53,7 +53,7 @@ class Mapper
      * @param AnnotationReader $annotationReader
      * @param Cache $cache
      */
-    public function __construct(Client $client, AnnotationReader $annotationReader, Cache $cache)
+    public function __construct(ClientInterface $client, AnnotationReader $annotationReader, Cache $cache)
     {
         $this->client = $client;
         $this->annotationReader = $annotationReader;
@@ -490,5 +490,14 @@ class Mapper
         }
 
         return $fields;
+    }
+
+    public function getClassMetadata($className)
+    {
+        $class;
+    }
+
+    public function merge($merge)
+    {
     }
 }
