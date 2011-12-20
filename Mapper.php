@@ -377,11 +377,12 @@ class Mapper
                 $operator = '=';
             }
 
-            $name = ucfirst($keyParts[0]);
-            $field = $fields->filter(function($field) use ($name) {
-                return $field->name == $name;
-            })->first();
-
+            $name = $keyParts[0];
+            $field = $this->annotationReader->getSalesforceField($model, $name);
+            if (!$field) {
+                throw new \InvalidArgumentException('Invalid field ' . $name);
+            }
+            
             $whereParts[] = sprintf('%s %s %s',
                 $field->name,
                 $operator,
