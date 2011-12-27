@@ -87,4 +87,48 @@ class MappedBulkSaver implements MappedBulkSaverInterface
     {
         return $this->bulkSaver->flush();
     }
+
+    /**
+     * Get bulk delete limit
+     *
+     * @return int
+     */
+    public function getBulkDeleteLimit()
+    {
+        return $this->bulkSaver->getBulkDeleteLimit();
+    }
+
+    /**
+     * Set bulk delete limit
+     *
+     * @param int $bulkDeleteLimit
+     * @return MappedBulkSaver
+     */
+    public function setBulkDeleteLimit($bulkDeleteLimit)
+    {
+        $this->bulkSaver->setBulkDeleteLimit($bulkDeleteLimit);
+        return $this;
+    }
+
+    /**
+     * Get bulk save limit
+     *
+     * @return int
+     */
+    public function getBulkSaveLimit()
+    {
+        return $this->bulkSaver->getBulkSaveLimit();
+    }
+
+    /**
+     * Set bulk save limit
+     *
+     * @param int $bulkSaveLimit
+     * @return MappedBulkSaver
+     */
+    public function setBulkSaveLimit($bulkSaveLimit)
+    {
+        $this->bulkSaver->setBulkSaveLimit($bulkSaveLimit);
+        return $this;
+    }
 }
