@@ -276,7 +276,7 @@ class Mapper
         foreach ($propertyMappings as $property => $mapping) {
             $fieldDescription = $objectDescription->getField($mapping->name);
             if (!$fieldDescription) {
-                throw new \InvalidArgumentException(spritnf(
+                throw new \InvalidArgumentException(sprintf(
                     'Field %s does not exist on %s',
                     $mapping->name,
                     $objectDescription->getName()
