@@ -12,7 +12,7 @@ use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-class MappedBulkSaver
+class MappedBulkSaver implements MappedBulkSaverInterface
 {
     /**
      * @var BulkSaver

@@ -106,6 +106,14 @@ $account->setName('Name change!');
 $mapper->save($account);
 ```
 
+### Fetching records
+
+#### Fetch all records
+
+```
+$results = $mapper->findAll('Ddeboer\Salesforce\MapperBundle\Model\Task');
+```
+
 ### Custom objects and properties
 
 In the `Model` folder you will find several standard Salesforce objects. As this
