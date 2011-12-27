@@ -15,64 +15,64 @@ class Attachment extends AbstractModel
      * @var string
      * @Salesforce\Field(name="Body")  
      */
-    private $body;
+    protected $body;
     
     /**
      * @var int
      */
-    private $bodyLength;
+    protected $bodyLength;
     
     /**
      * @var string
      */
-    private $contentType;
+    protected $contentType;
     
     /**
      * @var string
      * @Salesforce\Field(name="Description")
      */
-    private $description;
+    protected $description;
     
     /**
      * @var boolean
      * @Salesforce\Field(name="IsDeleted")
      */
-    private $isDeleted;
+    protected $isDeleted;
     
     /**
      * @var boolean
      */
-    private $isPrivate;
+    protected $isprotected;
 
     /**
      * @var string
      * @Salesforce\Field(name="Name")
      */
-    private $name;
+    protected $name;
     
     /**
      * @var Name
      * @Salesforce\Relation(field="Owner", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
-    private $owner;
+    protected $owner;
     
     /**
      * @var tnsID
      * @Salesforce\Field(name="OwnerId")
      */
-    private $ownerId;
+    protected $ownerId;
     
     /**
      * @var Name
      * @Salesforce\Relation(field="Parent", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
-    private $parent;
+    protected $parent;
     
     /**
      * @var string
      * @Salesforce\Field(name="ParentId")
      */
-    private $parentId;
+    protected $parentId;
 
     public function getBody()
     {
@@ -119,14 +119,14 @@ class Attachment extends AbstractModel
         return $this->isDeleted;
     }
 
-    public function getIsPrivate()
+    public function getIsprotected()
     {
-        return $this->isPrivate;
+        return $this->isprotected;
     }
 
-    public function setIsPrivate($isPrivate)
+    public function setIsprotected($isprotected)
     {
-        $this->isPrivate = $isPrivate;
+        $this->isprotected = $isprotected;
     }
 
     public function getName()
