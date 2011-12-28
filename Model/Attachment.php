@@ -42,7 +42,7 @@ class Attachment extends AbstractModel
     /**
      * @var boolean
      */
-    protected $isprotected;
+    protected $isProtected;
 
     /**
      * @var string
@@ -119,14 +119,14 @@ class Attachment extends AbstractModel
         return $this->isDeleted;
     }
 
-    public function getIsprotected()
+    public function getisProtected()
     {
-        return $this->isprotected;
+        return $this->isProtected;
     }
 
-    public function setIsprotected($isprotected)
+    public function setisProtected($isProtected)
     {
-        $this->isprotected = $isprotected;
+        $this->isProtected = $isProtected;
     }
 
     public function getName()
