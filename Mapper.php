@@ -115,9 +115,8 @@ class Mapper
      */
     public function find($model, $id, $related = 1)
     {
-        $criteria = array('Id' => $id);
         $query = $this->getQuerySelectPart($model, $related)
-               . $this->getQueryWherePart($criteria, $model);
+               . sprintf(' where Id=\'%s\'', $id);
 
         $result = $this->client->query($query);
         $mappedRecordIterator = new MappedRecordIterator($result, $this, $model);
