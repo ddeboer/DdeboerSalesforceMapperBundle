@@ -285,7 +285,8 @@ class Mapper
             // If the object is created, only allow creatable fields.
             // If the object is updated, only allow updatable.
             if (($model->getId() && $fieldDescription->isUpdateable())
-                || $fieldDescription->isCreateable() || $fieldDescription->isIdLookup()) {
+                || (!$model->getId() && $fieldDescription->isCreateable())
+                || $fieldDescription->isIdLookup()) {
                 // Get value through reflection
                 $reflProperty = $reflClass->getProperty($property);
                 $reflProperty->setAccessible(true);
