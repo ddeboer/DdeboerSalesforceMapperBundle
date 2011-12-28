@@ -170,7 +170,7 @@ class Mapper
      * Get object description, if possible from cache
      *
      * @param object $model     Model object or class name
-     * @return DescribeSObjectResult
+     * @return Response\DescribeSObjectResult
      * @throws \InvalidArgumentException
      */
     public function getObjectDescription($model)
