@@ -148,7 +148,7 @@ class Account extends AbstractModel
     
     /**
      * @var User
-     * @Salesforce\Relation(name="Owner", class="Ddeboer\Salesforce\MapperBundle\Model\User")
+     * @Salesforce\Relation(field="Owner", class="Ddeboer\Salesforce\MapperBundle\Model\User")
      */
     protected $owner;
     
