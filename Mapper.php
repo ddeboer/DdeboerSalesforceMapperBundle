@@ -248,7 +248,7 @@ class Mapper
 
                 $reflProperty = $reflObject->getProperty($property);
                 $reflProperty->setAccessible(true);
-                $reflProperty->setValue($model, $sObject->{$relation->field});
+                $reflProperty->setValue($model, $relatedObject);
             }
         }
 
