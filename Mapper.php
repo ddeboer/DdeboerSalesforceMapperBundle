@@ -127,7 +127,7 @@ class Mapper
     /**
      * Find multiple objects by criteria and return result as an iterator
      *
-     * @param mixed $model    Model object or class name
+     * @param object $model    Model object or class name
      * @param array $criteria Criteria as key/value pairs
      * @param array $order    Order to sort by as key/value pairs
      * @param int $related    Number of levels of related records to include
@@ -148,6 +148,23 @@ class Mapper
         }
         
         return new MappedRecordIterator($result, $this, $model);
+    }
+
+    /**
+     * Find one object by criteria
+     *
+     * @param object $model
+     * @param array $criteria
+     * @param array $order
+     * @param int $related
+     * @param bool $deleted
+     * @return object
+     */
+    public function findOneBy($model, array $criteria, array $order = array(),
+        $related = 1, $deleted = false)
+    {
+        $iterator = $this->findBy($model, $criteria, $order, $related, $deleted);
+        return $iterator->first();
     }
 
     /**
