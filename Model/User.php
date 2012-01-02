@@ -298,6 +298,12 @@ class User extends AbstractModel
     protected $timeZoneSidKey;
     
     /**
+     * @var string
+     * @Salesforce\Field(name="Username")
+     */
+    protected $username;
+
+    /**
      * @var xsdboolean
      */
     protected $userPermissionsAvantgoUser;
@@ -781,6 +787,16 @@ class User extends AbstractModel
     public function setTimeZoneSidKey($timeZoneSidKey)
     {
         $this->timeZoneSidKey = $timeZoneSidKey;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function setUsername($username)
+    {
+        $this->username = $username;
     }
 
     public function getUserPermissionsAvantgoUser()
