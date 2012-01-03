@@ -654,6 +654,81 @@ class User extends AbstractModel
         $this->fullPhotoUrl = $fullPhotoUrl;
     }
 
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+    }
+
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    public function isActive()
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
     public function getLanguageLocaleKey()
     {
         return $this->languageLocaleKey;
