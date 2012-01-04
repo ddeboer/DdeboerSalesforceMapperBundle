@@ -139,7 +139,7 @@ class Mapper
     {
         $query = $this->getQuerySelectPart($model, $related)
                . $this->getQueryWherePart($criteria, $model)
-               . $this->getQueryOrderByPart($order);
+               . $this->getQueryOrderByPart($order, $model);
 
         if (true === $deleted) {
             $result = $this->client->queryAll($query);
@@ -463,11 +463,12 @@ class Mapper
      * @param array $orderBy
      * @return string
      */
-    private function getQueryOrderByPart(array $orderBy)
+    private function getQueryOrderByPart(array $orderBy, $model)
     {
         $orderParts = array();
         foreach ($orderBy as $field => $direction) {
-            $orderParts[] = "$field $direction";
+            $fieldAnnotation = $this->annotationReader->getSalesforceField($model, $field);
+            $orderParts[] = $fieldAnnotation->name . ' ' . $direction;
         }
 
         if (!empty($orderParts)) {
