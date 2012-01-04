@@ -126,4 +126,18 @@ class MappedRecordIterator implements \OuterIterator, \Countable
     {
         return $this->recordIterator->count();
     }
+
+    /**
+     * Get object at key
+     * 
+     * @param int $key
+     * @return object | null
+     */
+    public function get($key)
+    {
+        $sObject = $this->recordIterator->seek($key);
+        if ($sObject) {
+            return $this->mapper->mapToDomainObject($sObject, $this->modelClass);
+        }
+    }
 }
