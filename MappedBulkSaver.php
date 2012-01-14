@@ -42,9 +42,22 @@ class MappedBulkSaver implements MappedBulkSaverInterface
      */
     public function save($model, $matchField = null)
     {
-        $record = $this->mapper->mapToSalesforceObject($model);
+        $record = $this->mapper->mapToSalesforceObject($model, null !== $matchField);        
         $objectMapping = $this->annotationReader->getSalesforceObject($model);
-        $this->bulkSaver->save($record, $objectMapping->name, $matchField);
+
+        $matchFieldName = null;
+        if ($matchField) {
+            $field = $this->annotationReader->getSalesforceField($model, $matchField);
+            if (!$field) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Invalid match field %s. Make sure to specify a mapped '
+                    . 'property’s name', $matchField)
+                );
+            }
+            $matchFieldName = $field->name;
+        }
+            
+        $this->bulkSaver->save($record, $objectMapping->name, $matchFieldName);
 
         return $this;
     }
