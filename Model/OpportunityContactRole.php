@@ -13,7 +13,7 @@ class OpportunityContactRole extends AbstractModel
 {
     /**
      * @var Contact
-     * @Salesforce\Relation(field="ContactId",
+     * @Salesforce\Relation(field="ContactId", name="Contact",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Contact")
      */
     protected $contact;
@@ -38,7 +38,7 @@ class OpportunityContactRole extends AbstractModel
   
     /**
      * @var Opportunity
-     * @Salesforce\Relation(field="OpportunityId",
+     * @Salesforce\Relation(field="OpportunityId", name="Opportunity",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Opportunity")
      */
     protected $opportunity;

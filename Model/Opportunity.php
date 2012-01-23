@@ -15,7 +15,8 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 class Opportunity extends AbstractModel
 {
     /**
-     * @Salesforce\Relation(field="Account", class="Ddeboer\Salesforce\MapperBundle\Model\Account")
+     * @Salesforce\Relation(field="AccountId", name="Account",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
     protected $account;
     
