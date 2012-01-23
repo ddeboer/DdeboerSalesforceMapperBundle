@@ -7,6 +7,7 @@ use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 use Ddeboer\Salesforce\ClientBundle\Response;
+use Ddeboer\Salesforce\MapperBundle\Query\Builder;
 use Doctrine\Common\Cache\Cache;
 
 /**
@@ -528,5 +529,15 @@ class Mapper
 
     public function merge($merge)
     {
+    }
+
+    /**
+     * Create query builder
+     *
+     * @return Builder
+     */
+    public function createQueryBuilder()
+    {
+        return new Builder($this, $this->client, $this->annotationReader);
     }
 }
