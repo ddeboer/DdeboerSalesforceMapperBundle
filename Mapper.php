@@ -240,7 +240,7 @@ class Mapper
      * @return object A mapped instantiation of the model class
      */
     public function mapToDomainObject($sObject, $modelClass)
-    {
+    {      
         $model = new $modelClass();
         $reflObject = new \ReflectionObject($model);
 
@@ -258,9 +258,13 @@ class Mapper
         // Set Salesforce relations on domain object
         $relations = $this->annotationReader->getSalesforceRelations($modelClass);
         foreach ($relations as $property => $relation) {
-            if (isset($sObject->{$relation->field})) {
+            $relationName = (isset($relation->name))
+                ? $relation->name
+                : $relation->field;
+
+            if (isset($sObject->$relationName)) {
                 $relatedObject = $this->mapToDomainObject(
-                    $sObject->{$relation->field}, $relation->class
+                    $sObject->$relationName, $relation->class
                 );
 
                 $reflProperty = $reflObject->getProperty($property);
