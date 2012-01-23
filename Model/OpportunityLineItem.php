@@ -30,7 +30,8 @@ class OpportunityLineItem extends AbstractModel
     
     /**
      * @var Opportunity
-     * @Salesforce\Relation(field="Opportunity", class="Ddeboer\Salesforce\MapperBundle\Model\Opportunity")
+     * @Salesforce\Relation(field="OpportunityId",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Opportunity")
      */
     protected $opportunity;
     
