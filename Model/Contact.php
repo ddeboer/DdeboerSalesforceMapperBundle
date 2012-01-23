@@ -56,7 +56,7 @@ class Contact extends AbstractModel
     protected $attachments;
     
     /**
-     * @Salesforce\Field(name="BirthDate")
+     * @Salesforce\Field(name="Birthdate")
      */
     protected $birthdate;
     
