@@ -162,7 +162,7 @@ class Mapper
      * @return object
      */
     public function findOneBy($model, array $criteria, array $order = array(),
-        $related = 1, $deleted = false)
+        $related = 2, $deleted = false)
     {
         $iterator = $this->findBy($model, $criteria, $order, $related, $deleted);
         return $iterator->first();
@@ -291,16 +291,25 @@ class Mapper
         $sObject->fieldsToNull = array();
 
         $objectDescription = $this->getObjectDescription($model);
-        $propertyMappings = $this->annotationReader->getSalesforceFields($model);
         $reflClass = new \ReflectionClass($model);
+        $mappedProperties = $this->annotationReader->getSalesforceFields($model);
+        $mappedRelations = $this->annotationReader->getSalesforceRelations($model);
+        $allMappings = $mappedProperties->toArray() + $mappedRelations;
 
-        foreach ($propertyMappings as $property => $mapping) {
-            $fieldDescription = $objectDescription->getField($mapping->name);
+        foreach ($allMappings as $property => $mapping) {
+            if ($mapping instanceof Annotation\Field) {
+                $fieldDescription = $objectDescription->getField($mapping->name);
+                $fieldName = $mapping->name;
+            } elseif ($mapping instanceof Annotation\Relation) {
+                $fieldDescription = $objectDescription->getField($mapping->field);
+                $fieldName = $mapping->field;
+            }
+
             if (!$fieldDescription) {
                 throw new \InvalidArgumentException(sprintf(
-                    'Field %s does not exist on %s',
-                    $mapping->name,
-                    $objectDescription->getName()
+                    'Field %s (for property ‘%s’) does not exist on %s. '
+                    . 'If you think it does, try emptying your cache.',
+                    $fieldName, $property, $objectDescription->getName()
                 ));
             }
 
@@ -308,19 +317,32 @@ class Mapper
             // If the object is updated, only allow updatable.
             if (($model->getId() && $fieldDescription->isUpdateable())
                 || (!$model->getId() && $fieldDescription->isCreateable())
+                    // for 'Id' field:
                 || $fieldDescription->isIdLookup()) {
+                
                 // Get value through reflection
                 $reflProperty = $reflClass->getProperty($property);
                 $reflProperty->setAccessible(true);
                 $value = $reflProperty->getValue($model);
 
+                if ($mapping instanceof Annotation\Relation) {
+                     // @todo Implements recursive saving for new related
+                     // records, too. This only works for already existing
+                     // records.
+                    if (method_exists($value, 'getId') && $value->getId()) {
+                        $value = $value->getId();
+                        $sObject->{$fieldDescription->getName()} = $value;
+                        continue;
+                    } 
+                }
+
                 if (null === $value || (is_string($value) && $value === '')) {
                     // Do not set fieldsToNull on create
                     if ($model->getId()) {
-                        $sObject->fieldsToNull[] = $mapping->name;
+                        $sObject->fieldsToNull[] = $fieldDescription->getName();
                     }
                 } else {
-                    $sObject->{$mapping->name} = $value;
+                    $sObject->{$fieldDescription->getName()} = $value;
                 }
             }
         }
