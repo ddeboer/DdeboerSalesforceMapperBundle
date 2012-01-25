@@ -52,7 +52,8 @@ class Attachment extends AbstractModel
     
     /**
      * @var Name
-     * @Salesforce\Relation(field="Owner", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
+     * @Salesforce\Relation(field="OwnerId", name="Owner",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $owner;
     
@@ -64,7 +65,8 @@ class Attachment extends AbstractModel
     
     /**
      * @var Name
-     * @Salesforce\Relation(field="Parent", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
+     * @Salesforce\Relation(field="ParentId", name="Parent",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $parent;
     

@@ -30,7 +30,7 @@ class OpportunityLineItem extends AbstractModel
     
     /**
      * @var Opportunity
-     * @Salesforce\Relation(field="OpportunityId",
+     * @Salesforce\Relation(field="OpportunityId", name="Opportunity",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Opportunity")
      */
     protected $opportunity;
@@ -42,7 +42,9 @@ class OpportunityLineItem extends AbstractModel
     protected $opportunityId;
     
     /**
-     * @var ensPricebookEntry
+     * @var PricebookEntry
+     * @Salesforce\Relation(field="PricebookEntryId", name="PricebookEntry",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\PricebookEntry")
      */
     protected $pricebookEntry;
     
@@ -79,7 +81,7 @@ class OpportunityLineItem extends AbstractModel
      * @Salesforce\Field(name="UnitPrice")
      */
     protected $unitPrice;
-    
+
     public function getDescription()
     {
         return $this->description;

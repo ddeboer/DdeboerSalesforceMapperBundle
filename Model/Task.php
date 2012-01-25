@@ -13,7 +13,8 @@ class Task extends AbstractModel
 {  
     /**
      * @var Account
-     * @Salesforce\Relation(field="Account", class="Ddeboer\Salesforce\MapperBundle\Model\Account")
+     * @Salesforce\Relation(field="AccountId", name="Account",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
     protected $account;
     
@@ -102,7 +103,8 @@ class Task extends AbstractModel
     
     /**
      * @var Name
-     * @Salesforce\Relation(field="Owner", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
+     * @Salesforce\Relation(field="OwnerId", name="Owner",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $owner;
     

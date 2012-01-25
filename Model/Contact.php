@@ -15,7 +15,8 @@ class Contact extends AbstractModel
 {
     /**
      * @var Account
-     * @Salesforce\Relation(field="Account", class="Ddeboer\Salesforce\MapperBundle\Model\Account")
+     * @Salesforce\Relation(field="AccountId", name="Account",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
     protected $account;
     
@@ -309,7 +310,8 @@ class Contact extends AbstractModel
     protected $otherStreet;
     
     /**
-     * @Salesforce\Relation(field="Owner", class="Ddeboer\Salesforce\MapperBundle\Model\User")
+     * @Salesforce\Relation(field="OwnerId", name="OwnerId",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\User")
      */
     protected $owner;
     
