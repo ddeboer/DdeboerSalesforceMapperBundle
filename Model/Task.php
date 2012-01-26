@@ -200,7 +200,8 @@ class Task extends AbstractModel
     
     /**
      * @var Name
-     * @Salesforce\Relation(field="What", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
+     * @Salesforce\Relation(field="WhatId", name="What",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $what;
     
@@ -212,7 +213,8 @@ class Task extends AbstractModel
     
     /**
      * @var Name
-     * @Salesforce\Relation(field="Who", class="Ddeboer\Salesforce\MapperBundle\Model\Name")
+     * @Salesforce\Relation(field="WhoId", name="Who",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $who;
     

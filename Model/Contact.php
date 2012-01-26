@@ -310,7 +310,7 @@ class Contact extends AbstractModel
     protected $otherStreet;
     
     /**
-     * @Salesforce\Relation(field="OwnerId", name="OwnerId",
+     * @Salesforce\Relation(field="OwnerId", name="Owner",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\User")
      */
     protected $owner;
