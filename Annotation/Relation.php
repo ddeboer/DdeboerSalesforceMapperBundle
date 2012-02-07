@@ -6,7 +6,8 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * Defines a relation between Salesforce objects
- * 
+ *
+ * @Annotation
  */
 class Relation extends Annotation
 {
