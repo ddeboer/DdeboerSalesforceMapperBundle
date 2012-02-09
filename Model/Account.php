@@ -56,7 +56,6 @@ class Account extends AbstractModel
     
     /**
      * @var ResultIterator
-     * @Salesforce\Relation(name="Contacts", class="Ddeboer\Salesforce\MapperBundle\Model\Contact")
      */
     protected $contacts;
     
@@ -530,6 +529,7 @@ class Account extends AbstractModel
     public function setParentId($parentId)
     {
         $this->parentId = $parentId;
+        return $this;
     }
 
     public function getPartnersFrom()
@@ -540,6 +540,7 @@ class Account extends AbstractModel
     public function setPartnersFrom($partnersFrom)
     {
         $this->partnersFrom = $partnersFrom;
+        return $this;
     }
 
     public function getPartnersTo()
@@ -550,6 +551,7 @@ class Account extends AbstractModel
     public function setPartnersTo($partnersTo)
     {
         $this->partnersTo = $partnersTo;
+        return $this;
     }
 
     public function getPhone()
@@ -560,6 +562,7 @@ class Account extends AbstractModel
     public function setPhone($phone)
     {
         $this->phone = $phone;
+        return $this;
     }
 
     public function getProcessInstances()
@@ -570,6 +573,7 @@ class Account extends AbstractModel
     public function setProcessInstances($processInstances)
     {
         $this->processInstances = $processInstances;
+        return $this;
     }
 
     public function getProcessSteps()
@@ -580,6 +584,7 @@ class Account extends AbstractModel
     public function setProcessSteps($processSteps)
     {
         $this->processSteps = $processSteps;
+        return $this;
     }
 
     public function getRecordType()
@@ -590,6 +595,7 @@ class Account extends AbstractModel
     public function setRecordType($recordType)
     {
         $this->recordType = $recordType;
+        return $this;
     }
 
     public function getRecordTypeId()
@@ -600,6 +606,7 @@ class Account extends AbstractModel
     public function setRecordTypeId($recordTypeId)
     {
         $this->recordTypeId = $recordTypeId;
+        return $this;
     }
 
     public function getShares()
@@ -610,6 +617,7 @@ class Account extends AbstractModel
     public function setShares($shares)
     {
         $this->shares = $shares;
+        return $this;
     }
 
     public function getShippingCity()
@@ -620,6 +628,7 @@ class Account extends AbstractModel
     public function setShippingCity($shippingCity)
     {
         $this->shippingCity = $shippingCity;
+        return $this;
     }
 
     public function getShippingCountry()
@@ -630,6 +639,7 @@ class Account extends AbstractModel
     public function setShippingCountry($shippingCountry)
     {
         $this->shippingCountry = $shippingCountry;
+        return $this;
     }
 
     public function getShippingPostalCode()
@@ -640,6 +650,7 @@ class Account extends AbstractModel
     public function setShippingPostalCode($shippingPostalCode)
     {
         $this->shippingPostalCode = $shippingPostalCode;
+        return $this;
     }
 
     public function getShippingState()
@@ -650,6 +661,7 @@ class Account extends AbstractModel
     public function setShippingState($shippingState)
     {
         $this->shippingState = $shippingState;
+        return $this;
     }
 
     public function getShippingStreet()
@@ -660,6 +672,7 @@ class Account extends AbstractModel
     public function setShippingStreet($shippingStreet)
     {
         $this->shippingStreet = $shippingStreet;
+        return $this;
     }
 
     public function getTags()
@@ -670,6 +683,7 @@ class Account extends AbstractModel
     public function setTags($tags)
     {
         $this->tags = $tags;
+        return $this;
     }
 
     public function getTasks()
@@ -680,6 +694,7 @@ class Account extends AbstractModel
     public function setTasks($tasks)
     {
         $this->tasks = $tasks;
+        return $this;
     }
 
     public function getType()
@@ -690,6 +705,7 @@ class Account extends AbstractModel
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
     }
 
     public function getWebsite()
@@ -700,5 +716,6 @@ class Account extends AbstractModel
     public function setWebsite($website)
     {
         $this->website = $website;
+        return $this;
     }
 }

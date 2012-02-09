@@ -293,6 +293,7 @@ class Opportunity extends AbstractModel
     {
         $this->account = $account;
         $this->accountId = $account->getId();
+        return $this;
     }
 
     public function getAccountId()
@@ -303,6 +304,7 @@ class Opportunity extends AbstractModel
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+        return $this;
     }
 
     public function getAccountPartners()
@@ -313,6 +315,7 @@ class Opportunity extends AbstractModel
     public function setAccountPartners($accountPartners)
     {
         $this->accountPartners = $accountPartners;
+        return $this;
     }
 
     public function getActivityHistories()
@@ -323,6 +326,7 @@ class Opportunity extends AbstractModel
     public function setActivityHistories($activityHistories)
     {
         $this->activityHistories = $activityHistories;
+        return $this;
     }
 
     public function getAmount()
@@ -333,6 +337,7 @@ class Opportunity extends AbstractModel
     public function setAmount($amount)
     {
         $this->amount = $amount;
+        return $this;
     }
 
     public function getAttachments()
@@ -343,6 +348,7 @@ class Opportunity extends AbstractModel
     public function setAttachments($attachments)
     {
         $this->attachments = $attachments;
+        return $this;
     }
 
     public function getCampaign()
@@ -353,6 +359,7 @@ class Opportunity extends AbstractModel
     public function setCampaign($campaign)
     {
         $this->campaign = $campaign;
+        return $this;
     }
 
     public function getCampaignId()
@@ -363,6 +370,7 @@ class Opportunity extends AbstractModel
     public function setCampaignId($campaignId)
     {
         $this->campaignId = $campaignId;
+        return $this;
     }
 
     public function getCloseDate()
@@ -373,6 +381,7 @@ class Opportunity extends AbstractModel
     public function setCloseDate($closeDate)
     {
         $this->closeDate = $closeDate;
+        return $this;
     }
 
     public function getDescription()
@@ -383,6 +392,7 @@ class Opportunity extends AbstractModel
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
     }
 
     public function getEvents()
@@ -393,6 +403,7 @@ class Opportunity extends AbstractModel
     public function setEvents($events)
     {
         $this->events = $events;
+        return $this;
     }
 
     public function getFeedSubscriptionsForEntity()
@@ -403,6 +414,7 @@ class Opportunity extends AbstractModel
     public function setFeedSubscriptionsForEntity($feedSubscriptionsForEntity)
     {
         $this->feedSubscriptionsForEntity = $feedSubscriptionsForEntity;
+        return $this;
     }
 
     public function getFeeds()
@@ -413,6 +425,7 @@ class Opportunity extends AbstractModel
     public function setFeeds($feeds)
     {
         $this->feeds = $feeds;
+        return $this;
     }
 
     public function getFiscal()
@@ -423,6 +436,7 @@ class Opportunity extends AbstractModel
     public function setFiscal($fiscal)
     {
         $this->fiscal = $fiscal;
+        return $this;
     }
 
     public function getFiscalQuarter()
@@ -433,6 +447,7 @@ class Opportunity extends AbstractModel
     public function setFiscalQuarter($fiscalQuarter)
     {
         $this->fiscalQuarter = $fiscalQuarter;
+        return $this;
     }
 
     public function getFiscalYear()
@@ -448,6 +463,7 @@ class Opportunity extends AbstractModel
     public function setForecastCategory($forecastCategory)
     {
         $this->forecastCategory = $forecastCategory;
+        return $this;
     }
 
     public function getForecastCategoryName()
@@ -458,6 +474,7 @@ class Opportunity extends AbstractModel
     public function setForecastCategoryName($forecastCategoryName)
     {
         $this->forecastCategoryName = $forecastCategoryName;
+        return $this;
     }
 
     public function getHasOpportunityLineItem()
@@ -473,6 +490,7 @@ class Opportunity extends AbstractModel
     public function setHistories($histories)
     {
         $this->histories = $histories;
+        return $this;
     }
 
     public function isClosed()
@@ -498,6 +516,7 @@ class Opportunity extends AbstractModel
     public function setLastActivityDate($lastActivityDate)
     {
         $this->lastActivityDate = $lastActivityDate;
+        return $this;
     }
 
     public function getLeadSource()
@@ -508,6 +527,7 @@ class Opportunity extends AbstractModel
     public function setLeadSource($leadSource)
     {
         $this->leadSource = $leadSource;
+        return $this;
     }
 
     public function getName()
@@ -518,6 +538,7 @@ class Opportunity extends AbstractModel
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     public function getNextStep()
@@ -528,6 +549,7 @@ class Opportunity extends AbstractModel
     public function setNextStep($nextStep)
     {
         $this->nextStep = $nextStep;
+        return $this;
     }
 
     public function getNotes()
@@ -538,6 +560,7 @@ class Opportunity extends AbstractModel
     public function setNotes($notes)
     {
         $this->notes = $notes;
+        return $this;
     }
 
     public function getNotesAndAttachments()
@@ -548,6 +571,7 @@ class Opportunity extends AbstractModel
     public function setNotesAndAttachments($notesAndAttachments)
     {
         $this->notesAndAttachments = $notesAndAttachments;
+        return $this;
     }
 
     public function getOpenActivities()
@@ -558,6 +582,7 @@ class Opportunity extends AbstractModel
     public function setOpenActivities($openActivities)
     {
         $this->openActivities = $openActivities;
+        return $this;
     }
 
     public function getOpportunityCompetitors()
@@ -568,6 +593,7 @@ class Opportunity extends AbstractModel
     public function setOpportunityCompetitors($opportunityCompetitors)
     {
         $this->opportunityCompetitors = $opportunityCompetitors;
+        return $this;
     }
 
     public function getOpportunityContactRoles()
@@ -578,6 +604,7 @@ class Opportunity extends AbstractModel
     public function setOpportunityContactRoles($opportunityContactRoles)
     {
         $this->opportunityContactRoles = $opportunityContactRoles;
+        return $this;
     }
 
     public function getOpportunityHistories()
@@ -588,6 +615,7 @@ class Opportunity extends AbstractModel
     public function setOpportunityHistories($opportunityHistories)
     {
         $this->opportunityHistories = $opportunityHistories;
+        return $this;
     }
 
     public function getOpportunityLineItems()
@@ -598,6 +626,7 @@ class Opportunity extends AbstractModel
     public function setOpportunityLineItems($opportunityLineItems)
     {
         $this->opportunityLineItems = $opportunityLineItems;
+        return $this;
     }
 
     public function getOpportunityPartnersFrom()
@@ -608,6 +637,7 @@ class Opportunity extends AbstractModel
     public function setOpportunityPartnersFrom($opportunityPartnersFrom)
     {
         $this->opportunityPartnersFrom = $opportunityPartnersFrom;
+        return $this;
     }
 
     public function getOwner()
@@ -619,6 +649,7 @@ class Opportunity extends AbstractModel
     {
         $this->owner = $owner;
         $this->ownerId = $owner->getId();
+        return $this;
     }
 
     public function getOwnerId()
@@ -629,6 +660,7 @@ class Opportunity extends AbstractModel
     public function setOwnerId($ownerId)
     {
         $this->ownerId = $ownerId;
+        return $this;
     }
 
     public function getPartners()
@@ -639,6 +671,7 @@ class Opportunity extends AbstractModel
     public function setPartners($partners)
     {
         $this->partners = $partners;
+        return $this;
     }
 
     public function getPricebook2()
@@ -649,6 +682,7 @@ class Opportunity extends AbstractModel
     public function setPricebook2($pricebook2)
     {
         $this->pricebook2 = $pricebook2;
+        return $this;
     }
 
     public function getPricebook2Id()
@@ -659,6 +693,7 @@ class Opportunity extends AbstractModel
     public function setPricebook2Id($pricebook2Id)
     {
         $this->pricebook2Id = $pricebook2Id;
+        return $this;
     }
 
     public function getProbability()
@@ -669,6 +704,7 @@ class Opportunity extends AbstractModel
     public function setProbability($probability)
     {
         $this->probability = $probability;
+        return $this;
     }
 
     public function getProcessInstances()
@@ -679,6 +715,7 @@ class Opportunity extends AbstractModel
     public function setProcessInstances($processInstances)
     {
         $this->processInstances = $processInstances;
+        return $this;
     }
 
     public function getProcessSteps()
@@ -689,6 +726,7 @@ class Opportunity extends AbstractModel
     public function setProcessSteps($processSteps)
     {
         $this->processSteps = $processSteps;
+        return $this;
     }
 
     public function getRecordType()
@@ -699,6 +737,7 @@ class Opportunity extends AbstractModel
     public function setRecordType($recordType)
     {
         $this->recordType = $recordType;
+        return $this;
     }
 
     public function getRecordTypeId()
@@ -709,6 +748,7 @@ class Opportunity extends AbstractModel
     public function setRecordTypeId($recordTypeId)
     {
         $this->recordTypeId = $recordTypeId;
+        return $this;
     }
 
     public function getShares()
@@ -719,6 +759,7 @@ class Opportunity extends AbstractModel
     public function setShares($shares)
     {
         $this->shares = $shares;
+        return $this;
     }
 
     public function getStageName()
@@ -729,6 +770,7 @@ class Opportunity extends AbstractModel
     public function setStageName($stageName)
     {
         $this->stageName = $stageName;
+        return $this;
     }
 
     public function getTags()
@@ -739,6 +781,7 @@ class Opportunity extends AbstractModel
     public function setTags($tags)
     {
         $this->tags = $tags;
+        return $this;
     }
 
     public function getTasks()
@@ -749,6 +792,7 @@ class Opportunity extends AbstractModel
     public function setTasks($tasks)
     {
         $this->tasks = $tasks;
+        return $this;
     }
 
     public function getType()
@@ -759,5 +803,6 @@ class Opportunity extends AbstractModel
     public function setType($type)
     {
         $this->type = $type;
+        return $this;
     }
 }

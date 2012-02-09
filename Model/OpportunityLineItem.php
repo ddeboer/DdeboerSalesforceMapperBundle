@@ -90,6 +90,7 @@ class OpportunityLineItem extends AbstractModel
     public function setDescription($description)
     {
         $this->description = $description;
+        return $this;
     }
 
     public function isDeleted()
@@ -105,6 +106,7 @@ class OpportunityLineItem extends AbstractModel
     public function setListPrice($listPrice)
     {
         $this->listPrice = $listPrice;
+        return $this;
     }
 
     public function getOpportunity()
@@ -116,6 +118,7 @@ class OpportunityLineItem extends AbstractModel
     {
         $this->opportunity = $opportunity;
         $this->opportunityId = $opportunity->getId();
+        return $this;
     }
 
     public function getOpportunityId()
@@ -126,6 +129,7 @@ class OpportunityLineItem extends AbstractModel
     public function setOpportunityId($opportunityId)
     {
         $this->opportunityId = $opportunityId;
+        return $this;
     }
 
     public function getPricebookEntry()
@@ -136,6 +140,7 @@ class OpportunityLineItem extends AbstractModel
     public function setPricebookEntry($pricebookEntry)
     {
         $this->pricebookEntry = $pricebookEntry;
+        return $this;
     }
 
     public function getPricebookEntryId()
@@ -146,6 +151,7 @@ class OpportunityLineItem extends AbstractModel
     public function setPricebookEntryId($pricebookEntryId)
     {
         $this->pricebookEntryId = $pricebookEntryId;
+        return $this;
     }
 
     public function getQuantity()
@@ -156,6 +162,7 @@ class OpportunityLineItem extends AbstractModel
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+        return $this;
     }
 
     public function getServiceDate()
@@ -166,6 +173,7 @@ class OpportunityLineItem extends AbstractModel
     public function setServiceDate(\DateTime $serviceDate)
     {
         $this->serviceDate = $serviceDate;
+        return $this;
     }
 
     public function getSortOrder()
@@ -176,6 +184,7 @@ class OpportunityLineItem extends AbstractModel
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+        return $this;
     }
 
     public function getTotalPrice()
@@ -186,6 +195,7 @@ class OpportunityLineItem extends AbstractModel
     public function setTotalPrice($totalPrice)
     {
         $this->totalPrice = $totalPrice;
+        return $this;
     }
 
     public function getUnitPrice()
@@ -196,5 +206,6 @@ class OpportunityLineItem extends AbstractModel
     public function setUnitPrice($unitPrice)
     {
         $this->unitPrice = $unitPrice;
+        return $this;
     }
 }

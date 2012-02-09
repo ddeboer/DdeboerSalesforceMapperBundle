@@ -63,6 +63,7 @@ class OpportunityContactRole extends AbstractModel
     public function setContact(Contact $contact)
     {
         $this->contact = $contact;
+        return $this;
     }
 
     public function getContactId()
@@ -73,6 +74,7 @@ class OpportunityContactRole extends AbstractModel
     public function setContactId($contactId)
     {
         $this->contactId = $contactId;
+        return $this;
     }
 
     public function isDeleted()
@@ -88,6 +90,7 @@ class OpportunityContactRole extends AbstractModel
     public function setIsPrimary($isPrimary)
     {
         $this->isPrimary = $isPrimary;
+        return $this;
     }
 
     public function getOpportunity()
@@ -99,6 +102,7 @@ class OpportunityContactRole extends AbstractModel
     {
         $this->opportunity = $opportunity;
         $this->opportunityId = $opportunity->getId();
+        return $this;
     }
 
     public function getOpportunityId()
@@ -109,6 +113,7 @@ class OpportunityContactRole extends AbstractModel
     public function setOpportunityId($opportunityId)
     {
         $this->opportunityId = $opportunityId;
+        return $this;
     }
 
     public function getRole()
@@ -119,5 +124,6 @@ class OpportunityContactRole extends AbstractModel
     public function setRole($role)
     {
         $this->role = $role;
+        return $this;
     }
 }
