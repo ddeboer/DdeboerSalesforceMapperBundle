@@ -6,8 +6,13 @@ use Ddeboer\Salesforce\MapperBundle\Mapper;
 use Ddeboer\Salesforce\MapperBundle\Model;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ddeboer\Salesforce\ClientBundle\Response\Field;
 use Ddeboer\Salesforce\ClientBundle\Response\RecordIterator;
 use Ddeboer\Salesforce\ClientBundle\Response\QueryResult;
+use Ddeboer\Salesforce\MapperBundle\Events;
+use Ddeboer\Salesforce\MapperBundle\Tests\Mock\DescribeAccountResult;
+use Ddeboer\Salesforce\MapperBundle\Tests\Mock\AccountMock;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class MapperTest extends \PHPUnit_Framework_TestCase
 {
@@ -100,17 +105,50 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         var_dump($task);
     }
 
+    public function testEventIsDispatched()
+    {
+        $account1 = new AccountMock();
+        $account1->setName('First account');
+
+        $account2 = new AccountMock();
+        $account2->setName('Second account');
+
+        $client = $this->getClient();
+        $client->expects($this->any())
+            ->method('create')
+            ->with(array(
+                (object) array(
+                    'Name' => 'First account',
+                    'fieldsToNull'   => array()
+                ),
+                (object) array(
+                    'Name' => 'Second account with altered name',
+                    'fieldsToNull'   => array()
+                )
+            ), 'Account'
+        );
+        
+        $mapper = $this->getMapper($client);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener(Events::beforeSave, function($event) {            
+            $objects = $event->getObjects();
+            $objects[1]->setName('Second account with altered name');
+
+        });
+        $mapper->setEventDispatcher($dispatcher);
+        $mapper->save(array($account1, $account2));
+    }
+
     protected function getClient()
     {
         $client = $this->getMockBuilder('Ddeboer\Salesforce\ClientBundle\Client')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $taskDescription = 'apenkop';
         $client->expects($this->any())
             ->method('describeSObjects')
-            ->with(array('Task'))
-            ->will($this->returnValue($taskDescription));
+            ->with(array('Account'))
+            ->will($this->returnValue(array(new DescribeAccountResult())));
 
         return $client;
     }

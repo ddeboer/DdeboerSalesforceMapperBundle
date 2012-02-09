@@ -14,7 +14,8 @@
     "require": {
         "php": ">=5.3.2",
         "ddeboer/salesforce-client-bundle": "*",
-        "doctrine/common": "*"
+        "doctrine/common": "*",
+        "symfony/event-dispatcher": "*"
     },
     "autoload": {
         "psr-0": { "Ddeboer\\Salesforce\\MapperBundle": "" }

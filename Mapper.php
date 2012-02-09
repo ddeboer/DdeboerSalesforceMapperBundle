@@ -8,7 +8,9 @@ use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 use Ddeboer\Salesforce\ClientBundle\Response;
 use Ddeboer\Salesforce\MapperBundle\Query\Builder;
+use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
 use Doctrine\Common\Cache\Cache;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This mapper makes interaction with the Salesforce API using full objects
@@ -48,6 +50,13 @@ class Mapper
     private $cache;
 
     /**
+     * Symfony event dispatcher
+     * 
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * Construct mapper
      *
      * @param SoapClient $soapClient
@@ -59,6 +68,28 @@ class Mapper
         $this->client = $client;
         $this->annotationReader = $annotationReader;
         $this->cache = $cache;
+    }
+
+    /**
+     * Get event dispatcher
+     * 
+     * @return type EventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
+    }
+
+    /**
+     * Set event dispatcher
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return Mapper
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        return $this;
     }
 
     /**
@@ -205,6 +236,12 @@ class Mapper
     public function save($model)
     {
         $models = is_array($model) ? $model : array($model);
+
+        if ($this->eventDispatcher) {
+            $event = new BeforeSaveEvent($models);
+            $this->eventDispatcher->dispatch(Events::beforeSave, $event);
+        }
+
         $objectsToBeCreated = array();
         $objectsToBeUpdated = array();
 

@@ -9,6 +9,9 @@
             <argument type="service" id="ddeboer_salesforce_client" />
             <argument type="service" id="ddeboer_salesforce_mapper.annotation_reader" />
             <argument type="service" id="ddeboer_salesforce_mapper.cache" />
+            <call method="setEventDispatcher">
+                <argument type="service" id="event_dispatcher" />
+            </call>
         </service>
 
         <service id="ddeboer_salesforce_mapper.bulk_saver" class="Ddeboer\Salesforce\MapperBundle\MappedBulkSaver">
