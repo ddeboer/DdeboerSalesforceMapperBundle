@@ -244,6 +244,7 @@ class Mapper
 
         $objectsToBeCreated = array();
         $objectsToBeUpdated = array();
+        $modelsWithoutId = array();
 
         foreach ($models as $model) {
             $object = $this->annotationReader->getSalesforceObject($model);
@@ -252,12 +253,26 @@ class Mapper
                 $objectsToBeUpdated[$object->name][] = $sObject;
             } else {
                 $objectsToBeCreated[$object->name][] = $sObject;
+                $modelsWithoutId[$object->name][] = $model;
             }
         }
 
         $results = array();
         foreach ($objectsToBeCreated as $objectName => $sObjects) {
-            $results[] = $this->client->create($sObjects, $objectName);
+            $reflClass = new \ReflectionClass(current(
+                $modelsWithoutId[$objectName]
+            ));
+            $reflProperty = $reflClass->getProperty('id');
+            $reflProperty->setAccessible(true);
+
+            $saveResults = $this->client->create($sObjects, $objectName);
+            for ($i = 0; $i < count($saveResults); $i++) {
+                $newId = $saveResults[$i]->id;
+                $model = $modelsWithoutId[$objectName][$i];                
+                $reflProperty->setValue($model, $newId);
+            }
+            
+            $results[] = $saveResults;
         }
 
         foreach ($objectsToBeUpdated as $objectName => $sObjects) {
