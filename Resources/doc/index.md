@@ -114,10 +114,24 @@ $mapper->save($account);
 $results = $mapper->findAll('Ddeboer\Salesforce\MapperBundle\Model\Task');
 ```
 
+### Saving records
+
+If you create a new record and save it, the ID assigned to it by Salesforce is
+accessible with `getId()`.
+
+```
+$account = new Ddeboer\Salesforce\MapperBundle\Model\Account();
+$account->setName('Some name');
+echo $account->getId();     // Returns null
+
+$mapper->save($account);
+echo $account->getId();     // Returns the new ID, e.g. `001D000000h0Jod`
+```
+
 ### Custom objects and properties
 
 In the `Model` folder you will find several standard Salesforce objects. As this
 is a generic client bundle, this directory does not contain custom objects, nor
 do the objects in it have custom properties. If you would like to add custom
 objects or properties, please extend from AbstractModel or the models provided
-respectively. 
+respectively.
