@@ -3,6 +3,7 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
+use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 
 /**
  * Salesforce standard account object
@@ -13,6 +14,13 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
  */
 class Account extends AbstractModel
 {
+    /**
+     * @var MappedRecordIterator
+     * @Salesforce\Relation(name="AccountContactRoles",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\AccountContactRole")
+     */
+    protected $accountContactRoles;
+
     /**
      * @var string
      * @Salesforce\Field(name="AccountNumber")
@@ -260,6 +268,16 @@ class Account extends AbstractModel
      * @Salesforce\Field(name="Website")
      */
     protected $website;
+
+    /**
+     * Get contact roles for the account
+     * 
+     * @return MappedRecordIterator
+     */
+    public function getAccountContactRoles()
+    {
+        return $this->accountContactRoles;
+    }
 
     public function getAccountNumber()
     {
