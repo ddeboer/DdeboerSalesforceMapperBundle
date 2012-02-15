@@ -56,8 +56,9 @@ class Account extends AbstractModel
     
     /**
      * @var ResultIterator
+     * @Salesforce\Relation(name="Contacts", class="Ddeboer\Salesforce\MapperBundle\Model\Contact")
      */
-    protected $contacts;
+    protected $contacts = array();
     
     /**
      * @var string
@@ -338,6 +339,13 @@ class Account extends AbstractModel
     public function setContacts($contacts)
     {
         $this->contacts = $contacts;
+    }
+
+    public function addContact($contact)
+    {
+        $contact->setAccount($this);
+        $this->contacts[] = $contact;
+        return $this;
     }
 
     public function getDescription()

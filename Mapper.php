@@ -311,18 +311,23 @@ class Mapper
         // Set Salesforce relations on domain object
         $relations = $this->annotationReader->getSalesforceRelations($modelClass);
         foreach ($relations as $property => $relation) {
-            $relationName = (isset($relation->name))
-                ? $relation->name
-                : $relation->field;
 
-            if (isset($sObject->$relationName)) {
-                $relatedObject = $this->mapToDomainObject(
-                    $sObject->$relationName, $relation->class
-                );
+            // Relation name must be set
+            if (isset($sObject->{$relation->name})) {
+                $value = $sObject->{$relation->name};
+                if ($value instanceof Response\RecordIterator) {
+                    $value = new MappedRecordIterator(
+                        $value, $this, $relation->class
+                    );
+                } else {
+                    $value = $this->mapToDomainObject(
+                        $sObject->{$relation->name}, $relation->class
+                    );
+                }
 
                 $reflProperty = $reflObject->getProperty($property);
                 $reflProperty->setAccessible(true);
-                $reflProperty->setValue($model, $relatedObject);
+                $reflProperty->setValue($model, $value);
             }
         }
 
@@ -445,8 +450,22 @@ class Mapper
     {
         $object = $this->annotationReader->getSalesforceObject($modelClass);
         $fields = $this->getFields($modelClass, $related);
+        $oneToMany = $this->getOneToManySubqueries($modelClass, $related);
 
-        return 'select ' . implode(',', $fields) . " from $object->name ";
+        $select = $this->getSelect($object->name, $fields, $oneToMany);
+        return $select;
+    }
+
+    private function getSelect($object, $fields, $subqueries = array())
+    {
+        $select = 'select '
+                . implode(',', $fields);
+        if (count($subqueries) > 0) {
+            $select .= ', ' . implode(',', $subqueries);
+        }
+
+        $select .= ' from ' . $object;
+        return $select;
     }
 
     /**
@@ -574,7 +593,9 @@ class Mapper
 
         if ($includeRelatedLevels > 0) {
             foreach($this->annotationReader->getSalesforceRelations($modelClass) as $relation) {
-                
+
+                // Only process one-to-one and many-to-one relations here;
+                // one-to-many relations must be looked up as subquery.
                 if (!$relation->field) {
                     continue;
                 }
@@ -594,6 +615,34 @@ class Mapper
         }
 
         return $fields;
+    }
+
+    /**
+     * Gets subqueries (sub selects) for annoted one-to-many relations on the
+     * model
+     *
+     * @param object $model
+     * @param int $includeRelatedLevels
+     */
+    public function getOneToManySubqueries($model, $includeRelatedLevels)
+    {
+        $relations = $this->annotationReader->getSalesforceRelations($model);
+        $subqueries = array();
+
+        if ($includeRelatedLevels > 0) {
+            foreach ($relations as $relation) {
+                // Only process one-to-many relations here
+                if ($relation->field) {
+                    continue;
+                }
+
+                $fields = $this->getFields($relation->class, $includeRelatedLevels);
+                $subqueries[] = sprintf('(%s)', 
+                    $this->getSelect($relation->name, $fields));
+            }
+        }
+
+        return $subqueries;
     }
 
     public function getClassMetadata($className)
