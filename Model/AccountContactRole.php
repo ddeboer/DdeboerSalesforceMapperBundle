@@ -46,28 +46,37 @@ class AccountContactRole extends AbstractModel
     protected $isDeleted;
     
     /**
-     * @var xsdboolean
-     * 
+     * @var boolean
      * @Salesforce\Field(name="IsPrimary")
      */
     protected $isPrimary;
     
     /**
-     * @var xsdstring
-     * 
+     * @var string
      * @Salesforce\Field(name="Role")
      */
     protected $role;
 
+    /**
+     * Get account
+     *
+     * @return Account
+     */
     public function getAccount()
     {
         return $this->account;
     }
 
+    /**
+     * Set account
+     *
+     * @param Account $account
+     */
     public function setAccount($account)
     {
         $this->account = $account;
         $this->accountId = $account->getId();
+        return $this;
     }
 
     public function getAccountId()
@@ -78,17 +87,29 @@ class AccountContactRole extends AbstractModel
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+        return $this;
     }
 
+    /**
+     * Get contact
+     * 
+     * @return Contact
+     */
     public function getContact()
     {
         return $this->contact;
     }
 
+    /**
+     * Set contact
+     *
+     * @param Contact $contact
+     */
     public function setContact($contact)
     {
         $this->contact = $contact;
         $this->contactId = $contact->getId();
+        return $this;
     }
 
     public function getContactId()
@@ -99,30 +120,58 @@ class AccountContactRole extends AbstractModel
     public function setContactId($contactId)
     {
         $this->contactId = $contactId;
+        return $this;
     }
 
+    /**
+     * Get is deleted
+     * 
+     * @return boolean
+     */
     public function isDeleted()
     {
         return $this->isDeleted;
     }
 
+    /**
+     * Get is primary
+     *
+     * @return boolean
+     */
     public function isPrimary()
     {
         return $this->isPrimary;
     }
 
+    /**
+     * Set is primary
+     *
+     * @param boolean $isPrimary
+     */
     public function setIsPrimary($isPrimary)
     {
         $this->isPrimary = $isPrimary;
+        return $this;
     }
 
+    /**
+     * Get role
+     *
+     * @return string
+     */
     public function getRole()
     {
         return $this->role;
     }
 
+    /**
+     * Set role
+     *
+     * @param string $role
+     */
     public function setRole($role)
     {
         $this->role = $role;
+        return $this;
     }
 }
