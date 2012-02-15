@@ -9,25 +9,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Ddeboer\Salesforce\ClientBundle\Response\Field;
 use Ddeboer\Salesforce\ClientBundle\Response\RecordIterator;
 use Ddeboer\Salesforce\ClientBundle\Response\QueryResult;
+use Ddeboer\Salesforce\ClientBundle\Response\SaveResult;
 use Ddeboer\Salesforce\MapperBundle\Events;
-use Ddeboer\Salesforce\MapperBundle\Tests\Mock\DescribeAccountResult;
-use Ddeboer\Salesforce\MapperBundle\Tests\Mock\AccountMock;
+use Ddeboer\Salesforce\MapperBundle\Tests\Mock;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+
 
 class MapperTest extends \PHPUnit_Framework_TestCase
 {
     public function testCount()
     {
-        return;
         $result = new QueryResult();
         $result->size = 15;
 
         $client = $this->getClient();
         $client->expects($this->once())
             ->method('query')
-            ->with('select count() from Task')
+            ->with('select count() from Account')
             ->will($this->returnValue(new RecordIterator($client, $result)));
-        $this->assertEquals(15, $this->getMapper($client)->count(new Model\Task()));
+        $this->assertEquals(15, $this->getMapper($client)->count(new Model\Account()));
     }
 
     public function testBuildQuery()
@@ -107,10 +107,10 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 
     public function testEventIsDispatched()
     {
-        $account1 = new AccountMock();
+        $account1 = new Mock\AccountMock();
         $account1->setName('First account');
 
-        $account2 = new AccountMock();
+        $account2 = new Mock\AccountMock();
         $account2->setName('Second account');
 
         $client = $this->getClient();
@@ -139,7 +139,42 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         $mapper->save(array($account1, $account2));
     }
 
-    protected function getClient()
+    public function testResultIdIsSetOnModel()
+    {
+        $account = new Mock\AccountMock();
+        $account->setName('An account');
+
+        $task = new Mock\TaskMock();
+        $task->setSubject('A task');
+
+        $client = $this->getClient(array('create'));
+
+        $saveResult1 = new SaveResult();
+        $saveResult1->id = '001D000000mDq9D';
+
+        $saveResult2 = new SaveResult();
+        $saveResult2->id = '00TD0000015m79U';
+
+        $client->expects($this->any())
+            ->method('create')
+            ->will($this->returnCallback(function($input, $type) use (
+                $saveResult1, $saveResult2
+            ) {
+                switch ($type) {
+                    case 'Account':
+                        return array($saveResult1);
+                    case 'Task':
+                        return array($saveResult2);
+                }
+            }));
+
+        $mapper = $this->getMapper($client);
+        $mapper->save(array($account, $task));
+        $this->assertEquals('001D000000mDq9D', $account->getId());
+        $this->assertEquals('00TD0000015m79U', $task->getId());
+    }
+
+    protected function getClient(array $methods = array())
     {
         $client = $this->getMockBuilder('Ddeboer\Salesforce\ClientBundle\Client')
             ->disableOriginalConstructor()
@@ -147,8 +182,15 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 
         $client->expects($this->any())
             ->method('describeSObjects')
-            ->with(array('Account'))
-            ->will($this->returnValue(array(new DescribeAccountResult())));
+            ->will($this->returnCallback(function($value) {
+                $object = reset($value);
+                switch ($object) {
+                    case 'Account':
+                        return array(new Mock\DescribeAccountResult());
+                    case 'Task':
+                        return array(new Mock\DescribeTaskResult());
+                }
+            }));
 
         return $client;
     }
