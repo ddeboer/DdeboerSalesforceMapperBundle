@@ -357,9 +357,14 @@ class Mapper
             if ($mapping instanceof Annotation\Field) {
                 $fieldDescription = $objectDescription->getField($mapping->name);
                 $fieldName = $mapping->name;
-            } elseif ($mapping instanceof Annotation\Relation) {
+            } elseif ($mapping instanceof Annotation\Relation
+                      && $mapping->field) {
+                // Only one-to-one and one-to-many relations will be saved
                 $fieldDescription = $objectDescription->getField($mapping->field);
                 $fieldName = $mapping->field;
+            } else {
+                // Do not save many-to-many relations
+                continue;
             }
 
             if (!$fieldDescription) {
