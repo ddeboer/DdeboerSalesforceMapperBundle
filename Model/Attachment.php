@@ -24,6 +24,7 @@ class Attachment extends AbstractModel
     
     /**
      * @var string
+     * @Salesforce\Field(name="ContentType")
      */
     protected $contentType;
     
