@@ -15,6 +15,7 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 class Opportunity extends AbstractModel
 {
     /**
+     * @var Account
      * @Salesforce\Relation(field="AccountId", name="Account",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
@@ -284,6 +285,10 @@ class Opportunity extends AbstractModel
      */
     protected $type;
 
+    /**
+     *
+     * @return Account
+     */
     public function getAccount()
     {
         return $this->account;
