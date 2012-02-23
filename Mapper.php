@@ -608,8 +608,9 @@ class Mapper
                 // Check whether we can find this relation
                 $relationshipField = $description->getRelationshipField($relation->field);
                 if (!$relationshipField) {
-                    throw new \InvalidArgumentException(
-                        'Field ' . $relation->field . ' does not exist on ' . $description->getName());
+//                    throw new \InvalidArgumentException(
+//                        'Field ' . $relation->field . ' does not exist on ' . $description->getName());
+                    continue;
                 }
 
                 $relatedFields = $this->getFields($relation->class, --$includeRelatedLevels);
