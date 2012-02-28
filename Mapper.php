@@ -555,6 +555,8 @@ class Mapper
                 }
             case 'boolean':
                 return $value ? 'true' : 'false';
+            case 'double':
+                return $value;
             default:
                 return "'" . addslashes($value) . "'";
         }
