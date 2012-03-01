@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/ddeboer/DdeboerSalesforceMapperBundle.png?branch=master)](http://travis-ci.org/ddeboer/DdeboerSalesforceMapperBundle)
+
 Ddeboer Salesforce Mapper Bundle
 ================================
 
