@@ -1,8 +1,14 @@
 <?php
+$vendorDir = __DIR__ . '/../vendor';
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
+if (!@include($vendorDir . '/.composer/autoload.php')) {
+    die("You must set up the project dependencies, run the following commands:
+wget http://getcomposer.org/composer.phar
+php composer.phar install
+");
+} 
 
-$loader = require __DIR__. '/../vendor/.composer/autoload.php';
+$loader = require $vendorDir .  '/.composer/autoload.php';
 
 spl_autoload_register(function($class) {
     if (0 === strpos($class, 'Ddeboer\\Salesforce\\MapperBundle\\')) {
@@ -16,7 +22,7 @@ spl_autoload_register(function($class) {
     }
 });
 
-AnnotationRegistry::registerLoader(function($class) use ($loader) {
+Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(function($class) use ($loader) {
     spl_autoload_call($class);
     return class_exists($class, false);
 });
