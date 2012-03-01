@@ -47,7 +47,7 @@
             "type": "package",
             "package": {
                 "name": "besimple/soap-common",
-                "version": "master-dev",
+                "version": "dev-master",
                 "source": {
                     "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
                     "type": "git",
@@ -62,7 +62,7 @@
     "require": {
         "php": ">=5.3.2",
         "ddeboer/salesforce-client-bundle": "dev-master",
-        "doctrine/common": "*",
+        "doctrine/common": ">=2.1.0,<=2.2.0",
         "symfony/event-dispatcher": "*"
     },
     "autoload": {
