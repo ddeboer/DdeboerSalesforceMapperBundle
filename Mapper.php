@@ -525,6 +525,7 @@ class Mapper
      * @param DescribeSObjectResult $description
      * @return string
      * @throws \InvalidArgumentException
+     * @link http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm#topic-title
      */
     private function getQuotedWhereValue(Annotation\Field $field, $value, 
         Response\DescribeSObjectResult $description)
@@ -532,7 +533,7 @@ class Mapper
         $fieldDescription = $description->getField($field->name);
         if (!$fieldDescription) {
             throw new \InvalidArgumentException(
-                sprintf('‘%s’ on object %s is not a valid field',
+                sprintf('\'%s\' on object %s is not a valid field',
                     $field->name,
                     $description->getName()
                 )
@@ -556,6 +557,9 @@ class Mapper
             case 'boolean':
                 return $value ? 'true' : 'false';
             case 'double':
+            case 'currency':
+            case 'percent':
+            case 'int':
                 return $value;
             default:
                 return "'" . addslashes($value) . "'";
