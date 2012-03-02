@@ -174,6 +174,17 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('00TD0000015m79U', $task->getId());
     }
 
+    public function testFetchOneToManyRelationMustNotContainManySideTwice()
+    {
+        $client = $this->getClient();
+        $client->expects($this->once())
+            ->method('query')
+            ->with('select Id,Name, (select Id,Contact.Id,Contact.FirstName,Contact.LastName from AccountContactRoles) from Account where Id=\'1\'')
+            ->will($this->returnValue(new RecordIterator($client, new QueryResult())));
+        $mapper = $this->getMapper($client);
+        $mapper->find(new Mock\AccountMock(), 1);
+    }
+
     protected function getClient(array $methods = array())
     {
         $client = $this->getMockBuilder('Ddeboer\Salesforce\ClientBundle\Client')
@@ -187,6 +198,10 @@ class MapperTest extends \PHPUnit_Framework_TestCase
                 switch ($object) {
                     case 'Account':
                         return array(new Mock\DescribeAccountResult());
+                    case 'Contact':
+                        return array(new Mock\DescribeContactResult());
+                    case 'AccountContactRole':
+                        return array(new Mock\DescribeAccountContactRoleResult());
                     case 'Task':
                         return array(new Mock\DescribeTaskResult());
                 }

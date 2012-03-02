@@ -10,16 +10,21 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 class AccountMock
 {
     /**
-     * @var string
      * @Salesforce\Field(name="Id")
      */
     protected $id;
 
     /**
-     * @var string
      * @Salesforce\Field(name="Name")
      */
     protected $name;
+
+    /**
+     * @Salesforce\Relation(name="AccountContactRoles",
+     *  class="Ddeboer\Salesforce\MapperBundle\Tests\Mock\AccountContactRoleMock"
+     * )
+     */
+    protected $accountContactRoles;
 
     public function getId()
     {
@@ -34,5 +39,15 @@ class AccountMock
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    public function getAccountContactRoles()
+    {
+        return $this->accountContactRoles;
+    }
+
+    public function setAccountContactRoles($accountContactRoles)
+    {
+        $this->accountContactRoles = $accountContactRoles;
     }
 }

@@ -600,6 +600,7 @@ class Mapper
      * @param DescribeSObjectResult $description
      * @return string
      * @throws \InvalidArgumentException
+     * @link http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm#topic-title
      */
     private function getQuotedWhereValue(Annotation\Field $field, $value, 
         Response\DescribeSObjectResult $description)
@@ -607,7 +608,7 @@ class Mapper
         $fieldDescription = $description->getField($field->name);
         if (!$fieldDescription) {
             throw new \InvalidArgumentException(
-                sprintf('‘%s’ on object %s is not a valid field',
+                sprintf('\'%s\' on object %s is not a valid field',
                     $field->name,
                     $description->getName()
                 )
@@ -631,6 +632,9 @@ class Mapper
             case 'boolean':
                 return $value ? 'true' : 'false';
             case 'double':
+            case 'currency':
+            case 'percent':
+            case 'int':
                 return $value;
             default:
                 return "'" . addslashes($value) . "'";
@@ -661,9 +665,11 @@ class Mapper
      *
      * @param string $modelClass
      * @param int $includeRelatedLevels
+     * @param string $ignoreObject  Salesforce object name of model for which
+     *                              fields should not be returned
      * @return array
      */
-    private function getFields($modelClass, $includeRelatedLevels)
+    private function getFields($modelClass, $includeRelatedLevels, $ignoreObject = null)
     {
         $fields = array();
 
@@ -685,8 +691,14 @@ class Mapper
                 // Check whether we can find this relation
                 $relationshipField = $description->getRelationshipField($relation->field);
                 if (!$relationshipField) {
-//                    throw new \InvalidArgumentException(
-//                        'Field ' . $relation->field . ' does not exist on ' . $description->getName());
+                    throw new \InvalidArgumentException(
+                        'Field ' . $relation->field . ' does not exist on ' . $description->getName());
+                    continue;
+                }
+
+                // If the referenced object should be ignored, don't fetch its
+                // fields
+                if ($ignoreObject && $relationshipField->references($ignoreObject)) {
                     continue;
                 }
 
@@ -710,6 +722,7 @@ class Mapper
     public function getOneToManySubqueries($model, $includeRelatedLevels)
     {
         $relations = $this->annotationReader->getSalesforceRelations($model);
+        $object = $this->annotationReader->getSalesforceObject($model);
         $subqueries = array();
 
         if ($includeRelatedLevels > 0) {
@@ -719,8 +732,8 @@ class Mapper
                     continue;
                 }
 
-                $fields = $this->getFields($relation->class, $includeRelatedLevels);
-                $subqueries[] = sprintf('(%s)', 
+                $fields = $this->getFields($relation->class, $includeRelatedLevels, $object->name);
+                $subqueries[] = sprintf('(%s)',
                     $this->getSelect($relation->name, $fields));
             }
         }
