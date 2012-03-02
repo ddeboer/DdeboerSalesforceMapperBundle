@@ -11,6 +11,7 @@ use Ddeboer\Salesforce\MapperBundle\Query\Builder;
 use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Ddeboer\Salesforce\MapperBundle\Exception\SaveException;
 
 /**
  * This mapper makes interaction with the Salesforce API using full objects
@@ -90,6 +91,14 @@ class Mapper
     {
         $this->eventDispatcher = $eventDispatcher;
         return $this;
+    }
+    
+    /**
+     * Disables the client's result check
+     */
+    public function disableClientResultCheck()
+    {
+        $this->client->disableResultCheck(true);
     }
 
     /**
@@ -245,12 +254,14 @@ class Mapper
         $objectsToBeCreated = array();
         $objectsToBeUpdated = array();
         $modelsWithoutId = array();
+        $modelsToUpdate = array();
 
         foreach ($models as $model) {
             $object = $this->annotationReader->getSalesforceObject($model);
             $sObject = $this->mapToSalesforceObject($model);
             if (isset($sObject->Id) && null !== $sObject->Id) {
                 $objectsToBeUpdated[$object->name][] = $sObject;
+                $modelsToUpdate[$object->name][] = $model;
             } else {
                 $objectsToBeCreated[$object->name][] = $sObject;
                 $modelsWithoutId[$object->name][] = $model;
@@ -262,24 +273,88 @@ class Mapper
             $reflClass = new \ReflectionClass(current(
                 $modelsWithoutId[$objectName]
             ));
-            $reflProperty = $reflClass->getProperty('id');
-            $reflProperty->setAccessible(true);
+            $idReflProperty = $reflClass->getProperty('id');
+            $idReflProperty->setAccessible(true);
+
+            $successReflProperty = $reflClass->getProperty('success');
+            $successReflProperty->setAccessible(true);
+
+            $errorsReflProperty = $reflClass->getProperty('errors');
+            $errorsReflProperty->setAccessible(true);
 
             $saveResults = $this->client->create($sObjects, $objectName);
+
             for ($i = 0; $i < count($saveResults); $i++) {
                 $newId = $saveResults[$i]->id;
+                $success = $saveResults[$i]->success;
+                $errors = $saveResults[$i]->errors;
+
                 $model = $modelsWithoutId[$objectName][$i];                
-                $reflProperty->setValue($model, $newId);
+
+                $idReflProperty->setValue($model, $newId);
+                $successReflProperty->setValue($model, $success);
+                $errorsReflProperty->setValue($model, $errors);
             }
             
-            $results[] = $saveResults;
+            $results = array_merge($results, $saveResults);
         }
 
         foreach ($objectsToBeUpdated as $objectName => $sObjects) {
-            $results[] = $this->client->update($sObjects, $objectName);
+            $reflClass = new \ReflectionClass(current(
+                $modelsToUpdate[$objectName]
+            ));
+
+            $successReflProperty = $reflClass->getProperty('success');
+            $successReflProperty->setAccessible(true);
+
+            $errorsReflProperty = $reflClass->getProperty('errors');
+            $errorsReflProperty->setAccessible(true);
+
+            $updateResults = $this->client->update($sObjects, $objectName);
+
+            for ($i = 0; $i < count($updateResults); $i++) {
+                $success = $updateResults[$i]->success;
+                $errors = $updateResults[$i]->errors;
+
+                $model = $modelsToUpdate[$objectName][$i];                
+
+                $successReflProperty->setValue($model, $success);
+                $errorsReflProperty->setValue($model, $errors);
+            }
+
+            $results = array_merge($results, $updateResults);
         }
 
+        $this->checkResult($models);
+        
         return $results;
+    }
+    
+    /**
+     * Checks the models for errors
+     *
+     * @param array $models
+     * @return bool
+     * @throws Ddeboer\Salesforce\MapperBundle\Exception\SaveException
+     */
+    protected function checkResult(array $models)
+    {
+        $okModels = array();
+        $errorModels = array();
+        foreach ($models as $model) {
+            if ( $model->getSuccess() )
+                $okModels[] = $model;
+            else
+                $errorModels[] = $model;
+        }
+        if (count($errorModels) > 0) 
+        {
+            $saveException = new SaveException();
+            $saveException->setOkModels($okModels);
+            $saveException->setErrorModels($errorModels);
+            throw $saveException;
+        }
+        return true;
     }
 
     /**
