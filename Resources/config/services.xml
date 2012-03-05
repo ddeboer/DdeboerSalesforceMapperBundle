@@ -12,6 +12,8 @@
             <call method="setEventDispatcher">
                 <argument type="service" id="event_dispatcher" />
             </call>
+            <call method="disableClientResultCheck">
+            </call>
         </service>
 
         <service id="ddeboer_salesforce_mapper.bulk_saver" class="Ddeboer\Salesforce\MapperBundle\MappedBulkSaver">

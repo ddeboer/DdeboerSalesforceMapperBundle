@@ -52,6 +52,16 @@ abstract class AbstractModel
      * @Salesforce\Field(name="SystemModstamp")
      */
     protected $systemModstamp;
+    
+    /**
+     * @var bool
+     */
+    protected $success;
+
+    /**
+     * @var array
+     */
+    protected $errors = array();
 
     /**
      * @return string
@@ -107,5 +117,21 @@ abstract class AbstractModel
     public function getSystemModstamp()
     {
         return $this->systemModstamp;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function getSuccess()
+    {
+        return $this->success;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 }
