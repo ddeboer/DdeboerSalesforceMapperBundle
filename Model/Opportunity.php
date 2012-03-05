@@ -184,7 +184,9 @@ class Opportunity extends AbstractModel
     protected $opportunityCompetitors;
     
     /**
-     * @var tnsQueryResult
+     * @Salesforce\Relation(name="OpportunityContactRoles",
+     *   class="Ddeboer\Salesforce\MapperBundle\Model\OpportunityContactRole"
+     * )
      */
     protected $opportunityContactRoles;
     

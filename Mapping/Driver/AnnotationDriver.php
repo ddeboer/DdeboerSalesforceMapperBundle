@@ -27,6 +27,7 @@ class AnnotationDriver
             $propertyAnnotations = $this->reader->getPropertyAnnotations(
                 $reflProperty, 'Ddeboer\Salesforce\MapperBundle\Annotation'
             );
+        }
 //
 //
 //            foreach ($propertyAnnotations as $key => $propertyAnnotation) {

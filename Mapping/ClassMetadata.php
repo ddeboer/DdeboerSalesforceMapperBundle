@@ -2,16 +2,17 @@
 
 namespace Ddeboer\Salesforce\MapperBundle\Mapping;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata as ClassMetadataInterface;
 use ReflectionClass;
 
-class ClassMetadata implements ClassMetadataInterface
+class ClassMetadata implements \Doctrine\Common\Persistence\Mapping\ClassMetadata
 {
     public $customRepositoryClassName;
 
     public $fieldMappings;
 
     public $object;
+
+    public $entityName;
 
     /**
      * @var \ReflectionClass
@@ -20,6 +21,7 @@ class ClassMetadata implements ClassMetadataInterface
 
     public function __construct($entityName)
     {
+        $this->entityName = $entityName;
         $this->reflectionClass = new ReflectionClass($entityName);
     }
 
@@ -129,5 +131,25 @@ class ClassMetadata implements ClassMetadataInterface
     public function setObject($object)
     {
         $this->object = $object;
+    }
+
+    public function getAssociationMappedByTargetField($assocName)
+    {
+
+    }
+
+    public function getIdentifierFieldNames()
+    {
+
+    }
+
+    public function getIdentifierValues($object)
+    {
+
+    }
+
+    public function isAssociationInverseSide($assocName)
+    {
+
     }
 }

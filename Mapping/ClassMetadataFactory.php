@@ -2,9 +2,7 @@
 
 namespace Ddeboer\Salesforce\MapperBundle\Mapping;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory as ClassMetadataFactoryInterface;
-
-class ClassMetadataFactory implements ClassMetadataFactoryInterface
+class ClassMetadataFactory implements \Doctrine\Common\Persistence\Mapping\ClassMetadataFactory
 {
     private $loadedMetadata = array();
     private $driver;
@@ -63,5 +61,10 @@ class ClassMetadataFactory implements ClassMetadataFactoryInterface
     public function setMetadataFor($className, $class)
     {
         
+    }
+
+    public function isTransient($className)
+    {
+
     }
 }

@@ -26,10 +26,16 @@ class EntityManager implements ObjectManager
      */
     private $metadataFactory;
 
+    /**
+     * @var UnitOfWork
+     */
+    private $unitOfWork;
+
     public function __construct(ClientInterface $client)
     {
         $this->client = $client;
         $this->metadataFactory = new ClassMetadataFactory(new AnnotationDriver());
+        $this->unitOfWork = new UnitOfWork($this);
     }
 
     public function getClient()
@@ -70,6 +76,16 @@ class EntityManager implements ObjectManager
         
     }
 
+    public function initializeObject($obj)
+    {
+        
+    }
+
+    public function contains($obj)
+    {
+        
+    }
+
 
     public function getRepository($className)
     {
@@ -95,5 +111,14 @@ class EntityManager implements ObjectManager
     public function getMetadataFactory()
     {
         return $this->metadataFactory;
+    }
+
+    /**
+     *
+     * @return UnitOfWork
+     */
+    public function getUnitOfWork()
+    {
+        return $this->unitOfWork;
     }
 }

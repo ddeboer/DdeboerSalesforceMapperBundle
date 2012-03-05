@@ -141,7 +141,7 @@ class Mapper
         $query = $this->getQuerySelectPart($model, $related)
                . $this->getQueryWherePart($criteria, $model)
                . $this->getQueryOrderByPart($order, $model);
-
+        
         if (true === $deleted) {
             $result = $this->client->queryAll($query);
         } else {
