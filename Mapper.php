@@ -409,6 +409,16 @@ class Mapper
             }
         }
 
+        // Strip all values from fields to null for which values have been
+        // set in the SObject
+        if (isset($sObject->fieldsToNull)) {
+            foreach ($sObject->fieldsToNull as $fieldToNull) {
+                if (isset($sObject->$fieldToNull)) {
+                    unset($sObject->fieldsToNull);
+                }
+            }
+        }
+
         return $sObject;
     }
 
