@@ -331,7 +331,7 @@ class Mapper
         }
         if (count($errors) > 0) 
         {
-            $saveException = new SaveException();
+            $saveException = new SaveException($errors[0]->errors[0]->message);
             $saveException->setOkModels($okModels);
             $saveException->setErrors($errors);
             throw $saveException;
