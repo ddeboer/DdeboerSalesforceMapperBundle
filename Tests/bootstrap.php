@@ -1,14 +1,14 @@
 <?php
 $vendorDir = __DIR__ . '/../vendor';
 
-if (!@include($vendorDir . '/.composer/autoload.php')) {
+if (!@include($vendorDir . '/autoload.php')) {
     die("You must set up the project dependencies, run the following commands:
 wget http://getcomposer.org/composer.phar
 php composer.phar install
 ");
-} 
+}
 
-$loader = require $vendorDir .  '/.composer/autoload.php';
+$loader = require $vendorDir .  '/autoload.php';
 
 spl_autoload_register(function($class) {
     if (0 === strpos($class, 'Ddeboer\\Salesforce\\MapperBundle\\')) {
