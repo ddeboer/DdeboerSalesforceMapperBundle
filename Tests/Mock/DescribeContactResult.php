@@ -2,8 +2,8 @@
 
 namespace Ddeboer\Salesforce\MapperBundle\Tests\Mock;
 
-use Ddeboer\Salesforce\ClientBundle\Response\DescribeSObjectResult;
-use Ddeboer\Salesforce\ClientBundle\Response\Field;
+use Accelerate\SoapClient\Result\DescribeSObjectResult;
+use Accelerate\SoapClient\Result\DescribeSObjectResult\Field;
 
 class DescribeContactResult extends DescribeSObjectResult
 {

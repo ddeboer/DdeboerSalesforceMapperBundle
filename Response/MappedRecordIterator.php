@@ -3,7 +3,7 @@
 namespace Ddeboer\Salesforce\MapperBundle\Response;
 
 use Ddeboer\Salesforce\MapperBundle\Mapper;
-use Ddeboer\Salesforce\ClientBundle\Response\RecordIterator;
+use Accelerate\SoapClient\Result\RecordIterator;
 
 /**
  * A mapped record iterator encapsulates a plain Salesforce record iterator and
@@ -129,7 +129,7 @@ class MappedRecordIterator implements \OuterIterator, \Countable
 
     /**
      * Get object at key
-     * 
+     *
      * @param int $key
      * @return object | null
      */

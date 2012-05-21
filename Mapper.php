@@ -2,11 +2,11 @@
 
 namespace Ddeboer\Salesforce\MapperBundle;
 
-use Ddeboer\Salesforce\ClientBundle\ClientInterface;
+use Accelerate\SoapClient\ClientInterface;
+use Accelerate\SoapClient\Result as Response;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
-use Ddeboer\Salesforce\ClientBundle\Response;
 use Ddeboer\Salesforce\MapperBundle\Query\Builder;
 use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
 use Doctrine\Common\Cache\Cache;
@@ -30,7 +30,7 @@ class Mapper
 {
     /**
      * Salesforce client
-     * 
+     *
      * @var ClientInterface
      */
     private $client;
@@ -44,14 +44,14 @@ class Mapper
 
     /**
      * Cache
-     * 
+     *
      * @var Cache
      */
     private $cache;
 
     /**
      * Symfony event dispatcher
-     * 
+     *
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
@@ -72,7 +72,7 @@ class Mapper
 
     /**
      * Get event dispatcher
-     * 
+     *
      * @return type EventDispatcherInterface
      */
     public function getEventDispatcher()
@@ -152,7 +152,7 @@ class Mapper
 
         $result = $this->client->query($query);
         $mappedRecordIterator = new MappedRecordIterator($result, $this, $model);
-        
+
         return $mappedRecordIterator->first();
     }
 
@@ -178,7 +178,7 @@ class Mapper
         } else {
             $result = $this->client->query($query);
         }
-        
+
         return new MappedRecordIterator($result, $this, $model);
     }
 
@@ -267,11 +267,11 @@ class Mapper
 
             $saveResults = $this->client->create($sObjects, $objectName);
             for ($i = 0; $i < count($saveResults); $i++) {
-                $newId = $saveResults[$i]->id;
-                $model = $modelsWithoutId[$objectName][$i];                
+                $newId = $saveResults[$i]->getId();
+                $model = $modelsWithoutId[$objectName][$i];
                 $reflProperty->setValue($model, $newId);
             }
-            
+
             $results[] = $saveResults;
         }
 
@@ -293,7 +293,7 @@ class Mapper
      * @return object A mapped instantiation of the model class
      */
     public function mapToDomainObject($sObject, $modelClass)
-    {      
+    {
         $model = new $modelClass();
         $reflObject = new \ReflectionObject($model);
 
@@ -381,7 +381,7 @@ class Mapper
                 || (!$model->getId() && $fieldDescription->isCreateable())
                     // for 'Id' field:
                 || $fieldDescription->isIdLookup()) {
-                
+
                 // Get value through reflection
                 $reflProperty = $reflClass->getProperty($property);
                 $reflProperty->setAccessible(true);
@@ -395,7 +395,7 @@ class Mapper
                         $value = $value->getId();
                         $sObject->{$fieldDescription->getName()} = $value;
                         continue;
-                    } 
+                    }
                 }
 
                 if (null === $value || (is_string($value) && $value === '')) {
@@ -514,7 +514,7 @@ class Mapper
             if (!$field) {
                 throw new \InvalidArgumentException('Invalid field ' . $name);
             }
-            
+
             $whereParts[] = sprintf('%s %s %s',
                 $field->name,
                 $operator,
@@ -529,7 +529,7 @@ class Mapper
 
     /**
      * Get quoted where value
-     * 
+     *
      * @param Annotation\Field $field
      * @param mixed $value
      * @param DescribeSObjectResult $description
@@ -537,7 +537,7 @@ class Mapper
      * @throws \InvalidArgumentException
      * @link http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm#topic-title
      */
-    private function getQuotedWhereValue(Annotation\Field $field, $value, 
+    private function getQuotedWhereValue(Annotation\Field $field, $value,
         Response\DescribeSObjectResult $description)
     {
         $fieldDescription = $description->getField($field->name);

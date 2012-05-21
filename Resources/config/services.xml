@@ -6,7 +6,7 @@
 
     <services>
         <service id="ddeboer_salesforce_mapper" class="Ddeboer\Salesforce\MapperBundle\Mapper">
-            <argument type="service" id="ddeboer_salesforce_client" />
+            <argument type="service" id="accelerate_salesforce.soap_client" />
             <argument type="service" id="ddeboer_salesforce_mapper.annotation_reader" />
             <argument type="service" id="ddeboer_salesforce_mapper.cache" />
             <call method="setEventDispatcher">

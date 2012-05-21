@@ -6,21 +6,24 @@ use Ddeboer\Salesforce\MapperBundle\Mapper;
 use Ddeboer\Salesforce\MapperBundle\Model;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Doctrine\Common\Collections\ArrayCollection;
-use Ddeboer\Salesforce\ClientBundle\Response\Field;
-use Ddeboer\Salesforce\ClientBundle\Response\RecordIterator;
-use Ddeboer\Salesforce\ClientBundle\Response\QueryResult;
-use Ddeboer\Salesforce\ClientBundle\Response\SaveResult;
+use Accelerate\SoapClient\Result\RecordIterator;
+use Accelerate\SoapClient\Result\QueryResult;
+
+//use Accelerate\SoapClient\Result\
+//use Ddeboer\Salesforce\ClientBundle\Response\Field;
+
 use Ddeboer\Salesforce\MapperBundle\Events;
 use Ddeboer\Salesforce\MapperBundle\Tests\Mock;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
+use Ddeboer\Salesforce\MapperBundle\Tests\Mock\QueryResultMock;
+use Ddeboer\Salesforce\MapperBundle\Tests\Mock\SaveResultMock;
 
 class MapperTest extends \PHPUnit_Framework_TestCase
 {
     public function testCount()
     {
-        $result = new QueryResult();
-        $result->size = 15;
+        $result = new QueryResultMock();
+        $result->setSize(15);
 
         $client = $this->getClient();
         $client->expects($this->once())
@@ -33,7 +36,7 @@ class MapperTest extends \PHPUnit_Framework_TestCase
     public function testBuildQuery()
     {
         return;
-        $client = $this->getMockBuilder('Ddeboer\Salesforce\ClientBundle\Client')
+        $client = $this->getMockBuilder('Accelerate\SoapClient\Client')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -127,10 +130,10 @@ class MapperTest extends \PHPUnit_Framework_TestCase
                 )
             ), 'Account'
         );
-        
+
         $mapper = $this->getMapper($client);
         $dispatcher = new EventDispatcher();
-        $dispatcher->addListener(Events::beforeSave, function($event) {            
+        $dispatcher->addListener(Events::beforeSave, function($event) {
             $objects = $event->getObjects();
             $objects[1]->setName('Second account with altered name');
 
@@ -149,11 +152,11 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getClient(array('create'));
 
-        $saveResult1 = new SaveResult();
-        $saveResult1->id = '001D000000mDq9D';
+        $saveResult1 = new SaveResultMock();
+        $saveResult1->setId('001D000000mDq9D');
 
-        $saveResult2 = new SaveResult();
-        $saveResult2->id = '00TD0000015m79U';
+        $saveResult2 = new SaveResultMock();
+        $saveResult2->setId('00TD0000015m79U');
 
         $client->expects($this->any())
             ->method('create')
@@ -180,14 +183,14 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->once())
             ->method('query')
             ->with('select Id,Name, (select Id,Contact.Id,Contact.FirstName,Contact.LastName from AccountContactRoles) from Account where Id=\'1\'')
-            ->will($this->returnValue(new RecordIterator($client, new QueryResult())));
+            ->will($this->returnValue(new RecordIterator($client, new QueryResultMock())));
         $mapper = $this->getMapper($client);
         $mapper->find(new Mock\AccountMock(), 1);
     }
 
     protected function getClient(array $methods = array())
     {
-        $client = $this->getMockBuilder('Ddeboer\Salesforce\ClientBundle\Client')
+        $client = $this->getMockBuilder('Accelerate\SoapClient\Client')
             ->disableOriginalConstructor()
             ->getMock();
 
