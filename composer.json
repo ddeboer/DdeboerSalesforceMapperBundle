@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.3.2",
         "accelerate/soap-client": "*",
-        "doctrine/common": ">=2.1.0,<=2.2.0",
+        "doctrine/common": "*",
         "symfony/event-dispatcher": "*"
     },
     "autoload": {
