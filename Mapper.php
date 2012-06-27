@@ -11,6 +11,9 @@ use Ddeboer\Salesforce\MapperBundle\Query\Builder;
 use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Ddeboer\Salesforce\MapperBundle\Exception\SaveException;
+use Ddeboer\Salesforce\MapperBundle\Exception\Error;
+use Ddeboer\Salesforce\ClientBundle\Exception\SaveException as ClientSaveException;
 
 /**
  * This mapper makes interaction with the Salesforce API using full objects
@@ -245,12 +248,14 @@ class Mapper
         $objectsToBeCreated = array();
         $objectsToBeUpdated = array();
         $modelsWithoutId = array();
+        $modelsToBeUpdated = array();
 
         foreach ($models as $model) {
             $object = $this->annotationReader->getSalesforceObject($model);
             $sObject = $this->mapToSalesforceObject($model);
             if (isset($sObject->Id) && null !== $sObject->Id) {
                 $objectsToBeUpdated[$object->name][] = $sObject;
+                $modelsToBeUpdated[$object->name][] = $model;
             } else {
                 $objectsToBeCreated[$object->name][] = $sObject;
                 $modelsWithoutId[$object->name][] = $model;
@@ -258,6 +263,7 @@ class Mapper
         }
 
         $results = array();
+        $checkModels = array();
         foreach ($objectsToBeCreated as $objectName => $sObjects) {
             $reflClass = new \ReflectionClass(current(
                 $modelsWithoutId[$objectName]
@@ -265,21 +271,72 @@ class Mapper
             $reflProperty = $reflClass->getProperty('id');
             $reflProperty->setAccessible(true);
 
-            $saveResults = $this->client->create($sObjects, $objectName);
+            try
+            {
+                $saveResults = $this->client->create($sObjects, $objectName);
+            } catch( ClientSaveException $e )
+            {
+                $saveResults = $e->getResults();
+            }
             for ($i = 0; $i < count($saveResults); $i++) {
                 $newId = $saveResults[$i]->id;
                 $model = $modelsWithoutId[$objectName][$i];                
                 $reflProperty->setValue($model, $newId);
             }
             
-            $results[] = $saveResults;
+            $checkModels = array_merge($checkModels, $modelsWithoutId[$objectName]);
+            $results = array_merge($results, $saveResults);
         }
 
         foreach ($objectsToBeUpdated as $objectName => $sObjects) {
-            $results[] = $this->client->update($sObjects, $objectName);
+            try
+            {
+                $updateResults = $this->client->update($sObjects, $objectName);
+            } catch( ClientSaveException $e )
+            {
+                $updateResults = $e->getResults();
+            }
+            $checkModels = array_merge($checkModels, $modelsToBeUpdated[$objectName]);
+            $results = array_merge($results, $updateResults);
         }
 
+        $this->checkResult($results,$checkModels);
+        
         return $results;
+    }
+    
+    /**
+     * Checks client results and throws SaveException if errors are found
+     * 
+     * @param array $results
+     * @param array $models
+     * @return bool
+     * @throws Ddeboer\Salesforce\MapperBundle\Exception\SaveException
+     */
+    private function checkResult(array $results, array $models)
+    {
+        $okModels = array();
+        $errors = array();
+        foreach($results as $key => $result)
+        {
+            if ($result->success)
+                $okModels[] = $models[$key];
+            else
+            {
+                $error = new Error();
+                $error->model = $models[$key];
+                $error->errors = $result->errors;
+                $errors[] = $error;
+            }
+        }
+        if (count($errors) > 0) 
+        {
+            $saveException = new SaveException($errors[0]->errors[0]->message);
+            $saveException->setOkModels($okModels);
+            $saveException->setErrors($errors);
+            throw $saveException;
+        }
+        return true;
     }
 
     /**
