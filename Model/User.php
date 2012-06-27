@@ -6,7 +6,7 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 
 /**
  * Salesforce user object
- * 
+ *
  * @Salesforce\Object(name="User")
  */
 class User extends AbstractModel
@@ -16,138 +16,132 @@ class User extends AbstractModel
      * @Salesforce\Field(name="AboutMe")
      */
     protected $aboutMe;
-    
+
     /**
      * @var tnsID
      */
     protected $accounts;
 
     protected $alias;
-    
+
     /**
      * @var string
      */
     protected $callCenterId;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="City")
      */
     protected $city;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="CommunityNickName")
      */
     protected $communityNickname;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="CompanyName")
      */
     protected $companyName;
-    
+
     /**
      * @var ensContact
      */
     protected $contact;
-    
+
     /**
      * @var tnsID
      */
     protected $contactId;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $contractsSigned;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Country")
      */
     protected $country;
- 
-    /**
-     * @var string
-     * @Salesforce\Field(name="CurrentStatus")
-     */
-    protected $currentStatus;
-    
+
     /**
      * @var string
      */
     protected $defaultGroupNotificationFrequency;
-    
+
     /**
      * @var string
      */
     protected $delegatedApproverId;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $delegatedUsers;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Department")
      */
     protected $department;
-    
+
     /**
      * @var string
      */
     protected $digestFrequency;
-    
+
     /**
      * @var string
      */
     protected $division;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Email")
      */
     protected $email;
-    
+
     /**
      * @var string
      */
     protected $emailEncodingKey;
-    
+
     /**
      * @var string
      */
     protected $employeeNumber;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Extension")
      */
     protected $extension;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Fax")
      */
     protected $fax;
-    
+
     /**
      * @var string
      */
     protected $federationIdentifier;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $feedSubscriptions;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $feedSubscriptionsForEntity;
-    
+
     /**
      * @var tnsQueryResult
      */
@@ -158,12 +152,12 @@ class User extends AbstractModel
      * @Salesforce\Field(name="FirstName")
      */
     protected $firstName;
-    
+
     /**
      * @var xsdboolean
      */
     protected $forecastEnabled;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="FullPhotoUrl")
@@ -193,55 +187,55 @@ class User extends AbstractModel
      * @Salesforce\Field(name="Phone")
      */
     protected $phone;
-    
+
     /**
      * @var string
      */
     protected $languageLocaleKey;
-    
+
     /**
      * @var \DateTime
      * @Salesforce\Field(name="LastLoginDate")
      */
     protected $lastLoginDate;
-    
+
     /**
      * @var \DateTime
      * @Salesforce\Field(name="LastPasswordChangeDate")
      */
     protected $lastPasswordChangeDate;
-    
+
     /**
      * @var string
      */
     protected $localeSidKey;
-    
+
     /**
      * @var User
      */
     protected $manager;
-    
+
     /**
      * @var string
      */
     protected $managerId;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="MobilePhone")
      */
     protected $mobilePhone;
-    
+
     /**
      * @var \DateTime
      */
     protected $offlinePdaTrialExpirationDate;
-    
+
     /**
      * @var xsddateTime
      */
     protected $offlineTrialExpirationDate;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="PostalCode")
@@ -267,36 +261,36 @@ class User extends AbstractModel
      * @Salesforce\Field(name="ReceivesAdminInfoEmails")
      */
     protected $receivesAdminInfoEmails;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="ReceivesInfoEmails")
      */
     protected $receivesInfoEmails;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="SmallPhotoUrl")
      */
     protected $smallPhotoUrl;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="State")
      */
     protected $state;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Street")
      */
     protected $street;
-    
+
     /**
      * @var string
      */
     protected $timeZoneSidKey;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Username")
@@ -307,67 +301,67 @@ class User extends AbstractModel
      * @var xsdboolean
      */
     protected $userPermissionsAvantgoUser;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPermissionsCallCenterAutoLogin;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPermissionsMarketingUser;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPermissionsMobileUser;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPermissionsOfflineUser;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPermissionsSFContentUser;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $userPreferences;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPreferencesActivityRemindersPopup;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPreferencesApexPagesDeveloperMode;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPreferencesDisableAutoSubForFeeds;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPreferencesEventRemindersCheckboxDefault;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPreferencesReminderSoundOff;
-    
+
     /**
      * @var xsdboolean
      */
     protected $userPreferencesTaskRemindersCheckboxDefault;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="UserType")
@@ -472,16 +466,6 @@ class User extends AbstractModel
     public function setCountry($country)
     {
         $this->country = $country;
-    }
-
-    public function getCurrentStatus()
-    {
-        return $this->currentStatus;
-    }
-
-    public function setCurrentStatus($currentStatus)
-    {
-        $this->currentStatus = $currentStatus;
     }
 
     public function getDefaultGroupNotificationFrequency()
