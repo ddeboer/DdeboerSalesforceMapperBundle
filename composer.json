@@ -68,5 +68,6 @@
     "autoload": {
         "psr-0": { "Ddeboer\\Salesforce\\MapperBundle": "" }
     },
-    "target-dir": "Ddeboer/Salesforce/MapperBundle"
+    "target-dir": "Ddeboer/Salesforce/MapperBundle",
+    "minimum-stability": "dev"
 }
