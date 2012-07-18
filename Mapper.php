@@ -418,7 +418,10 @@ class Mapper
         if (isset($sObject->fieldsToNull)) {
             foreach ($sObject->fieldsToNull as $fieldToNull) {
                 if (isset($sObject->$fieldToNull)) {
-                    unset($sObject->fieldsToNull);
+                    $key = array_search($fieldToNull, $sObject->fieldsToNull);
+                    if ($key) {
+                        unset($sObject->fieldsToNull[$key]);
+                    }
                 }
             }
         }
