@@ -30,10 +30,15 @@ class DdeboerSalesforceMapperExtension extends Extension
                 case 'file':
                     $container->setAlias('ddeboer_salesforce_mapper.cache', 'ddeboer_salesforce_mapper.file_cache');
                     break;
-
                 default:
                     break;
             }
         }
+
+        if (isset($config['param_converter'])) {
+            $loader->load('param_converter.xml');
+            $container->setParameter('ddeboer_salesforce_mapper.param_converter', $config['param_converter']);
+        }
     }
 }
+
