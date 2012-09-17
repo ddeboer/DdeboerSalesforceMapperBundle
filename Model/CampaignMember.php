@@ -39,7 +39,7 @@ class CampaignMember extends AbstractModel
      * @Salesforce\Relation(field="LeadId", name="Lead",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Lead")
      */
-    protected $contact;
+    protected $lead;
 
     /**
      * @Salesforce\Field(name="LeadId")
