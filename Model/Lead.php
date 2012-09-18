@@ -97,6 +97,12 @@ class Lead extends AbstractModel
     protected $ownerId;
 
     /**
+     * @var boolean
+     * @Salesforce\Field(name="IsConverted")
+     */
+    protected $isConverted;
+
+    /**
      * Get name
      *
      * @return string
@@ -417,4 +423,15 @@ class Lead extends AbstractModel
 
         return $this;
     }
+
+    /**
+     * Is converted?
+     *
+     * @return bool
+     */
+    public function isConverted()
+    {
+        return $this->isConverted;
+    }
 }
+
