@@ -6,10 +6,10 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 
 /**
  * Default opportunity model
- * 
+ *
  * You can extend this class to incorporate custom fields on the Salesforce
  * opportunity object.
- * 
+ *
  * @Salesforce\Object(name="Opportunity")
  */
 class Opportunity extends AbstractModel
@@ -20,241 +20,242 @@ class Opportunity extends AbstractModel
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
     protected $account;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="AccountId")
      */
     protected $accountId;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $accountPartners;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $activityHistories;
-    
+
     /**
      * @var float
      * @Salesforce\Field(name="Amount")
      */
     protected $amount;
-    
+
     /**
      * @var tnsQueryResult
      */
-    protected $attachments;    
-    
+    protected $attachments;
+
     /**
      * @var ensCampaign
      */
     protected $campaign;
-    
+
     /**
      * @Salesforce\Field(name="CampaignId")
      */
     protected $campaignId;
-    
+
     /**
      * @var xsddate
      * @Salesforce\Field(name="CloseDate")
      */
     protected $closeDate;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Description")
      */
     protected $description;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $events;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $feedSubscriptionsForEntity;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $feeds;
-    
+
     /**
      * @var string
      */
     protected $fiscal;
-    
+
     /**
      * @var xsdint
      */
     protected $fiscalQuarter;
-    
+
     /**
      * @var int
      * @Salesforce\Field(name="FiscalYear")
      */
     protected $fiscalYear;
-    
+
     /**
      * @var string
      */
     protected $forecastCategory;
-    
+
     /**
      * @var string
      */
     protected $forecastCategoryName;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="HasOpportunityLineItem")
      */
     protected $hasOpportunityLineItem;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $histories;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsClosed")
      */
     protected $isClosed;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsDeleted")
      */
     protected $isDeleted;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsWon")
      */
     protected $isWon;
-    
+
     /**
      * @var \DateTime
      * @Salesforce\Field(name="LastActivityDate")
      */
     protected $lastActivityDate;
-   
+
     /**
      * @var string
      * @Salesforce\Field(name="LeadSource")
      */
     protected $leadSource;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Name")
      */
     protected $name;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="NextStep")
      */
     protected $nextStep;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $notes;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $notesAndAttachments;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $openActivities;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $opportunityCompetitors;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $opportunityContactRoles;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $opportunityHistories;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $opportunityLineItems;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $opportunityPartnersFrom;
-    
+
     /**
      * @var User
      * @Salesforce\Relation(field="OwnerId", name="Owner",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\User")
      */
     protected $owner;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="OwnerId")
      */
     protected $ownerId;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $partners;
-    
+
     /**
      * @var ensPricebook2
      */
     protected $pricebook2;
-    
+
     /**
      * @var tnsID
      */
     protected $pricebook2Id;
-    
+
     /**
      * @var float
      * @Salesforce\Field(name="Probability")
      */
     protected $probability;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $processInstances;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $processSteps;
-    
+
     /**
      * @var ensRecordType
      */
     protected $recordType;
-    
+
     /**
-     * @var tnsID
+     * @var string
+     * @Salesforce\Field(name="RecordTypeId")
      */
     protected $recordTypeId;
 
@@ -262,23 +263,23 @@ class Opportunity extends AbstractModel
      * @var tnsQueryResult
      */
     protected $shares;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="StageName")
      */
     protected $stageName;
-     
+
     /**
      * @var tnsQueryResult
      */
     protected $tags;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $tasks;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Type")
