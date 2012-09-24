@@ -97,6 +97,24 @@ class Lead extends AbstractModel
     protected $ownerId;
 
     /**
+     * @var boolean
+     * @Salesforce\Field(name="IsConverted")
+     */
+    protected $isConverted;
+
+    /**
+     * @var string
+     * @Salesforce\Field(name="ConvertedAccountId")
+     */
+    protected $convertedAccountId;
+
+    /**
+     * @var string
+     * @Salesforce\Field(name="ConvertedContactId")
+     */
+    protected $convertedContactId;
+
+    /**
      * Get name
      *
      * @return string
@@ -417,4 +435,35 @@ class Lead extends AbstractModel
 
         return $this;
     }
+
+    /**
+     * Is converted?
+     *
+     * @return bool
+     */
+    public function isConverted()
+    {
+        return $this->isConverted;
+    }
+
+    /**
+     * Get converted account id
+     *
+     * @return string
+     */
+    public function getConvertedAccountId()
+    {
+        return $this->convertedAccountId;
+    }
+
+    /**
+     * Get converted contact id
+     *
+     * @return string
+     */
+    public function getConvertedContactId()
+    {
+        return $this->convertedContactId;
+    }
 }
+

@@ -64,6 +64,10 @@
         "ddeboer/salesforce-client-bundle": "dev-master",
         "doctrine/common": "*"
     },
+    "suggest": {
+        "guzzle/http": "For the refresh-wsdl command",
+        "sensio/framework-extra-bundle": "For the param converter"
+    },
     "autoload": {
         "psr-0": { "Ddeboer\\Salesforce\\MapperBundle": "" }
     },
