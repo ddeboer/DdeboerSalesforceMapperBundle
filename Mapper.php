@@ -575,10 +575,12 @@ class Mapper
                 if ($value instanceof \DateTime) {
                     $value = $value->setTimeZone(new \DateTimeZone('UTC'));
                     return $value->format('Y-m-d\TH:i:sP');
-                } else {
+                } elseif (null != $value) {
                     // A text representation, such as ‘yesterday’: these should
                     // not be enclosed in quotes
                     return $value;
+                } else {
+                    return 'null';
                 }
             case 'boolean':
                 return $value ? 'true' : 'false';
