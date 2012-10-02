@@ -127,10 +127,10 @@ class MapperTest extends \PHPUnit_Framework_TestCase
                 )
             ), 'Account'
         );
-        
+
         $mapper = $this->getMapper($client);
         $dispatcher = new EventDispatcher();
-        $dispatcher->addListener(Events::beforeSave, function($event) {            
+        $dispatcher->addListener(Events::beforeSave, function($event) {
             $objects = $event->getObjects();
             $objects[1]->setName('Second account with altered name');
 
@@ -182,6 +182,8 @@ class MapperTest extends \PHPUnit_Framework_TestCase
             ->with('select Id,Name, (select Id,Contact.Id,Contact.FirstName,Contact.LastName from AccountContactRoles) from Account where Id=\'1\'')
             ->will($this->returnValue(new RecordIterator($client, new QueryResult())));
         $mapper = $this->getMapper($client);
+
+        $this->setExpectedException('\OutOfBoundsException');
         $mapper->find(new Mock\AccountMock(), 1);
     }
 
