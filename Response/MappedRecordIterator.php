@@ -140,7 +140,7 @@ class MappedRecordIterator implements \OuterIterator, \Countable
         if (!isset($this->mappedCache[$this->key()])) {
             $sObject = $this->recordIterator->seek($key);
             if (!$sObject) {
-                throw \OutOfBoundsException();
+                throw new \OutOfBoundsException();
             }
 
             $this->mappedCache[$key] = $this->mapper->mapToDomainObject($sObject, $this->modelClass);
