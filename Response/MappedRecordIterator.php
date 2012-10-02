@@ -74,14 +74,7 @@ class MappedRecordIterator implements \OuterIterator, \Countable
      */
     public function current()
     {
-        if (!isset($this->mappedCache[$this->key()])) {
-            $this->mappedCache[$this->key()] = $this->mapper->mapToDomainObject(
-                $this->recordIterator->current(),
-                $this->modelClass
-            );
-        }
-
-        return $this->mappedCache[$this->key()];
+        return $this->get($this->key());
     }
 
     /**
@@ -123,9 +116,7 @@ class MappedRecordIterator implements \OuterIterator, \Countable
      */
     public function first()
     {
-        $this->rewind();
-        
-        return $this->current();
+        return $this->get(0);
     }
 
     /**
@@ -146,9 +137,15 @@ class MappedRecordIterator implements \OuterIterator, \Countable
      */
     public function get($key)
     {
-        $sObject = $this->recordIterator->seek($key);
-        if ($sObject) {
-            return $this->mapper->mapToDomainObject($sObject, $this->modelClass);
+        if (!isset($this->mappedCache[$this->key()])) {
+            $sObject = $this->recordIterator->seek($key);
+            if (!$sObject) {
+                throw \OutOfBoundsException();
+            }
+
+            $this->mappedCache[$key] = $this->mapper->mapToDomainObject($sObject, $this->modelClass);
         }
+
+        return $this->mappedCache[$key];
     }
 }
