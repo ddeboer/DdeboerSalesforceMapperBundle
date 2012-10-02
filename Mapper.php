@@ -239,7 +239,16 @@ class Mapper
      */
     public function save($model)
     {
-        $models = is_array($model) ? $model : array($model);
+        if (is_array($model)) {
+            $models = $model;
+        } elseif ($model instanceof \Traversable) {
+            $models = array();
+            foreach ($model as $m) {
+                $models[] = $m;
+            }
+        } else {
+            $models = array($model);
+        }
 
         if ($this->eventDispatcher) {
             $event = new BeforeSaveEvent($models);
