@@ -183,8 +183,7 @@ class MapperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new RecordIterator($client, new QueryResult())));
         $mapper = $this->getMapper($client);
 
-        $this->setExpectedException('\OutOfBoundsException');
-        $mapper->find(new Mock\AccountMock(), 1);
+        $this->assertNull($mapper->find(new Mock\AccountMock(), 1));
     }
 
     protected function getClient(array $methods = array())
