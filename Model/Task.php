@@ -6,218 +6,218 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 
 /**
  * Salesforce standard task object
- * 
+ *
  * @Salesforce\Object(name="Task")
  */
 class Task extends AbstractModel
-{  
+{
     /**
      * @var Account
      * @Salesforce\Relation(field="AccountId", name="Account",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
      */
     protected $account;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="AccountId")
      */
     protected $accountId;
-    
+
     /**
      * @var \DateTime
      * @Salesforce\Field(name="ActivityDate")
      */
     protected $activityDate;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $attachments;
-    
+
     /**
      * @var string
      */
     protected $callDisposition;
-    
+
     /**
      * @var xsdint
      */
     protected $callDurationInSeconds;
-    
+
     /**
      * @var string
      */
     protected $callObject;
-    
+
     /**
      * @var string
      */
     protected $callType;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Description")
      */
     protected $description;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $feedSubscriptionsForEntity;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $feeds;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsArchived")
      */
     protected $isArchived;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsClosed")
      */
     protected $isClosed;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsDeleted")
      */
     protected $isDeleted;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsRecurrence")
      */
     protected $isRecurrence;
-    
+
     /**
      * @var boolean
      * @Salesforce\Field(name="IsReminderSet")
      */
     protected $isReminderSet;
-    
+
     /**
      * @var Name
      * @Salesforce\Relation(field="OwnerId", name="Owner",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $owner;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="OwnerId")
      */
     protected $ownerId;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Priority")
      */
     protected $priority;
-    
+
     /**
      * @var string
      */
     protected $recurrenceActivityId;
-    
+
     /**
      * @var int
      */
     protected $recurrenceDayOfMonth;
-    
+
     /**
      * @var int
      */
     protected $recurrenceDayOfWeekMask;
-    
+
     /**
      * @var \DateTime
      */
     protected $recurrenceEndDateOnly;
-    
+
     /**
      * @var string
      */
     protected $recurrenceInstance;
-    
+
     /**
      * @var xsdint
      */
     protected $recurrenceInterval;
-    
+
     /**
      * @var string
      */
     protected $recurrenceMonthOfYear;
-    
+
     /**
      * @var xsddate
      */
     protected $recurrenceStartDateOnly;
-    
+
     /**
      * @var string
      */
     protected $recurrenceTimeZoneSidKey;
-    
+
     /**
      * @var string
      */
     protected $recurrenceType;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $recurringTasks;
-    
+
     /**
      * @var \DateTime
      * @Salesforce\Field(name="ReminderDateTime")
      */
     protected $reminderDateTime;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Status")
      */
     protected $status;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Subject")
      */
     protected $subject;
-    
+
     /**
      * @var tnsQueryResult
      */
     protected $tags;
-    
+
     /**
      * @var Name
      * @Salesforce\Relation(field="WhatId", name="What",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $what;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="WhatId")
      */
     protected $whatId;
-    
+
     /**
      * @var Name
      * @Salesforce\Relation(field="WhoId", name="Who",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Name")
      */
     protected $who;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="WhoId")
@@ -229,20 +229,9 @@ class Task extends AbstractModel
         return $this->account;
     }
 
-    public function setAccount($account)
-    {
-        $this->account = $account;
-        $this->accountId = $account->getId();
-    }
-
     public function getAccountId()
     {
         return $this->accountId;
-    }
-
-    public function setAccountId($accountId)
-    {
-        $this->accountId = $accountId;
     }
 
     public function getActivityDate()
