@@ -115,6 +115,11 @@ class Lead extends AbstractModel
     protected $convertedContactId;
 
     /**
+     * @Salesforce\Field(name="Fax")
+     */
+    protected $fax;
+
+    /**
      * Get name
      *
      * @return string
@@ -464,6 +469,16 @@ class Lead extends AbstractModel
     public function getConvertedContactId()
     {
         return $this->convertedContactId;
+    }
+
+    public function getFax()
+    {
+        return $this->fax;
+    }
+
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
     }
 }
 
