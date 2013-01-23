@@ -3,14 +3,16 @@
 namespace Ddeboer\Salesforce\MapperBundle;
 
 use Ddeboer\Salesforce\ClientBundle\ClientInterface;
+use Ddeboer\Salesforce\ClientBundle\Response;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
-use Ddeboer\Salesforce\ClientBundle\Response;
 use Ddeboer\Salesforce\MapperBundle\Query\Builder;
 use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
+use Ddeboer\Salesforce\MapperBundle\UnitOfWork;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 
 /**
  * This mapper makes interaction with the Salesforce API using full objects
@@ -56,6 +58,10 @@ class Mapper
      */
     private $eventDispatcher;
 
+    protected $unitOfWork;
+
+    protected $objectDescriptions = array();
+
     /**
      * Construct mapper
      *
@@ -68,6 +74,7 @@ class Mapper
         $this->client = $client;
         $this->annotationReader = $annotationReader;
         $this->cache = $cache;
+        $this->unitOfWork = new UnitOfWork($this, $this->annotationReader);
     }
 
     /**
@@ -228,7 +235,13 @@ class Mapper
     public function getObjectDescription($model)
     {
         $object = $this->annotationReader->getSalesforceObject($model);
-        return $this->doGetObjectDescription($object->name);
+
+        if (!isset($this->objectDescriptions[$object->name])) {
+            $this->objectDescriptions[$object->name] =
+                $this->doGetObjectDescription($object->name);
+        }
+
+        return $this->objectDescriptions[$object->name];
     }
 
     /**
@@ -307,6 +320,11 @@ class Mapper
      */
     public function mapToDomainObject($sObject, $modelClass)
     {
+        // Try to find mapped model in unit of work
+        if ($this->unitOfWork->find($modelClass, $sObject->Id)) {
+            return $this->unitOfWork->find($modelClass, $sObject->Id);
+        }
+
         $model = new $modelClass();
         $reflObject = new \ReflectionObject($model);
 
@@ -343,6 +361,9 @@ class Mapper
                 $reflProperty->setValue($model, $value);
             }
         }
+
+        // Add mapped model to unit of work
+        $this->unitOfWork->addToIdentityMap($model);
 
         return $model;
     }
@@ -711,5 +732,15 @@ class Mapper
     public function createQueryBuilder()
     {
         return new Builder($this, $this->client, $this->annotationReader);
+    }
+
+    /*
+     * Get unit of work
+     *
+     * @return UnitOfWork
+     */
+    public function getUnitOfWork()
+    {
+        return $this->unitOfWork;
     }
 }

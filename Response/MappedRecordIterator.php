@@ -35,13 +35,6 @@ class MappedRecordIterator implements \OuterIterator, \Countable
     protected $modelClass;
 
     /**
-     * Mapped cache
-     *
-     * @var array
-     */
-    protected $mappedCache = array();
-
-    /**
      * Construct a mapped record iterator
      *
      * @param RecordIterator $recordIterator
@@ -137,15 +130,11 @@ class MappedRecordIterator implements \OuterIterator, \Countable
      */
     public function get($key)
     {
-        if (!isset($this->mappedCache[$this->key()])) {
-            $sObject = $this->recordIterator->seek($key);
-            if (!$sObject) {
-                return null;
-            }
-
-            $this->mappedCache[$key] = $this->mapper->mapToDomainObject($sObject, $this->modelClass);
+        $sObject = $this->recordIterator->seek($key);
+        if (!$sObject) {
+            return null;
         }
 
-        return $this->mappedCache[$key];
+        return $this->mapper->mapToDomainObject($sObject, $this->modelClass);
     }
 }
