@@ -2,8 +2,8 @@
 
 namespace Ddeboer\Salesforce\MapperBundle;
 
-use Ddeboer\Salesforce\ClientBundle\ClientInterface;
-use Ddeboer\Salesforce\ClientBundle\Response;
+use Phpforce\SoapClient\ClientInterface;
+use Phpforce\SoapClient\Result;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
@@ -248,7 +248,7 @@ class Mapper
      * Save one or more domain models to Salesforce
      *
      * @param mixed $model  One model or array of models
-     * @return Response\SaveResult[]
+     * @return Result\SaveResult[]
      */
     public function save($model)
     {
@@ -293,7 +293,7 @@ class Mapper
 
             $saveResults = $this->client->create($sObjects, $objectName);
             for ($i = 0; $i < count($saveResults); $i++) {
-                $newId = $saveResults[$i]->id;
+                $newId = $saveResults[$i]->getId();
                 $model = $modelsWithoutId[$objectName][$i];
                 $reflProperty->setValue($model, $newId);
             }
@@ -346,7 +346,7 @@ class Mapper
             // Relation name must be set
             if (isset($sObject->{$relation->name})) {
                 $value = $sObject->{$relation->name};
-                if ($value instanceof Response\RecordIterator) {
+                if ($value instanceof Result\RecordIterator) {
                     $value = new MappedRecordIterator(
                         $value, $this, $relation->class
                     );
@@ -575,7 +575,7 @@ class Mapper
      * @link http://www.salesforce.com/us/developer/docs/api/Content/field_types.htm#topic-title
      */
     private function getQuotedWhereValue(Annotation\Field $field, $value,
-        Response\DescribeSObjectResult $description)
+        Result\DescribeSObjectResult $description)
     {
         $fieldDescription = $description->getField($field->name);
         if (!$fieldDescription) {

@@ -6,7 +6,7 @@
 
     <services>
         <service id="ddeboer_salesforce_mapper" class="Ddeboer\Salesforce\MapperBundle\Mapper">
-            <argument type="service" id="ddeboer_salesforce_client" />
+            <argument type="service" id="phpforce.soap_client" />
             <argument type="service" id="ddeboer_salesforce_mapper.annotation_reader" />
             <argument type="service" id="ddeboer_salesforce_mapper.cache" />
             <call method="setEventDispatcher">
@@ -15,7 +15,7 @@
         </service>
 
         <service id="ddeboer_salesforce_mapper.bulk_saver" class="Ddeboer\Salesforce\MapperBundle\MappedBulkSaver">
-            <argument type="service" id="ddeboer_salesforce_client.bulk_saver" />
+            <argument type="service" id="phpforce.soap_client.bulk_saver" />
             <argument type="service" id="ddeboer_salesforce_mapper" />
             <argument type="service" id="ddeboer_salesforce_mapper.annotation_reader" />
         </service>

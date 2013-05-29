@@ -6,10 +6,8 @@ use Ddeboer\Salesforce\MapperBundle\Mapper;
 use Ddeboer\Salesforce\MapperBundle\Model;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
 use Doctrine\Common\Collections\ArrayCollection;
-use Ddeboer\Salesforce\ClientBundle\Response\Field;
-use Ddeboer\Salesforce\ClientBundle\Response\RecordIterator;
-use Ddeboer\Salesforce\ClientBundle\Response\QueryResult;
-use Ddeboer\Salesforce\ClientBundle\Response\SaveResult;
+use Phpforce\SoapClient\Result\RecordIterator;
+use Phpforce\SoapClient\Result\QueryResult;
 use Ddeboer\Salesforce\MapperBundle\Events;
 use Ddeboer\Salesforce\MapperBundle\Tests\Mock;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -19,9 +17,7 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 {
     public function testCount()
     {
-        $result = new QueryResult();
-        $result->size = 15;
-
+        $result = new Mock\QueryResultMock(15);
         $client = $this->getClient();
         $client->expects($this->once())
             ->method('query')
@@ -149,11 +145,8 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 
         $client = $this->getClient(array('create'));
 
-        $saveResult1 = new SaveResult();
-        $saveResult1->id = '001D000000mDq9D';
-
-        $saveResult2 = new SaveResult();
-        $saveResult2->id = '00TD0000015m79U';
+        $saveResult1 = new Mock\SaveResultMock('001D000000mDq9D');
+        $saveResult2 = new Mock\SaveResultMock('00TD0000015m79U');
 
         $client->expects($this->any())
             ->method('create')
@@ -180,15 +173,15 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->once())
             ->method('query')
             ->with('select Id,Name, (select Id,Contact.Id,Contact.FirstName,Contact.LastName from AccountContactRoles) from Account where Id=\'1\'')
-            ->will($this->returnValue(new RecordIterator($client, new QueryResult())));
+            ->will($this->returnValue(new RecordIterator($client, new Mock\QueryResultMock(1))));
         $mapper = $this->getMapper($client);
 
         $this->assertNull($mapper->find(new Mock\AccountMock(), 1));
     }
 
-    protected function getClient(array $methods = array())
+    protected function getClient()
     {
-        $client = $this->getMockBuilder('Ddeboer\Salesforce\ClientBundle\Client')
+        $client = $this->getMockBuilder('\Phpforce\SoapClient\Client')
             ->disableOriginalConstructor()
             ->getMock();
 

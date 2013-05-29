@@ -2,8 +2,8 @@
 
 namespace Ddeboer\Salesforce\MapperBundle;
 
-use Ddeboer\Salesforce\ClientBundle\BulkSaver;
-use Ddeboer\Salesforce\ClientBundle\Response\SaveResult;
+use Phpforce\SoapClient\Result\SaveResult;
+use Phpforce\SoapClient\BulkSaverInterface;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 
 /**
@@ -29,7 +29,7 @@ class MappedBulkSaver implements MappedBulkSaverInterface
      */
     private $annotationReader;
 
-    public function __construct(BulkSaver $bulkSaver, Mapper $mapper,
+    public function __construct(BulkSaverInterface $bulkSaver, Mapper $mapper,
         AnnotationReader $annotationReader)
     {
         $this->bulkSaver = $bulkSaver;

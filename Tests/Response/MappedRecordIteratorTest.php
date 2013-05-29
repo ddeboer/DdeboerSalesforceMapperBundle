@@ -3,13 +3,13 @@
 namespace Ddeboer\Salesforce\MapperBundle\Tests\Response;
 
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
-use Ddeboer\Salesforce\ClientBundle\Response\RecordIterator;
+use Phpforce\SoapClient\Result\RecordIterator;
 
 class MappedRecordIteratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testFirstDoesNotThrowOutOfBounds()
     {
-        $recordIterator = $this->getMockBuilder('\Ddeboer\Salesforce\ClientBundle\Response\RecordIterator')
+        $recordIterator = $this->getMockBuilder('\Phpforce\SoapClient\Result\RecordIterator')
             ->disableOriginalConstructor()
             ->getMock();
 
