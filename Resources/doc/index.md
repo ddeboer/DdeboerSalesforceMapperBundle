@@ -52,8 +52,8 @@ Add the following to `AppKernel.php`:
     {
         $bundles = array(
             ...
-            new Ddeboer\Salesforce\ClientBundle\DdeboerSalesforceClientBundle(),
-            new Ddeboer\Salesforce\ClientBundle\DdeboerSalesforceMapperBundle(),
+            new Phpforce\SalesforceBundle\PhpforceSalesforceBundle(),
+            new Ddeboer\Salesforce\MapperBundle\DdeboerSalesforceMapperBundle(),
             ...
         );
     }
