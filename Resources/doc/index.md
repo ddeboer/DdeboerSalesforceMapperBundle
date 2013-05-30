@@ -32,7 +32,9 @@ This bundle is available on [Packagist](http://packagist.org/packages/ddeboer/sa
     "require": {
         ...,
         "ddeboer/salesforce-mapper-bundle": "*"
-    }
+        ...
+    },
+    "minimum-stability": "dev"
     ...
 }
 ```
@@ -133,5 +135,4 @@ echo $account->getId();     // Returns the new ID, e.g. `001D000000h0Jod`
 In the `Model` folder you will find several standard Salesforce objects. As this
 is a generic client bundle, this directory does not contain custom objects, nor
 do the objects in it have custom properties. If you would like to add custom
-objects or properties, please extend from AbstractModel or the models provided
-respectively.
+objects or properties, please extend from AbstractModel or the models provided.
