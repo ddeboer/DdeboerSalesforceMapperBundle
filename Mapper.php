@@ -551,11 +551,23 @@ class Mapper
             if (!$field) {
                 throw new \InvalidArgumentException('Invalid field ' . $name);
             }
+            
+            if (is_array($value)) {
+                $quotedValueList = array();
+                
+                foreach ($value as $v) {
+                    $quotedValueList[] = $this->getQuotedWhereValue($field, $v, $objectDescription);
+                }
+                
+                $quotedValue = '(' . implode(',', $quotedValueList) . ')';
+            } else {
+                $quotedValue = $this->getQuotedWhereValue($field, $value, $objectDescription);
+            }
 
             $whereParts[] = sprintf('%s %s %s',
                 $field->name,
                 $operator,
-                $this->getQuotedWhereValue($field, $value, $objectDescription)
+                $quotedValue
             );
         }
 

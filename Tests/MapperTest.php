@@ -178,6 +178,32 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($mapper->find(new Mock\AccountMock(), 1));
     }
+    
+    public function testBuildQueryWhereValueIsArray()
+    {
+        $queryResult = new Mock\QueryResultMock(2, true, array(
+            (object) array(
+                'Id' => '0010000000xxxx1',
+                'Name' => 'Test Account 1'
+            ),
+            (object) array(
+                'Id' => '0010000000xxxx2',
+                'Name' => 'Test Account 2'
+            )
+        ));
+        
+        $client = $this->getClient();
+        $client->expects($this->once())
+            ->method('query')
+            ->with("select Id,Name from Account where Id in ('0010000000xxxx1','0010000000xxxx2')")
+            ->will($this->returnValue(new RecordIterator($client, $queryResult)));
+        ;
+        
+        $mapper = $this->getMapper($client);
+        $mapper->findBy(new Mock\AccountMock(), array(
+            'id in' => array('0010000000xxxx1', '0010000000xxxx2')
+        ), array(), 0);
+    }
 
     protected function getClient()
     {
