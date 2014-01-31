@@ -20,12 +20,6 @@ class Account extends AbstractModel
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\AccountContactRole")
      */
     protected $accountContactRoles;
-
-    /**
-     * @var string
-     * @Salesforce\Field(name="AccountNumber")
-     */
-    protected $accountNumber;
     
     /**
      * @var float
@@ -277,16 +271,6 @@ class Account extends AbstractModel
     public function getAccountContactRoles()
     {
         return $this->accountContactRoles;
-    }
-
-    public function getAccountNumber()
-    {
-        return $this->accountNumber;
-    }
-
-    public function setAccountNumber($accountNumber)
-    {
-        $this->accountNumber = $accountNumber;
     }
 
     public function getAnnualRevenue()
