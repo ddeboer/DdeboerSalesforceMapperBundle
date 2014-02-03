@@ -16,7 +16,7 @@ class FerendaOrganisation extends AbstractModel
 {
     /**
      * @var string
-     * @Salesforce\Field(name="companyName__c")
+     * @Salesforce\Field(name="CompanyName__c")
      */
     protected $companyName;
     
