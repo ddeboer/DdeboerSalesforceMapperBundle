@@ -178,11 +178,12 @@ class Mapper
      * @return MappedRecordIterator
      */
     public function findBy($model, array $criteria, array $order = array(),
-        $related = 1, $deleted = false)
+        $related = 1, $deleted = false, array $limit = array())
     {
         $query = $this->getQuerySelectPart($model, $related)
                . $this->getQueryWherePart($criteria, $model)
-               . $this->getQueryOrderByPart($order, $model);
+               . $this->getQueryOrderByPart($order, $model)
+               . $this->getQueryLimitPart($limit);
 
         if (true === $deleted) {
             $result = $this->client->queryAll($query);
@@ -220,9 +221,9 @@ class Mapper
      * @return MappedRecordIterator
      */
     public function findAll($model, array $order = array(), $related = 1,
-        $deleted = false)
+        $deleted = false, array $limit = array())
     {
-        return $this->findBy($model, array(), $order, $related, $deleted);
+        return $this->findBy($model, array(), $order, $related, $deleted, $limit);
     }
 
     /**
@@ -625,6 +626,22 @@ class Mapper
             default:
                 return "'" . addslashes($value) . "'";
         }
+    }
+
+    private function getQueryLimitPart(array $limit = array())
+    {
+        if(count($limit) === 0) {
+            return '';
+        }
+
+        if(!array_key_exists('limit', $limit) ||
+            !array_key_exists('offset', $limit) ||
+            !is_numeric($limit['limit']) ||
+            !is_numeric($limit['offset'])) {
+            return '';
+        }
+
+        return sprintf(" limit %d offset %d", $limit['limit'], $limit['offset']);
     }
 
     /**
