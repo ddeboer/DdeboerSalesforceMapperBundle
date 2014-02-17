@@ -257,7 +257,7 @@ class Opportunity extends AbstractModel
      * @var string
      * @Salesforce\Field(name="RecordTypeId")
      */
-    protected $recordTypeId;
+    //protected $recordTypeId;
 
     /**
      * @var tnsQueryResult
