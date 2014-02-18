@@ -35,7 +35,7 @@ class SalesforceCase extends AbstractModel
      * @Salesforce\Relation(field="OwnerId", name="Owner",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\User")
      */
-    protected $owner;
+    //protected $owner;
 
     /**
      * @var string
@@ -67,13 +67,13 @@ class SalesforceCase extends AbstractModel
         $this->description = $description;
     }
 
-    public function getOwner() {
-        return $this->owner;
-    }
-
-    public function setOwner($owner) {
-        $this->owner = $owner;
-    }
+//    public function getOwner() {
+//        return $this->owner;
+//    }
+//
+//    public function setOwner($owner) {
+//        $this->owner = $owner;
+//    }
 
     public function getOwnerId() {
         return $this->ownerId;
