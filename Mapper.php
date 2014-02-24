@@ -98,7 +98,7 @@ class Mapper
         $this->eventDispatcher = $eventDispatcher;
         return $this;
     }
-
+    
     /**
      * Get object count
      *
@@ -194,6 +194,27 @@ class Mapper
         return new MappedRecordIterator($result, $this, $model);
     }
 
+    /**
+     * Find by using a custom where clause. The $criteria param in findBy does
+     * not support complex where clauses e.g.
+     * 
+     * where ProductPack__r.Area__c = 'Accounting'
+     * 
+     * @param type $model
+     * @param type $where
+     * @param type $related
+     * 
+     * @return \Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator
+     */
+    public function findWhereBy($model, $where, $related = 1)
+    {
+        $query = $this->getQuerySelectPart($model, $related) 
+                . ' where ' . $where;
+
+        $result = $this->client->query($query);
+        return new MappedRecordIterator($result, $this, $model);
+    }
+    
     /**
      * Find one object by criteria
      *
