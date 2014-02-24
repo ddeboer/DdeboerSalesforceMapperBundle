@@ -40,6 +40,18 @@ class PricebookEntry extends AbstractModel
 
     protected $pricebook;
 
+    /**
+     * @var float
+     * @Salesforce\Field(name="UnitPrice")
+     */
+    public $unitPrice;
+
+    /**
+     * @var boolean
+     * @Salesforce\Field(name="UseStandardPrice")
+     */
+    public $useStandardPrice;
+
     public function getName()
     {
         return $this->name;
@@ -69,4 +81,27 @@ class PricebookEntry extends AbstractModel
     {
         $this->product = $product;
     }
+
+    public function getUnitPrice()
+    {
+        return $this->unitPrice;
+    }
+    
+    public function setUnitPrice($unitPrice)
+    {
+        $this->unitPrice = $unitPrice;
+        return $this;
+    }
+    
+    public function getUseStandardPrice()
+    {
+        return $this->useStandardPrice;
+    }
+    
+    public function setUseStandardPrice($useStandardPrice)
+    {
+        $this->useStandardPrice = $useStandardPrice;
+        return $this;
+    }
+    
 }

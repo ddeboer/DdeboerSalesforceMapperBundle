@@ -37,6 +37,20 @@ class Product extends AbstractModel
      */
     protected $isActive;
 
+    /**
+     * @var string
+     * @Salesforce\Field(name="PriceUnit__c")
+     */
+    protected $priceUnit;
+
+    /**
+     * @var MappedRecordIterator
+     * @Salesforce\Relation(name="PricebookEntries",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\PricebookEntry")
+     */
+    protected $pricebookEntries;
+
+
     public function getName()
     {
         return $this->name;
@@ -80,5 +94,24 @@ class Product extends AbstractModel
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+    }
+
+    public function getPriceUnit() {
+        return $this->priceUnit;
+    }
+
+    public function setPriceUnit($priceUnit) {
+        $this->priceUnit = $priceUnit;
+    }
+
+    public function getPricebookEntries()
+    {
+        return $this->pricebookEntries;
+    }
+    
+    public function setPricebookEntries($pricebookEntries)
+    {
+        $this->pricebookEntries = $pricebookEntries;
+        return $this;
     }
 }
