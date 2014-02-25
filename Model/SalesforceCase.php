@@ -36,6 +36,11 @@ class SalesforceCase extends AbstractModel
      */
     protected $subject;
 
+    /*
+     * @Salesforce\Field(name="ContactId")
+     */
+    protected $contactId;
+    
     /**
      * @var string
      * @Salesforce\Field(name="Description")
@@ -93,6 +98,14 @@ class SalesforceCase extends AbstractModel
         return $this;
     }
 
+    public function getContactId() {
+        return $this->contactId;
+    }
+
+    public function setContactId($contactId) {
+        $this->contactId = $contactId;
+    }
+    
     public function getDescription() {
         return $this->description;
     }
