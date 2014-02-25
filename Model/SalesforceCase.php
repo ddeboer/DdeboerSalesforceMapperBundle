@@ -26,6 +26,18 @@ class SalesforceCase extends AbstractModel
     
     /**
      * @var string
+     * @Salesforce\Field(name="Status")
+     */
+    protected $status;
+
+    /**
+     * @var string
+     * @Salesforce\Field(name="Subject")
+     */
+    protected $subject;
+
+    /**
+     * @var string
      * @Salesforce\Field(name="Description")
      */
     protected $description;
@@ -57,6 +69,28 @@ class SalesforceCase extends AbstractModel
 
     public function setAccountId($accountId) {
         $this->accountId = $accountId;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+    
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+    
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+        return $this;
     }
 
     public function getDescription() {
