@@ -228,7 +228,8 @@ class Opportunity extends AbstractModel
     protected $pricebook2;
 
     /**
-     * @var tnsID
+     * @var string
+     * @Salesforce\Field(name="Pricebook2Id")
      */
     protected $pricebook2Id;
 
