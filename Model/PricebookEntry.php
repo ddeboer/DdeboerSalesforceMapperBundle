@@ -38,7 +38,18 @@ class PricebookEntry extends AbstractModel
      */
     protected $productId;
 
+    /**
+     * @var Product
+     * @Salesforce\Relation(field="Pricebook2Id", name="Pricebook2",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Pricebook2")
+     */
     protected $pricebook;
+
+    /**
+     * @var string
+     * @Salesforce\Field(name="Pricebook2Id")
+     */
+    protected $pricebookId;
 
     /**
      * @var float
@@ -80,6 +91,28 @@ class PricebookEntry extends AbstractModel
     public function setProduct($product)
     {
         $this->product = $product;
+    }
+
+    public function getPricebook()
+    {
+        return $this->pricebook;
+    }
+    
+    public function setPricebook($pricebook)
+    {
+        $this->pricebook = $pricebook;
+        return $this;
+    }
+    
+    public function getPricebookId()
+    {
+        return $this->pricebookId;
+    }
+    
+    public function setPricebookId($pricebookId)
+    {
+        $this->pricebookId = $pricebookId;
+        return $this;
     }
 
     public function getUnitPrice()
