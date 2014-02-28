@@ -36,7 +36,7 @@ class SalesforceCase extends AbstractModel
      */
     protected $subject;
 
-    /*
+    /**
      * @Salesforce\Field(name="ContactId")
      */
     protected $contactId;
