@@ -153,7 +153,7 @@ class Product extends AbstractModel implements Serializable
                 $price->unserialize($pe);
                 $arr[] = $price;
             }
-            $this->pricebookEntries = array();
+            $this->pricebookEntries = $arr;
         }
 
         parent::unserialize($vars['parent']);

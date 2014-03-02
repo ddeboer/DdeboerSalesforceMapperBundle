@@ -4,6 +4,7 @@ namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
+use Serializable;
 
 /**
  * Salesforce standard account object
@@ -12,7 +13,7 @@ use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
  * 
  * @Salesforce\Object(name="Account")
  */
-class Account extends AbstractModel
+class Account extends AbstractModel implements Serializable
 {
     /**
      * @var MappedRecordIterator
@@ -727,5 +728,56 @@ class Account extends AbstractModel
     {
         $this->website = $website;
         return $this;
+    }
+
+    public function serialize()
+    {
+        $vars = array(
+            'accountContactRoles' => $this->accountContactRoles
+            'annualRevenue' => $this->annualRevenue
+            'billingCity' => $this->billingCity
+            'billingCountry' => $this->billingCountry
+            'billingPostalCode' => $this->billingPostalCode
+            'billingState' => $this->billingState
+            'billingStreet' => $this->billingStreet
+            'contacts' => $this->contacts
+            'description' => $this->description
+            'fax' => $this->fax,
+            'histories' => $this->histories,
+            'industry' => $this->industry,
+            'isDeleted' => $this->isDeleted,
+            'jigsaw' => $this->jigsaw,
+            'lastActivityDate' => $this->lastActivityDate,
+            'masterRecord' => $this->masterRecord,
+            'masterRecordId' => $this->masterRecordId,
+            'name' => $this->name,
+            'notes' => $this->notes,
+            'notesAndAttachments' => $this->notesAndAttachments,
+            'numberOfEmployees' => $this->numberOfEmployees,
+            'openActivities' => $this->openActivities,
+            'opportunities' => $this->opportunities,
+            'opportunityPartnersTo' => $this->opportunityPartnersTo,
+            'owner' => $this->owner,
+            'ownerId' => $this->ownerId,
+            'parent' => $this->parent,
+            'parentId' => $this->parentId,
+            'partnersFrom' => $this->partnersFrom,
+            'partnersTo' => $this->partnersTo,
+            'phone' => $this->phone,
+            'processInstances' => $this->processInstances,
+            'processSteps' => $this->processSteps,
+            'recordType' => $this->recordType,
+            'recordTypeId' => $this->recordTypeId,
+            'shares' => $this->shares,
+            'shippingCity' => $this->shippingCity,
+            'shippingCountry' => $this->shippingCountry,
+            'shippingPostalCode' => $this->shippingPostalCode,
+            'shippingState' => $this->shippingState,
+            'shippingStreet' => $this->shippingStreet,
+            'tags' => $this->tags,
+            'tasks' => $this->tasks,
+            'type' => $this->type,
+            'website' => $this->website,
+        );
     }
 }
