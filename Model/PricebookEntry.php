@@ -141,11 +141,11 @@ class PricebookEntry extends AbstractModel implements Serializable
     
     public function serialize() {
         $vars = array(
-            'name' => $this->id,
-            'isActive' => $this->createdBy,
-            'productId' => $this->createdDate,
-            'pricebookId' => $this->lastModifiedDate,
-            'unitPrice' => $this->systemModstamp,
+            'name' => $this->name,
+            'isActive' => $this->isActive,
+            'productId' => $this->productId,
+            'pricebookId' => $this->pricebookId,
+            'unitPrice' => $this->unitPrice,
             'useStandardPrice' => $this->useStandardPrice,
             'parent' => parent::serialize()
         );
@@ -179,7 +179,7 @@ class PricebookEntry extends AbstractModel implements Serializable
             $this->pricebook = new Pricebook2();
             $this->pricebook->unserialize($vars['pricebook']);
         }
-        
+
         parent::unserialize($vars['parent']);
     }
 }

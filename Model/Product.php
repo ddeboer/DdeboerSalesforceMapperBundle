@@ -11,7 +11,7 @@ use Serializable;
  *
  * @Salesforce\Object(name="Product2")
  */
-class Product extends AbstractModel implements Serializable {
+class Product extends AbstractModel implements Serializable
 {
     /**
      * @var string

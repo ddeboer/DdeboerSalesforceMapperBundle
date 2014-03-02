@@ -11,7 +11,7 @@ use DateTime;
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-abstract class AbstractModel implements Serializable {
+abstract class AbstractModel implements Serializable
 {
     /**
      * Object ID
