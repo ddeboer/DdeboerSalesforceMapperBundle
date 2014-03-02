@@ -3,13 +3,15 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
+use Serializable;
+use DateTime;
 
 /**
  * Layer supertype for Salesforce objects
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-abstract class AbstractModel
+abstract class AbstractModel implements Serializable {
 {
     /**
      * Object ID
@@ -107,5 +109,31 @@ abstract class AbstractModel
     public function getSystemModstamp()
     {
         return $this->systemModstamp;
+    }
+
+    public function serialize() {
+        $vars = array(
+            'id' => $this->id,
+            'createdBy' => $this->createdBy,
+            'createdById' => $this->createdById,
+            'createdDate' => $this->createdDate,
+            'lastModifiedById' => $this->lastModifiedById,
+            'lastModifiedDate' => $this->lastModifiedDate,
+            'systemModstamp' => $this->systemModstamp,
+            //'addon' => serialize($this->addon)
+        );
+
+        return serialize($vars);
+    }
+
+    public function unserialize($serialized) {
+        $vars = unserialize($serialized);
+        $this->id = $vars['id'];
+        $this->createdBy = $vars['createdBy'];
+        $this->createdById = $vars['createdById'];
+        $this->createdDate = $vars['createdDate'];
+        $this->lastModifiedById = $vars['lastModifiedById'];
+        $this->lastModifiedDate = $vars['lastModifiedDate'];
+        $this->systemModstamp = $vars['systemModstamp'];
     }
 }
