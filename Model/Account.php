@@ -732,16 +732,16 @@ class Account extends AbstractModel implements Serializable
 
     public function serialize()
     {
-        $vars = array(
-            'accountContactRoles' => $this->accountContactRoles
-            'annualRevenue' => $this->annualRevenue
-            'billingCity' => $this->billingCity
-            'billingCountry' => $this->billingCountry
-            'billingPostalCode' => $this->billingPostalCode
-            'billingState' => $this->billingState
-            'billingStreet' => $this->billingStreet
-            'contacts' => $this->contacts
-            'description' => $this->description
+        return serialize(array(
+            'accountContactRoles' => $this->accountContactRoles,
+            'annualRevenue' => $this->annualRevenue,
+            'billingCity' => $this->billingCity,
+            'billingCountry' => $this->billingCountry,
+            'billingPostalCode' => $this->billingPostalCode,
+            'billingState' => $this->billingState,
+            'billingStreet' => $this->billingStreet,
+            'contacts' => $this->contacts,
+            'description' => $this->description,
             'fax' => $this->fax,
             'histories' => $this->histories,
             'industry' => $this->industry,
@@ -778,6 +778,6 @@ class Account extends AbstractModel implements Serializable
             'tasks' => $this->tasks,
             'type' => $this->type,
             'website' => $this->website,
-        );
+        ));
     }
 }
