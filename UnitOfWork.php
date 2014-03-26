@@ -2,6 +2,7 @@
 namespace Ddeboer\Salesforce\MapperBundle;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
+use Ddeboer\Salesforce\MapperBundle\Model\AbstractModel;
 
 class UnitOfWork
 {
@@ -28,6 +29,16 @@ class UnitOfWork
     {
         $this->getObjectName($model);
         $this->identityMap[$this->getObjectName($model)][$model->getId()] = $model;
+    }
+    
+    public function removeFromIdentityMap(AbstractModel $model)
+    {
+        $sObjectName = $this->getObjectName($model);
+        $id = $model->getId();
+        
+        if (isset($this->identityMap[$sObjectName][$id])) {
+            unset($this->identityMap[$sObjectName][$id]);
+        }
     }
 
     protected function getObjectName($model)
