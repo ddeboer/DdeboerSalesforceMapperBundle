@@ -45,6 +45,6 @@ class UnitOfWork
     {
         $description = $this->mapper->getObjectDescription($model);
 
-        return get_class($model) . "-" . $description->getName();
+        return (is_object($model) ? get_class($model) : $model) . "-" . $description->getName();
     }
 }
