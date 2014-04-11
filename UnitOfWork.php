@@ -47,10 +47,8 @@ class UnitOfWork
 
     protected function getObjectName($model)
     {
-        return 
-            $this->annotationReader->sanitiseModelClass($model)
-            . "-"
-            . $this->mapper->getObjectDescription($model)->getName()
-        ;
+        $description = $this->mapper->getObjectDescription($model);
+
+        return (is_object($model) ? get_class($model) : $model) . "-" . $description->getName();
     }
 }

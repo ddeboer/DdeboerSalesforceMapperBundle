@@ -23,7 +23,7 @@ class SalesforceCase extends AbstractModel
      * @Salesforce\Field(name="AccountId")
      */
     protected $accountId;
-    
+
     /**
      * @var string
      * @Salesforce\Field(name="Status")
@@ -40,7 +40,18 @@ class SalesforceCase extends AbstractModel
      * @Salesforce\Field(name="ContactId")
      */
     protected $contactId;
-    
+
+    /**
+     * @Salesforce\Field(name="ProductId")
+     */
+    protected $productId;
+
+    /**
+     * @Salesforce\Relation(field="ProductId", name="Product",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Product")
+     */
+    protected $product;
+
     /**
      * @var string
      * @Salesforce\Field(name="Description")
@@ -128,6 +139,22 @@ class SalesforceCase extends AbstractModel
 
     public function setOwnerId($ownerId) {
         $this->ownerId = $ownerId;
+    }
+
+    public function getProductId() {
+        return $this->productId;
+    }
+
+    public function setProductId($productId) {
+        $this->productId = $productId;
+    }
+
+    public function getProduct() {
+        return $this->product;
+    }
+
+    public function setProduct($product) {
+        $this->product = $product;
     }
 
 }
