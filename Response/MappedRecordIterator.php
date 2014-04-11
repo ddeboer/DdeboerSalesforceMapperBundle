@@ -137,4 +137,20 @@ class MappedRecordIterator implements \OuterIterator, \Countable
 
         return $this->mapper->mapToDomainObject($sObject, $this->modelClass);
     }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        $results = array();
+        
+        foreach ($this as $result) {
+            $results[] = $result;
+        }
+        
+        return $results;
+    }
+
 }

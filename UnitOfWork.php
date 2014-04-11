@@ -3,6 +3,7 @@ namespace Ddeboer\Salesforce\MapperBundle;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Model\AbstractModel;
+use Ddeboer\Salesforce\MapperBundle\Model\NonCacheableModel;
 
 class UnitOfWork
 {
@@ -27,7 +28,10 @@ class UnitOfWork
 
     public function addToIdentityMap($model)
     {
-        $this->getObjectName($model);
+        if ($model instanceof NonCacheableModel) {
+            return;
+        }
+        
         $this->identityMap[$this->getObjectName($model)][$model->getId()] = $model;
     }
     
@@ -43,8 +47,10 @@ class UnitOfWork
 
     protected function getObjectName($model)
     {
-        $description = $this->mapper->getObjectDescription($model);
-
-        return get_class($model) . "-" . $description->getName();
+        return 
+            $this->annotationReader->sanitiseModelClass($model)
+            . "-"
+            . $this->mapper->getObjectDescription($model)->getName()
+        ;
     }
 }
