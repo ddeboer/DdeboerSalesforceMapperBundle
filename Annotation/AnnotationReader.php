@@ -185,15 +185,15 @@ class AnnotationReader
         }
         
         // Override annotations - if any are set
-        $overrideRelationsAnnotation = $this->reader->getClassAnnotation(
+        $objectOverridesAnnotation = $this->reader->getClassAnnotation(
             $reflClass,
-            'Ddeboer\Salesforce\MapperBundle\Annotation\ObjectRelationOverrides'
+            'Ddeboer\Salesforce\MapperBundle\Annotation\ObjectOverrides'
         );
         
-        if ($overrideRelationsAnnotation instanceof ObjectRelationOverrides) {
+        if ($objectOverridesAnnotation instanceof ObjectOverrides) {
             
             // Field override annotations
-            if (is_array(($overrideFields = $overrideRelationsAnnotation->fields))) {
+            if (is_array(($overrideFields = $objectOverridesAnnotation->fields))) {
                 foreach ($overrideFields as $overrideField) {
                     $property = $overrideField->property;
 
@@ -204,7 +204,7 @@ class AnnotationReader
             }
             
             // Relation override annotations
-            if (is_array(($overrideRelations = $overrideRelationsAnnotation->relations))) {
+            if (is_array(($overrideRelations = $objectOverridesAnnotation->relations))) {
                 foreach ($overrideRelations as $overrideRelation) {
                     $property = $overrideRelation->property;
 
