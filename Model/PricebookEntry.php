@@ -94,6 +94,17 @@ class PricebookEntry extends AbstractModel implements Serializable
     {
         $this->product = $product;
     }
+    
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+        return $this;
+    }
 
     public function getPricebook()
     {
