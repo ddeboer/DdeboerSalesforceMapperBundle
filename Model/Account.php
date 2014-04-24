@@ -130,7 +130,8 @@ class Account extends AbstractModel implements Serializable
     protected $notesAndAttachments;
     
     /**
-     * @var int
+     * @var string
+     * @Salesforce\Field(name="NumberOfEmployees")
      */
     protected $numberOfEmployees;
     
