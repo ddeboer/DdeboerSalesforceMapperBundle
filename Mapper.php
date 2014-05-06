@@ -411,6 +411,9 @@ class Mapper
 
         foreach ($allMappings as $property => $mapping) {
             if ($mapping instanceof Annotation\Field) {
+                if(isset($mapping->updateable) && $mapping->updateable === "false") {
+                    continue;
+                }
                 $fieldDescription = $objectDescription->getField($mapping->name);
                 $fieldName = $mapping->name;
             } elseif ($mapping instanceof Annotation\Relation
