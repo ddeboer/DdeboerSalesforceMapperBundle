@@ -12,4 +12,5 @@ use Doctrine\Common\Annotations\Annotation\Target;
 class Field extends Annotation
 {
     public $name;
+    public $updateable;
 }
