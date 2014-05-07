@@ -585,6 +585,12 @@ class Mapper
                 }
                 
                 $quotedValue = '(' . implode(',', $quotedValueList) . ')';
+                
+                $operator = ($operator !== '=' ? "NOT " : "") . "IN";
+                
+            } else if ($value === null) {
+                $quotedValue = "null";
+                
             } else {
                 $quotedValue = $this->getQuotedWhereValue($field, $value, $objectDescription);
             }
