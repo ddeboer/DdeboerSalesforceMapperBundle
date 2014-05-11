@@ -26,6 +26,12 @@ class AnnotationReader
      */
     protected $annotationCache;
     
+    /**
+     *
+     * @var boolean
+     */
+    protected $useGettersAndSetters = false;
+    
     
     
     /**
@@ -33,10 +39,11 @@ class AnnotationReader
      * @param \Doctrine\Common\Annotations\Reader $reader
      * @param \Doctrine\Common\Cache\Cache $annotationCache
      */
-    public function __construct(Reader $reader, Cache $annotationCache = null)
+    public function __construct(Reader $reader, Cache $annotationCache = null, $useGettersAndSetters = false)
     {
         $this->reader = $reader;
         $this->annotationCache = ($annotationCache ?: new ArrayCache(spl_object_hash($this)));
+        $this->useGettersAndSetters = ($useGettersAndSetters === true);
     }
     
     /**
@@ -149,14 +156,15 @@ class AnnotationReader
             $salesforceProperties['object'] = $classAnnotation;
         }
         
-        $reflProperties = $reflClass->getProperties();
-        foreach ($reflProperties as $reflProperty) {         
+        // Property annotations (field and relation mappings)
+        foreach ($reflClass->getProperties() as $reflProperty) {         
             $propertyAnnotations = $this->reader->getPropertyAnnotations(
                 $reflProperty, 'Ddeboer\Salesforce\MapperBundle\Annotation'
             );
             
             // Field and Relation annotations against class properties/fields
-            foreach ($propertyAnnotations as $key => $propertyAnnotation) {
+            foreach ($propertyAnnotations as $propertyAnnotation) {
+                
                 if ($propertyAnnotation instanceof Relation) {
                     $salesforceProperties['relations'][$reflProperty->getName()] =
                             $propertyAnnotation;
@@ -181,6 +189,27 @@ class AnnotationReader
                     $properties[$attribute],
                     $salesforceProperties[$attribute]
                 );
+            }
+        }
+        
+        foreach (array('fields', 'relations') as $attribute) {
+            /* @var $propertyAnnotation Ddeboer\Salesforce\MapperBundle\Annotation\PropertyAnnotation */
+            foreach ($salesforceProperties[$attribute] as $propertyName => &$propertyAnnotation) {
+                
+                foreach (array('get', 'set') as $beanMethodPrefix) {
+                    $beanMethodProperty = $beanMethodPrefix . "ter";
+                    
+                    $beanMethod = (
+                        $propertyAnnotation->$beanMethodProperty ?:
+                        $beanMethodPrefix . ucfirst($propertyName)
+                    );
+                    
+                    $propertyAnnotation->$beanMethodProperty = (
+                        $reflClass->hasMethod($beanMethod)
+                        ? $beanMethod
+                        : null
+                    );
+                }
             }
         }
         
@@ -215,7 +244,7 @@ class AnnotationReader
             }
         }
         
-        // Store this definition in the all important cache
+        // Store this definition in the all-important cache
         $this->annotationCache->save($reflClass->getName(), $salesforceProperties);
         
         // And return the properties

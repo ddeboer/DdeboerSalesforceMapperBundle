@@ -4,11 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+        <parameter key="ddeboer_salesforce_mapper.property_mapper_class" type="string">Ddeboer\Salesforce\MapperBundle\PropertyMapper\ReflectionPropertyMapper</parameter>
+    </parameters>
+    
     <services>
+        <service
+            id="ddeboer_salesforce_mapper.property_mapper"
+            class="%ddeboer_salesforce_mapper.property_mapper_class%"
+        />
+        
         <service id="ddeboer_salesforce_mapper" class="Ddeboer\Salesforce\MapperBundle\Mapper">
             <argument type="service" id="phpforce.soap_client" />
             <argument type="service" id="ddeboer_salesforce_mapper.annotation_reader" />
             <argument type="service" id="ddeboer_salesforce_mapper.cache" />
+            <argument type="service" id="ddeboer_salesforce_mapper.property_mapper"/>
             <call method="setEventDispatcher">
                 <argument type="service" id="event_dispatcher" />
             </call>
