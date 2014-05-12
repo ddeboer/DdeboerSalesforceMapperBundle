@@ -9,8 +9,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Annotation
  * @Target("PROPERTY")
  */
-class Field extends Annotation
+class Field extends PropertyAnnotation
 {
-    public $name;
     public $updateable;
 }

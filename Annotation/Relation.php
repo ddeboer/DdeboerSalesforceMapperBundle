@@ -11,9 +11,8 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Annotation
  * @Target("PROPERTY")
  */
-class Relation extends Annotation
+class Relation extends PropertyAnnotation
 {
     public $field;
     public $class;
-    public $name;
 }

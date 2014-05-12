@@ -2,14 +2,17 @@
 
 namespace Ddeboer\Salesforce\MapperBundle;
 
+use ReflectionClass;
+use ReflectionObject;
 use Phpforce\SoapClient\ClientInterface;
 use Phpforce\SoapClient\Result;
+use Ddeboer\Salesforce\MapperBundle\Model\AbstractModel;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
+use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
+use Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 use Ddeboer\Salesforce\MapperBundle\Query\Builder;
-use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
-use Ddeboer\Salesforce\MapperBundle\UnitOfWork;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -50,6 +53,13 @@ class Mapper
      * @var Cache
      */
     private $cache;
+    
+    /**
+     * Property mapper
+     * 
+     * @var \Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper
+     */
+    private $propertyMapper;
 
     /**
      * Symfony event dispatcher
@@ -58,9 +68,19 @@ class Mapper
      */
     private $eventDispatcher;
 
+    /**
+     *
+     * @var \Ddeboer\Salesforce\MapperBundle\UnitOfWork
+     */
     protected $unitOfWork;
 
+    /**
+     *
+     * @var array 
+     */
     protected $objectDescriptions = array();
+
+
 
     /**
      * Construct mapper
@@ -69,11 +89,17 @@ class Mapper
      * @param AnnotationReader $annotationReader
      * @param Cache $cache
      */
-    public function __construct(ClientInterface $client, AnnotationReader $annotationReader, Cache $cache)
-    {
+    public function __construct(
+        ClientInterface $client,
+        AnnotationReader $annotationReader,
+        Cache $cache,
+        AbstractPropertyMapper $propertyMapper
+    ) {
         $this->client = $client;
         $this->annotationReader = $annotationReader;
         $this->cache = $cache;
+        $this->propertyMapper = $propertyMapper;
+        
         $this->unitOfWork = new UnitOfWork($this, $this->annotationReader);
     }
 
@@ -307,7 +333,7 @@ class Mapper
 
         $results = array();
         foreach ($objectsToBeCreated as $objectName => $sObjects) {
-            $reflClass = new \ReflectionClass(current(
+            $reflClass = new ReflectionClass(current(
                 $modelsWithoutId[$objectName]
             ));
             $reflProperty = $reflClass->getProperty('id');
@@ -348,16 +374,13 @@ class Mapper
         }
 
         $model = new $modelClass();
-        $reflObject = new \ReflectionObject($model);
-
+        $reflObject = new ReflectionObject($model);
+        
         // Set Salesforce property values on domain object
         $fields = $this->annotationReader->getSalesforceFields($modelClass);
         foreach ($fields as $name => $field) {
             if (isset($sObject->{$field->name})) {
-                // Use reflection to set the protected/private properties
-                $reflProperty = $reflObject->getProperty($name);
-                $reflProperty->setAccessible(true);
-                $reflProperty->setValue($model, $sObject->{$field->name});
+                $this->propertyMapper->updateField($sObject, $model, $reflObject, $field, $name);
             }
         }
 
@@ -367,29 +390,35 @@ class Mapper
 
             // Relation name must be set
             if (isset($sObject->{$relation->name})) {
+                
                 $value = $sObject->{$relation->name};
+                
                 if ($value instanceof Result\RecordIterator) {
-                    $value = new MappedRecordIterator(
-                        $value, $this, $relation->class
-                    );
+                    $value = new MappedRecordIterator($value, $this, $relation->class);
                 } else {
                     $value = $this->mapToDomainObject(
-                        $sObject->{$relation->name}, $relation->class
+                        $sObject->{$relation->name},
+                        $relation->class
                     );
                 }
-
-                $reflProperty = $reflObject->getProperty($property);
-                $reflProperty->setAccessible(true);
-                $reflProperty->setValue($model, $value);
+                
+                $this->propertyMapper->updateRelation(
+                    $sObject,
+                    $model,
+                    $reflObject,
+                    $relation,
+                    $property,
+                    $value
+                );
             }
         }
-
+        
         // Add mapped model to unit of work
         $this->unitOfWork->addToIdentityMap($model);
 
         return $model;
     }
-
+    
     /**
      * Map a PHP model object to a Salesforce object
      *
@@ -404,7 +433,7 @@ class Mapper
         $sObject->fieldsToNull = array();
 
         $objectDescription = $this->getObjectDescription($model);
-        $reflClass = new \ReflectionClass($model);
+        $reflClass = new ReflectionClass($model);
         $mappedProperties = $this->annotationReader->getSalesforceFields($model);
         $mappedRelations = $this->annotationReader->getSalesforceRelations($model);
         $allMappings = $mappedProperties->toArray() + $mappedRelations;
@@ -441,10 +470,14 @@ class Mapper
                     // for 'Id' field:
                 || $fieldDescription->isIdLookup()) {
 
-                // Get value through reflection
-                $reflProperty = $reflClass->getProperty($property);
-                $reflProperty->setAccessible(true);
-                $value = $reflProperty->getValue($model);
+                if ($this->useGettersAndSetters && isset($mapping->getter)) {
+                    $value = $model->{$mapping->getter}();
+                } else {
+                    // Get value through reflection
+                    $reflProperty = $reflClass->getProperty($property);
+                    $reflProperty->setAccessible(true);
+                    $value = $reflProperty->getValue($model);
+                }
 
                 if ($mapping instanceof Annotation\Relation) {
                      // @todo Implements recursive saving for new related

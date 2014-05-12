@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('ddeboer_salesforce_mapper');
         $rootNode
             ->children()
+                ->scalarNode('mapper_class')->end()
                 ->scalarNode('cache_driver')->defaultValue('file')->end()
                 ->arrayNode('param_converter')
                     ->requiresAtLeastOneElement()
