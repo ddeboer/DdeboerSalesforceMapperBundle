@@ -470,14 +470,10 @@ class Mapper
                     // for 'Id' field:
                 || $fieldDescription->isIdLookup()) {
 
-                if ($this->useGettersAndSetters && isset($mapping->getter)) {
-                    $value = $model->{$mapping->getter}();
-                } else {
-                    // Get value through reflection
-                    $reflProperty = $reflClass->getProperty($property);
-                    $reflProperty->setAccessible(true);
-                    $value = $reflProperty->getValue($model);
-                }
+                // Get value through reflection
+                $reflProperty = $reflClass->getProperty($property);
+                $reflProperty->setAccessible(true);
+                $value = $reflProperty->getValue($model);
 
                 if ($mapping instanceof Annotation\Relation) {
                      // @todo Implements recursive saving for new related
