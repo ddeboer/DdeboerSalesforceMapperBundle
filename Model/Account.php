@@ -4,7 +4,6 @@ namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
-use Serializable;
 
 /**
  * Salesforce standard account object
@@ -13,7 +12,7 @@ use Serializable;
  * 
  * @Salesforce\Object(name="Account")
  */
-class Account extends AbstractModel implements Serializable
+class Account extends AbstractModel
 {
     /**
      * @var MappedRecordIterator

@@ -48,11 +48,11 @@ class Mapper
     private $annotationReader;
 
     /**
-     * Cache
+     * Object description cache
      *
-     * @var Cache
+     * @var \Doctrine\Common\Cache\Cache
      */
-    private $cache;
+    protected $objectDescriptionCache;
     
     /**
      * Property mapper
@@ -83,21 +83,21 @@ class Mapper
 
 
     /**
-     * Construct mapper
-     *
-     * @param SoapClient $soapClient
-     * @param AnnotationReader $annotationReader
-     * @param Cache $cache
+     * 
+     * @param \Phpforce\SoapClient\ClientInterface $client
+     * @param \Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader $annotationReader
+     * @param \Doctrine\Common\Cache\Cache $objectDescriptionCache
+     * @param \Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper $propertyMapper
      */
     public function __construct(
         ClientInterface $client,
         AnnotationReader $annotationReader,
-        Cache $cache,
+        Cache $objectDescriptionCache,
         AbstractPropertyMapper $propertyMapper
     ) {
         $this->client = $client;
         $this->annotationReader = $annotationReader;
-        $this->cache = $cache;
+        $this->objectDescriptionCache = $objectDescriptionCache;
         $this->propertyMapper = $propertyMapper;
         
         $this->unitOfWork = new UnitOfWork($this, $this->annotationReader);
@@ -518,6 +518,17 @@ class Mapper
     }
 
     /**
+     * Builds an object description cache key for a given Salesforce object name
+     * 
+     * @param string $objectName Name of the Salesforce object
+     * @return string Cache key for caching object descriptions
+     */
+    private function buildObjectDescriptionCacheKey($objectName)
+    {
+        return sprintf('ddeboer_salesforce_mapper.object_description.%s', $objectName);
+    }
+    
+    /**
      * Get object description for Salesforce object
      *
      * @param string $objectName        Name of the Salesforce object
@@ -526,10 +537,10 @@ class Mapper
      */
     private function doGetObjectDescription($objectName)
     {
-        $cacheId = sprintf('ddeboer_salesforce_mapper.object_description.%s',
-            $objectName);
-        if ($this->cache->contains($cacheId)) {
-            return $this->cache->fetch($cacheId);
+        $cacheId = $this->buildObjectDescriptionCacheKey($objectName);
+        
+        if ($this->objectDescriptionCache->contains($cacheId)) {
+            return $this->objectDescriptionCache->fetch($cacheId);
         }
 
         $descriptions = $this->client->describeSObjects(array($objectName));
@@ -538,7 +549,7 @@ class Mapper
         }
 
         $description = /* @var $description DescribeSObjectResult */ $descriptions[0];
-        $this->cache->save($cacheId, $description);
+        $this->objectDescriptionCache->save($cacheId, $description);
         return $description;
     }
 
