@@ -3,7 +3,6 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
-use Serializable;
 
 /**
  * Salesforce standard contact object
@@ -12,7 +11,7 @@ use Serializable;
  *
  * @Salesforce\Object(name="Contact")
  */
-class Contact extends AbstractModel implements Serializable
+class Contact extends AbstractModel
 {
     /**
      * @var Account
@@ -1017,106 +1016,4 @@ class Contact extends AbstractModel implements Serializable
         $this->title = $title;
     }
 
-    public function serialize()
-    {
-        $vars = array(
-            'account' => $this->account,
-            'accountContactRoles' => $this->accountContactRoles,
-            'accountId' => $this->account,
-            'activityHistories' => $this->activityHistories,
-            'assets' => $this->assets,
-            'assistantName' => $this->assistantName,
-            'assistantPhone' => $this->assistantPhone,
-            'attachments' => $this->attachments,
-            'birthdate' => $this->birthdate,
-            'campaignMembers' => $this->campaignMembers,
-            'caseContactRoles' => $this->caseContactRoles,
-            'cases' => $this->cases,
-            'contractContactRoles' => $this->contractContactRoles,
-            'contractsSigned' => $this->contractsSigned,
-            'department' => $this->department,
-            'description' => $this->description,
-            'email' => $this->email,
-            'emailBouncedDate' => $this->emailBouncedDate,
-            'emailBouncedReason' => $this->emailBouncedReason,
-            'emailStatuses' => $this->emailStatuses,
-            'events' => $this->events,
-            'fax' => $this->fax,
-            'feedSubscriptionsForEntity' => $this->feedSubscriptionsForEntity,
-            'feeds' => $this->feeds,
-            'firstName' => $this->firstName,
-            'histories' => $this->histories,
-            'homePhone' => $this->homePhone,
-            'isDeleted' => $this->isDeleted,
-            'jigsaw' => $this->jigsaw,
-            'lastActivityDate' => $this->lastActivityDate,
-            'lastCURequestDate' => $this->lastCURequestDate,
-            'lastCUUpdateDate' => $this->lastCUUpdateDate,
-            'lastName' => $this->lastName,
-            'leadSource' => $this->leadSource,
-            'mailingCity' => $this->mailingCity,
-            'mailingCountry' => $this->MailingCountry,
-            'mailingPostalCode' => $this->mailingPostalCode,
-            'mailingState' => $this->MailingState,
-            'mailingStreet' => $this->MailingStreet,
-            'masterRecord' => $this->masterRecord,
-            'masterRecordId' => $this->masterRecordId,
-            'mobilePhone' => $this->mobilePhone,
-            'name' => $this->name,
-            'notes' => $this->notes,
-            'notesAndAttachments' => $this->notesAndAttachments,
-            'openActivities' => $this->openActivities,
-            'opportunities' => $this->opportunities,
-            'opportunityContactRoles' => $this->opportunityContactRoles,
-            'otherCity' => $this->otherCity,
-            'otherCountry' => $this->otherCountry,
-            'otherPhone' => $this->otherPhone,
-            'otherPostalCode' => $this->otherPostalCode,
-            'otherState' => $this->otherState,
-            'otherStreet' => $this->otherStreet,
-            'owner' => $this->owner,
-            'ownerId' => $this->ownerId,
-            'phone' => $this->phone,
-            'processInstances' => $this->processInstances,
-            'processSteps' => $this->processSteps,
-            'reportsTo' => $this->reportsTo,
-            'reportsToId' => $this->reportsToId,
-            'salutation' => $this->salutation,
-            'shares' => $this->shares,
-            'tags' => $this->tags,
-            'tasks' => $this->tasks,
-            'parent' => parent::serialize()
-        );
-
-        if($this->pricebookEntries instanceof MappedRecordIterator) {
-            $arr = array();
-            foreach($this->pricebookEntries as $pe) {
-                $arr[] = $pe->serialize();
-            }
-            $vars['pricebookEntries'] = $arr;
-        }
-
-        return serialize($vars);
-    }
-
-    public function unserialize($serialized) {
-        $vars = unserialize($serialized);
-        $this->description = $vars['description'];
-        $this->name = $vars['name'];
-        $this->family = $vars['family'];
-        $this->isActive = $vars['isActive'];
-        $this->priceUnit = $vars['priceUnit'];
-
-        if(array_key_exists('pricebookEntries', $vars)) {
-            $arr = array();
-            foreach($vars['pricebookEntries'] as $pe) {
-                $price = new PricebookEntry();
-                $price->unserialize($pe);
-                $arr[] = $price;
-            }
-            $this->pricebookEntries = $arr;
-        }
-
-        parent::unserialize($vars['parent']);
-    }
 }
