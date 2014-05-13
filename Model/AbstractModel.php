@@ -3,14 +3,16 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use DateTime;
+use Serializable;
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
+use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 
 /**
  * Layer supertype for Salesforce objects
  *
  * @author David de Boer <david@ddeboer.nl>
  */
-abstract class AbstractModel
+abstract class AbstractModel implements Serializable
 {
     /**
      * Object ID
@@ -108,6 +110,36 @@ abstract class AbstractModel
     public function getSystemModstamp()
     {
         return $this->systemModstamp;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function serialize()
+    {
+        $serialized = array();
+        
+        foreach ($this as $name => $value) {
+            if ($value instanceof MappedRecordIterator) {
+                $value = $value->toArray();
+            }
+            
+            $serialized[$name] = $value;
+        }
+        
+        return serialize($serialized);
+    }
+    
+    /**
+     * 
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        foreach (unserialize($serialized) as $name => $value) {
+            $this->$name = $value;
+        }
     }
 
 }
