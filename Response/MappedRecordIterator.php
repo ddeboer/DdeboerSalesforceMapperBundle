@@ -11,7 +11,7 @@ use Phpforce\SoapClient\Result\RecordIterator;
  *
  * @author David de Boer <d.deboer@Ddeboer.nl>
  */
-class MappedRecordIterator implements \OuterIterator, \Countable
+class MappedRecordIterator implements \OuterIterator, \Countable, \SeekableIterator
 {
     /**
      * Record iterator
@@ -136,6 +136,16 @@ class MappedRecordIterator implements \OuterIterator, \Countable
         }
 
         return $this->mapper->mapToDomainObject($sObject, $this->modelClass);
+    }
+    
+    /**
+     * Gets an object at a specific position
+     * 
+     * @param int $position
+     * @return object|null
+     */
+    public function seek($position) {
+        return $this->recordIterator->seek($position);
     }
     
     /**
