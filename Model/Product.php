@@ -4,14 +4,13 @@ namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
-use Serializable;
 
 /**
  * Salesforce standard task object
  *
  * @Salesforce\Object(name="Product2")
  */
-class Product extends AbstractModel implements Serializable
+class Product extends AbstractModel
 {
     /**
      * @var string
@@ -117,45 +116,4 @@ class Product extends AbstractModel implements Serializable
         return $this;
     }
 
-    public function serialize() {
-        $vars = array(
-            'description' => $this->description,
-            'name' => $this->name,
-            'family' => $this->family,
-            'isActive' => $this->isActive,
-            'priceUnit' => $this->priceUnit,
-            'parent' => parent::serialize()
-        );
-
-        if($this->pricebookEntries instanceof MappedRecordIterator) {
-            $arr = array();
-            foreach($this->pricebookEntries as $pe) {
-                $arr[] = $pe->serialize();
-            }
-            $vars['pricebookEntries'] = $arr;
-        }
-
-        return serialize($vars);
-    }
-
-    public function unserialize($serialized) {
-        $vars = unserialize($serialized);
-        $this->description = $vars['description'];
-        $this->name = $vars['name'];
-        $this->family = $vars['family'];
-        $this->isActive = $vars['isActive'];
-        $this->priceUnit = $vars['priceUnit'];
-
-        if(array_key_exists('pricebookEntries', $vars)) {
-            $arr = array();
-            foreach($vars['pricebookEntries'] as $pe) {
-                $price = new PricebookEntry();
-                $price->unserialize($pe);
-                $arr[] = $price;
-            }
-            $this->pricebookEntries = $arr;
-        }
-
-        parent::unserialize($vars['parent']);
-    }
 }

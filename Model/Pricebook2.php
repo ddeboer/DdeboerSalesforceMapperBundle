@@ -3,7 +3,8 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
-use Serializable;
+
+
 
 /**
  * Represents a product entry (an association between a Pricebook2 and Product2)
@@ -11,8 +12,9 @@ use Serializable;
  *
  * @Salesforce\Object(name="Pricebook2")
  */
-class Pricebook2 extends AbstractModel implements Serializable
+class Pricebook2 extends AbstractModel
 {
+
     /**
      * @var string
      * @Salesforce\Field(name="Name")
@@ -52,32 +54,14 @@ class Pricebook2 extends AbstractModel implements Serializable
     }
 
     public function getDescription()
-     {
-         return $this->description;
-     }
-     
-     public function setDescription($description)
-     {
-         $this->description = $description;
-         return $this;
-     }
- 
-    public function serialize() {
-        $vars = array(
-            'name' => $this->name,
-            'isActive' => $this->isActive,
-            'description' => $this->description,
-            'parent' => parent::serialize()
-        );
-
-        return serialize($vars);
+    {
+        return $this->description;
     }
 
-    public function unserialize($serialized) {
-        $vars = unserialize($serialized);
-        $this->name = $vars['name'];
-        $this->isActive = $vars['isActive'];
-        $this->description = $vars['description'];
-        parent::unserialize($vars['parent']);
-    }     
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
 }

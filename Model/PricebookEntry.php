@@ -3,7 +3,6 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
-use Serializable;
 use DateTime;
 
 /**
@@ -13,7 +12,7 @@ use DateTime;
  * @Salesforce\Object(name="PricebookEntry")
  * @link http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_objects_pricebookentry.htm
  */
-class PricebookEntry extends AbstractModel implements Serializable
+class PricebookEntry extends AbstractModel
 {
     /**
      * @var string
@@ -139,47 +138,4 @@ class PricebookEntry extends AbstractModel implements Serializable
         return $this;
     }
     
-    public function serialize() {
-        $vars = array(
-            'name' => $this->name,
-            'isActive' => $this->isActive,
-            'productId' => $this->productId,
-            'pricebookId' => $this->pricebookId,
-            'unitPrice' => $this->unitPrice,
-            'useStandardPrice' => $this->useStandardPrice,
-            'parent' => parent::serialize()
-        );
-
-        if(is_object($this->product)) {
-            $vars['product'] = $this->product->serialize();
-        }
-
-        if(is_object($this->pricebook)) {
-            $vars['pricebook'] = $this->pricebook->serialize();
-        }
-
-        return serialize($vars);
-    }
-
-    public function unserialize($serialized) {
-        $vars = unserialize($serialized);
-        $this->name = $vars['name'];
-        $this->isActive = $vars['isActive'];
-        $this->productId = $vars['productId'];
-        $this->pricebookId = $vars['pricebookId'];
-        $this->unitPrice = $vars['unitPrice'];
-        $this->useStandardPrice = $vars['useStandardPrice'];
-
-        if(array_key_exists('product', $vars)) {
-            $this->product = new Product();
-            $this->product->unserialize($vars['product']);
-        }
-
-        if(array_key_exists('pricebook', $vars)) {
-            $this->pricebook = new Pricebook2();
-            $this->pricebook->unserialize($vars['pricebook']);
-        }
-
-        parent::unserialize($vars['parent']);
-    }
 }
