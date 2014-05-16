@@ -145,7 +145,7 @@ class MappedRecordIterator implements \OuterIterator, \Countable, \SeekableItera
      * @return object|null
      */
     public function seek($position) {
-        return $this->recordIterator->seek($position);
+        return $this->get($position);
     }
     
     /**
