@@ -195,7 +195,8 @@ class Opportunity extends AbstractModel
     protected $opportunityHistories;
 
     /**
-     * @var tnsQueryResult
+     * @Salesforce\Relation(name="OpportunityLineItems",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\OpportunityLineItem")
      */
     protected $opportunityLineItems;
 
