@@ -198,7 +198,7 @@ class Opportunity extends AbstractModel
      * @Salesforce\Relation(name="OpportunityLineItems",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\OpportunityLineItem")
      */
-    protected $opportunityLineItems;
+    //protected $opportunityLineItems;
 
     /**
      * @var tnsQueryResult
@@ -626,16 +626,16 @@ class Opportunity extends AbstractModel
         return $this;
     }
 
-    public function getOpportunityLineItems()
-    {
-        return $this->opportunityLineItems;
-    }
-
-    public function setOpportunityLineItems($opportunityLineItems)
-    {
-        $this->opportunityLineItems = $opportunityLineItems;
-        return $this;
-    }
+//    public function getOpportunityLineItems()
+//    {
+//        return $this->opportunityLineItems;
+//    }
+//
+//    public function setOpportunityLineItems($opportunityLineItems)
+//    {
+//        $this->opportunityLineItems = $opportunityLineItems;
+//        return $this;
+//    }
 
     public function getOpportunityPartnersFrom()
     {
