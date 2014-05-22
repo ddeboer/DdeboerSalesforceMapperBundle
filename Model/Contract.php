@@ -70,7 +70,7 @@ class Contract extends AbstractModel
 
     /**
      * @var string
-     * @Salesforce\Field(name="ContractNumber")
+     * @Salesforce\Field(name="ContractNumber", updateable="false")
      */
     protected $contractNumber;
 
