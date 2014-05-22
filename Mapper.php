@@ -80,7 +80,11 @@ class Mapper
      */
     protected $objectDescriptions = array();
 
-
+    /**
+     *
+     * @var array
+     */
+    protected $subqueryWhere = array();
 
     /**
      * 
@@ -806,11 +810,18 @@ class Mapper
                 }
 
                 $fields = $this->getFields($relation->class, $includeRelatedLevels, $object->name);
-                $subqueries[] = sprintf('(%s)',
-                    $this->getSelect($relation->name, $fields));
+
+                if(isset($this->subqueryWhere[$relation->name])) {
+                    $subqueries[] = sprintf('(%s where %s)',
+                        $this->getSelect($relation->name, $fields), $this->subqueryWhere[$relation->name]);
+                } else {
+                    $subqueries[] = sprintf('(%s)',
+                        $this->getSelect($relation->name, $fields));
+                }
             }
         }
 
+        $this->subqueryWhere = array();
         return $subqueries;
     }
 
@@ -842,4 +853,20 @@ class Mapper
     {
         return $this->unitOfWork;
     }
+    
+    public function getSubqueryWhere()
+    {
+        return $this->subqueryWhere;
+    }
+
+    /**
+     * 
+     * @param string $model the name of the salesforce relation name
+     * @param string $where the where clause
+     */
+    public function setSubqueryWhere($model, $where)
+    {
+        $this->subqueryWhere[$model] = $where;
+    }
+    
 }
