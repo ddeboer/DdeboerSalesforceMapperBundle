@@ -860,13 +860,15 @@ class Mapper
     }
 
     /**
+     * Allows the ability to add a where clause to the child part in parent-to-child queries.
      * 
-     * @param string $model the name of the salesforce relation name
-     * @param string $where the where clause
+     * @param string $relationName the name of the salesforce relation name in the parent table
+     * @param string $where        the where clause
      */
-    public function setSubqueryWhere($model, $where)
+    public function setSubqueryWhere($relationName, $where)
     {
-        $this->subqueryWhere[$model] = $where;
+        $this->subqueryWhere[$relationName] = $where;
+        return $this;
     }
     
 }

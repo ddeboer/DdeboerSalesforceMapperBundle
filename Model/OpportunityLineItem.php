@@ -56,7 +56,7 @@ class OpportunityLineItem extends AbstractModel
     
     /**
      * @var PricebookEntry
-     * @Salesforce\Relation(field="productId", name="Product2",
+     * @Salesforce\Relation(field="Product2Id", name="Product2",
      *                      class="Ddeboer\Salesforce\MapperBundle\Model\Product")
      */
     protected $product;
