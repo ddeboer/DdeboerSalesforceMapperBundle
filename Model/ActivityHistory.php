@@ -78,7 +78,7 @@ class ActivityHistory extends AbstractModel
     
     /**
      * @var string
-     * @Salesforce\Field(name="WhatId")
+     * @Salesforce\Field(name="WhoId")
      */
     protected $whoId;
     
