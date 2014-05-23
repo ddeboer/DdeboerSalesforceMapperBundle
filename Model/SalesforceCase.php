@@ -25,6 +25,12 @@ class SalesforceCase extends AbstractModel
     protected $accountId;
 
     /**
+     * @var ResultIterator
+     * @Salesforce\Relation(name="ActivityHistories", class="Ddeboer\Salesforce\MapperBundle\Model\ActivityHistory")
+     */
+    protected $activityHistories;
+    
+    /**
      * @var string
      * @Salesforce\Field(name="Status")
      */
@@ -85,6 +91,16 @@ class SalesforceCase extends AbstractModel
 
     public function setAccountId($accountId) {
         $this->accountId = $accountId;
+    }
+
+    public function getActivityHistories()
+    {
+        return $this->activityHistories;
+    }
+
+    public function setActivityHistories($activityHistories)
+    {
+        $this->activityHistories = $activityHistories;
     }
 
     public function getStatus()
