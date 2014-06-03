@@ -65,7 +65,7 @@ class OpportunityLineItem extends AbstractModel
      * @var string
      * @Salesforce\Field(name="Product2Id")
      */
-    protected $productId;
+    protected $Product2Id;
     
     /**
      * @var double
