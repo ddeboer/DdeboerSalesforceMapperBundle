@@ -12,24 +12,11 @@ use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
  * @Salesforce\Object(name="Contact")
  */
 class Contact extends AbstractModel
-{
-    /**
-     * @var Account
-     * @Salesforce\Relation(field="AccountId", name="Account",
-     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Account")
-     */
-    protected $account;
-    
+{   
     /**
      * @var tnsQueryResult
      */
     protected $accountContactRoles;
-
-    /**
-     * @var string
-     * @Salesforce\Field(name="AccountId")
-     */
-    protected $accountId;
     
     /**
      * @var tnsQueryResult
@@ -373,17 +360,6 @@ class Contact extends AbstractModel
      * @Salesforce\Field(name="Title")
      */
     protected $title;    
-    
-    public function getAccount()
-    {
-        return $this->account;
-    }
-
-    public function setAccount(Account $account)
-    {
-        $this->account = $account;
-        $this->accountId = $account->getId();
-    }
 
     public function getAccountContactRoles()
     {
