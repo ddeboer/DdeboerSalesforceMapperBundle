@@ -259,7 +259,12 @@ class Mapper
         $related = 2, $deleted = false)
     {
         $iterator = $this->findBy($model, $criteria, $order, $related, $deleted);
-        return $iterator->first();
+
+        foreach ($iterator as $item) {
+            return $item;
+        }
+
+        return null;
     }
 
     /**
