@@ -53,10 +53,10 @@ class Mapper
      * @var \Doctrine\Common\Cache\Cache
      */
     protected $objectDescriptionCache;
-    
+
     /**
      * Property mapper
-     * 
+     *
      * @var \Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper
      */
     private $propertyMapper;
@@ -76,7 +76,7 @@ class Mapper
 
     /**
      *
-     * @var array 
+     * @var array
      */
     protected $objectDescriptions = array();
 
@@ -87,7 +87,7 @@ class Mapper
     protected $subqueryWhere = array();
 
     /**
-     * 
+     *
      * @param \Phpforce\SoapClient\ClientInterface $client
      * @param \Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader $annotationReader
      * @param \Doctrine\Common\Cache\Cache $objectDescriptionCache
@@ -103,7 +103,7 @@ class Mapper
         $this->annotationReader = $annotationReader;
         $this->objectDescriptionCache = $objectDescriptionCache;
         $this->propertyMapper = $propertyMapper;
-        
+
         $this->unitOfWork = new UnitOfWork($this, $this->annotationReader);
     }
 
@@ -128,7 +128,7 @@ class Mapper
         $this->eventDispatcher = $eventDispatcher;
         return $this;
     }
-    
+
     /**
      * Get object count
      *
@@ -227,24 +227,24 @@ class Mapper
     /**
      * Find by using a custom where clause. The $criteria param in findBy does
      * not support complex where clauses e.g.
-     * 
+     *
      * where ProductPack__r.Area__c = 'Accounting'
-     * 
+     *
      * @param type $model
      * @param type $where
      * @param type $related
-     * 
+     *
      * @return \Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator
      */
     public function findWhereBy($model, $where, $related = 1)
     {
-        $query = $this->getQuerySelectPart($model, $related) 
+        $query = $this->getQuerySelectPart($model, $related)
                 . ' where ' . $where;
 
         $result = $this->client->query($query);
         return new MappedRecordIterator($result, $this, $model);
     }
-    
+
     /**
      * Find one object by criteria
      *
@@ -378,13 +378,13 @@ class Mapper
     public function mapToDomainObject($sObject, $modelClass)
     {
         // Try to find mapped model in unit of work
-        if ($this->unitOfWork->find($modelClass, $sObject->Id)) {
-            return $this->unitOfWork->find($modelClass, $sObject->Id);
-        }
+        // if ($this->unitOfWork->find($modelClass, $sObject->Id)) {
+        //     return $this->unitOfWork->find($modelClass, $sObject->Id);
+        // }
 
         $model = new $modelClass();
         $reflObject = new ReflectionObject($model);
-        
+
         // Set Salesforce property values on domain object
         $fields = $this->annotationReader->getSalesforceFields($modelClass);
         foreach ($fields as $name => $field) {
@@ -399,9 +399,9 @@ class Mapper
 
             // Relation name must be set
             if (isset($sObject->{$relation->name})) {
-                
+
                 $value = $sObject->{$relation->name};
-                
+
                 if ($value instanceof Result\RecordIterator) {
                     $value = new MappedRecordIterator($value, $this, $relation->class);
                 } else {
@@ -410,7 +410,7 @@ class Mapper
                         $relation->class
                     );
                 }
-                
+
                 $this->propertyMapper->updateRelation(
                     $sObject,
                     $model,
@@ -421,13 +421,13 @@ class Mapper
                 );
             }
         }
-        
+
         // Add mapped model to unit of work
-        $this->unitOfWork->addToIdentityMap($model);
+        // $this->unitOfWork->addToIdentityMap($model);
 
         return $model;
     }
-    
+
     /**
      * Map a PHP model object to a Salesforce object
      *
@@ -524,7 +524,7 @@ class Mapper
 
     /**
      * Builds an object description cache key for a given Salesforce object name
-     * 
+     *
      * @param string $objectName Name of the Salesforce object
      * @return string Cache key for caching object descriptions
      */
@@ -532,7 +532,7 @@ class Mapper
     {
         return sprintf('ddeboer_salesforce_mapper.object_description.%s', $objectName);
     }
-    
+
     /**
      * Get object description for Salesforce object
      *
@@ -543,7 +543,7 @@ class Mapper
     private function doGetObjectDescription($objectName)
     {
         $cacheId = $this->buildObjectDescriptionCacheKey($objectName);
-        
+
         if ($this->objectDescriptionCache->contains($cacheId)) {
             return $this->objectDescriptionCache->fetch($cacheId);
         }
@@ -625,21 +625,21 @@ class Mapper
             if (!$field) {
                 throw new \InvalidArgumentException('Invalid field ' . $name);
             }
-            
+
             if (is_array($value)) {
                 $quotedValueList = array();
-                
+
                 foreach ($value as $v) {
                     $quotedValueList[] = $this->getQuotedWhereValue($field, $v, $objectDescription);
                 }
-                
+
                 $quotedValue = '(' . implode(',', $quotedValueList) . ')';
-                
+
                 $operator = ($operator !== '=' ? "NOT " : "") . "IN";
-                
+
             } else if ($value === null) {
                 $quotedValue = "null";
-                
+
             } else {
                 $quotedValue = $this->getQuotedWhereValue($field, $value, $objectDescription);
             }
@@ -858,7 +858,7 @@ class Mapper
     {
         return $this->unitOfWork;
     }
-    
+
     public function getSubqueryWhere()
     {
         return $this->subqueryWhere;
@@ -866,7 +866,7 @@ class Mapper
 
     /**
      * Allows the ability to add a where clause to the child part in parent-to-child queries.
-     * 
+     *
      * @param string $relationName the name of the salesforce relation name in the parent table
      * @param string $where        the where clause
      */
@@ -875,5 +875,5 @@ class Mapper
         $this->subqueryWhere[$relationName] = $where;
         return $this;
     }
-    
+
 }
