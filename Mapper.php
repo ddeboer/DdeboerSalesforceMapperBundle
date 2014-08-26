@@ -2,14 +2,17 @@
 
 namespace Ddeboer\Salesforce\MapperBundle;
 
+use ReflectionClass;
+use ReflectionObject;
 use Phpforce\SoapClient\ClientInterface;
 use Phpforce\SoapClient\Result;
+use Ddeboer\Salesforce\MapperBundle\Model\AbstractModel;
 use Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader;
 use Ddeboer\Salesforce\MapperBundle\Annotation;
+use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
+use Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper;
 use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 use Ddeboer\Salesforce\MapperBundle\Query\Builder;
-use Ddeboer\Salesforce\MapperBundle\Event\BeforeSaveEvent;
-use Ddeboer\Salesforce\MapperBundle\UnitOfWork;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -45,11 +48,18 @@ class Mapper
     private $annotationReader;
 
     /**
-     * Cache
+     * Object description cache
      *
-     * @var Cache
+     * @var \Doctrine\Common\Cache\Cache
      */
-    private $cache;
+    protected $objectDescriptionCache;
+
+    /**
+     * Property mapper
+     *
+     * @var \Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper
+     */
+    private $propertyMapper;
 
     /**
      * Symfony event dispatcher
@@ -58,22 +68,42 @@ class Mapper
      */
     private $eventDispatcher;
 
+    /**
+     *
+     * @var \Ddeboer\Salesforce\MapperBundle\UnitOfWork
+     */
     protected $unitOfWork;
 
+    /**
+     *
+     * @var array
+     */
     protected $objectDescriptions = array();
 
     /**
-     * Construct mapper
      *
-     * @param SoapClient $soapClient
-     * @param AnnotationReader $annotationReader
-     * @param Cache $cache
+     * @var array
      */
-    public function __construct(ClientInterface $client, AnnotationReader $annotationReader, Cache $cache)
-    {
+    protected $subqueryWhere = array();
+
+    /**
+     *
+     * @param \Phpforce\SoapClient\ClientInterface $client
+     * @param \Ddeboer\Salesforce\MapperBundle\Annotation\AnnotationReader $annotationReader
+     * @param \Doctrine\Common\Cache\Cache $objectDescriptionCache
+     * @param \Ddeboer\Salesforce\MapperBundle\PropertyMapper\AbstractPropertyMapper $propertyMapper
+     */
+    public function __construct(
+        ClientInterface $client,
+        AnnotationReader $annotationReader,
+        Cache $objectDescriptionCache,
+        AbstractPropertyMapper $propertyMapper
+    ) {
         $this->client = $client;
         $this->annotationReader = $annotationReader;
-        $this->cache = $cache;
+        $this->objectDescriptionCache = $objectDescriptionCache;
+        $this->propertyMapper = $propertyMapper;
+
         $this->unitOfWork = new UnitOfWork($this, $this->annotationReader);
     }
 
@@ -178,11 +208,12 @@ class Mapper
      * @return MappedRecordIterator
      */
     public function findBy($model, array $criteria, array $order = array(),
-        $related = 1, $deleted = false)
+        $related = 1, $deleted = false, array $limit = array())
     {
         $query = $this->getQuerySelectPart($model, $related)
                . $this->getQueryWherePart($criteria, $model)
-               . $this->getQueryOrderByPart($order, $model);
+               . $this->getQueryOrderByPart($order, $model)
+               . $this->getQueryLimitPart($limit);
 
         if (true === $deleted) {
             $result = $this->client->queryAll($query);
@@ -190,6 +221,27 @@ class Mapper
             $result = $this->client->query($query);
         }
 
+        return new MappedRecordIterator($result, $this, $model);
+    }
+
+    /**
+     * Find by using a custom where clause. The $criteria param in findBy does
+     * not support complex where clauses e.g.
+     *
+     * where ProductPack__r.Area__c = 'Accounting'
+     *
+     * @param type $model
+     * @param type $where
+     * @param type $related
+     *
+     * @return \Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator
+     */
+    public function findWhereBy($model, $where, $related = 1)
+    {
+        $query = $this->getQuerySelectPart($model, $related)
+                . ' where ' . $where;
+
+        $result = $this->client->query($query);
         return new MappedRecordIterator($result, $this, $model);
     }
 
@@ -207,7 +259,12 @@ class Mapper
         $related = 2, $deleted = false)
     {
         $iterator = $this->findBy($model, $criteria, $order, $related, $deleted);
-        return $iterator->first();
+
+        foreach ($iterator as $item) {
+            return $item;
+        }
+
+        return null;
     }
 
     /**
@@ -220,9 +277,9 @@ class Mapper
      * @return MappedRecordIterator
      */
     public function findAll($model, array $order = array(), $related = 1,
-        $deleted = false)
+        $deleted = false, array $limit = array())
     {
-        return $this->findBy($model, array(), $order, $related, $deleted);
+        return $this->findBy($model, array(), $order, $related, $deleted, $limit);
     }
 
     /**
@@ -285,7 +342,7 @@ class Mapper
 
         $results = array();
         foreach ($objectsToBeCreated as $objectName => $sObjects) {
-            $reflClass = new \ReflectionClass(current(
+            $reflClass = new ReflectionClass(current(
                 $modelsWithoutId[$objectName]
             ));
             $reflProperty = $reflClass->getProperty('id');
@@ -321,21 +378,18 @@ class Mapper
     public function mapToDomainObject($sObject, $modelClass)
     {
         // Try to find mapped model in unit of work
-        if ($this->unitOfWork->find($modelClass, $sObject->Id)) {
-            return $this->unitOfWork->find($modelClass, $sObject->Id);
-        }
+        // if ($this->unitOfWork->find($modelClass, $sObject->Id)) {
+        //     return $this->unitOfWork->find($modelClass, $sObject->Id);
+        // }
 
         $model = new $modelClass();
-        $reflObject = new \ReflectionObject($model);
+        $reflObject = new ReflectionObject($model);
 
         // Set Salesforce property values on domain object
         $fields = $this->annotationReader->getSalesforceFields($modelClass);
         foreach ($fields as $name => $field) {
             if (isset($sObject->{$field->name})) {
-                // Use reflection to set the protected/private properties
-                $reflProperty = $reflObject->getProperty($name);
-                $reflProperty->setAccessible(true);
-                $reflProperty->setValue($model, $sObject->{$field->name});
+                $this->propertyMapper->updateField($sObject, $model, $reflObject, $field, $name);
             }
         }
 
@@ -345,25 +399,31 @@ class Mapper
 
             // Relation name must be set
             if (isset($sObject->{$relation->name})) {
+
                 $value = $sObject->{$relation->name};
+
                 if ($value instanceof Result\RecordIterator) {
-                    $value = new MappedRecordIterator(
-                        $value, $this, $relation->class
-                    );
+                    $value = new MappedRecordIterator($value, $this, $relation->class);
                 } else {
                     $value = $this->mapToDomainObject(
-                        $sObject->{$relation->name}, $relation->class
+                        $sObject->{$relation->name},
+                        $relation->class
                     );
                 }
 
-                $reflProperty = $reflObject->getProperty($property);
-                $reflProperty->setAccessible(true);
-                $reflProperty->setValue($model, $value);
+                $this->propertyMapper->updateRelation(
+                    $sObject,
+                    $model,
+                    $reflObject,
+                    $relation,
+                    $property,
+                    $value
+                );
             }
         }
 
         // Add mapped model to unit of work
-        $this->unitOfWork->addToIdentityMap($model);
+        // $this->unitOfWork->addToIdentityMap($model);
 
         return $model;
     }
@@ -382,13 +442,16 @@ class Mapper
         $sObject->fieldsToNull = array();
 
         $objectDescription = $this->getObjectDescription($model);
-        $reflClass = new \ReflectionClass($model);
+        $reflClass = new ReflectionClass($model);
         $mappedProperties = $this->annotationReader->getSalesforceFields($model);
         $mappedRelations = $this->annotationReader->getSalesforceRelations($model);
         $allMappings = $mappedProperties->toArray() + $mappedRelations;
 
         foreach ($allMappings as $property => $mapping) {
             if ($mapping instanceof Annotation\Field) {
+                if(isset($mapping->updateable) && $mapping->updateable === "false") {
+                    continue;
+                }
                 $fieldDescription = $objectDescription->getField($mapping->name);
                 $fieldName = $mapping->name;
             } elseif ($mapping instanceof Annotation\Relation
@@ -460,6 +523,17 @@ class Mapper
     }
 
     /**
+     * Builds an object description cache key for a given Salesforce object name
+     *
+     * @param string $objectName Name of the Salesforce object
+     * @return string Cache key for caching object descriptions
+     */
+    private function buildObjectDescriptionCacheKey($objectName)
+    {
+        return sprintf('ddeboer_salesforce_mapper.object_description.%s', $objectName);
+    }
+
+    /**
      * Get object description for Salesforce object
      *
      * @param string $objectName        Name of the Salesforce object
@@ -468,10 +542,10 @@ class Mapper
      */
     private function doGetObjectDescription($objectName)
     {
-        $cacheId = sprintf('ddeboer_salesforce_mapper.object_description.%s',
-            $objectName);
-        if ($this->cache->contains($cacheId)) {
-            return $this->cache->fetch($cacheId);
+        $cacheId = $this->buildObjectDescriptionCacheKey($objectName);
+
+        if ($this->objectDescriptionCache->contains($cacheId)) {
+            return $this->objectDescriptionCache->fetch($cacheId);
         }
 
         $descriptions = $this->client->describeSObjects(array($objectName));
@@ -480,7 +554,7 @@ class Mapper
         }
 
         $description = /* @var $description DescribeSObjectResult */ $descriptions[0];
-        $this->cache->save($cacheId, $description);
+        $this->objectDescriptionCache->save($cacheId, $description);
         return $description;
     }
 
@@ -551,15 +625,21 @@ class Mapper
             if (!$field) {
                 throw new \InvalidArgumentException('Invalid field ' . $name);
             }
-            
+
             if (is_array($value)) {
                 $quotedValueList = array();
-                
+
                 foreach ($value as $v) {
                     $quotedValueList[] = $this->getQuotedWhereValue($field, $v, $objectDescription);
                 }
-                
+
                 $quotedValue = '(' . implode(',', $quotedValueList) . ')';
+
+                $operator = ($operator !== '=' ? "NOT " : "") . "IN";
+
+            } else if ($value === null) {
+                $quotedValue = "null";
+
             } else {
                 $quotedValue = $this->getQuotedWhereValue($field, $value, $objectDescription);
             }
@@ -625,6 +705,22 @@ class Mapper
             default:
                 return "'" . addslashes($value) . "'";
         }
+    }
+
+    private function getQueryLimitPart(array $limit = array())
+    {
+        if(count($limit) === 0) {
+            return '';
+        }
+
+        if(!array_key_exists('limit', $limit) ||
+            !array_key_exists('offset', $limit) ||
+            !is_numeric($limit['limit']) ||
+            !is_numeric($limit['offset'])) {
+            return '';
+        }
+
+        return sprintf(" limit %d offset %d", $limit['limit'], $limit['offset']);
     }
 
     /**
@@ -719,11 +815,18 @@ class Mapper
                 }
 
                 $fields = $this->getFields($relation->class, $includeRelatedLevels, $object->name);
-                $subqueries[] = sprintf('(%s)',
-                    $this->getSelect($relation->name, $fields));
+
+                if(isset($this->subqueryWhere[$relation->name])) {
+                    $subqueries[] = sprintf('(%s where %s)',
+                        $this->getSelect($relation->name, $fields), $this->subqueryWhere[$relation->name]);
+                } else {
+                    $subqueries[] = sprintf('(%s)',
+                        $this->getSelect($relation->name, $fields));
+                }
             }
         }
 
+        $this->subqueryWhere = array();
         return $subqueries;
     }
 
@@ -755,4 +858,22 @@ class Mapper
     {
         return $this->unitOfWork;
     }
+
+    public function getSubqueryWhere()
+    {
+        return $this->subqueryWhere;
+    }
+
+    /**
+     * Allows the ability to add a where clause to the child part in parent-to-child queries.
+     *
+     * @param string $relationName the name of the salesforce relation name in the parent table
+     * @param string $where        the where clause
+     */
+    public function setSubqueryWhere($relationName, $where)
+    {
+        $this->subqueryWhere[$relationName] = $where;
+        return $this;
+    }
+
 }

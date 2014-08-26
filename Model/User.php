@@ -22,6 +22,10 @@ class User extends AbstractModel
      */
     protected $accounts;
 
+    /**
+     * @var string
+     * @Salesforce\Field(name="Alias")
+     */
     protected $alias;
 
     /**
@@ -37,7 +41,7 @@ class User extends AbstractModel
 
     /**
      * @var string
-     * @Salesforce\Field(name="CommunityNickName")
+     * @Salesforce\Field(name="CommunityNickname")
      */
     protected $communityNickname;
 
@@ -107,6 +111,7 @@ class User extends AbstractModel
 
     /**
      * @var string
+     * @Salesforce\Field(name="EmailEncodingKey")
      */
     protected $emailEncodingKey;
 
@@ -190,6 +195,7 @@ class User extends AbstractModel
 
     /**
      * @var string
+     * @Salesforce\Field(name="LanguageLocaleKey")
      */
     protected $languageLocaleKey;
 
@@ -207,6 +213,7 @@ class User extends AbstractModel
 
     /**
      * @var string
+     * @Salesforce\Field(name="LocaleSidKey")
      */
     protected $localeSidKey;
 
@@ -288,6 +295,7 @@ class User extends AbstractModel
 
     /**
      * @var string
+     * @Salesforce\Field(name="TimeZoneSidKey")
      */
     protected $timeZoneSidKey;
 
@@ -367,6 +375,16 @@ class User extends AbstractModel
      * @Salesforce\Field(name="UserType")
      */
     protected $userType;
+
+    public function getProfileId()
+    {
+        return $this->profileId;
+    }
+
+    public function setProfileId($profileId)
+    {
+        $this->profileId = $profileId;
+    }    
 
     public function getAboutMe()
     {

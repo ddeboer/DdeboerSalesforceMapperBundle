@@ -195,9 +195,10 @@ class Opportunity extends AbstractModel
     protected $opportunityHistories;
 
     /**
-     * @var tnsQueryResult
+     * @Salesforce\Relation(name="OpportunityLineItems",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\OpportunityLineItem")
      */
-    protected $opportunityLineItems;
+    //protected $opportunityLineItems;
 
     /**
      * @var tnsQueryResult
@@ -228,7 +229,8 @@ class Opportunity extends AbstractModel
     protected $pricebook2;
 
     /**
-     * @var tnsID
+     * @var string
+     * @Salesforce\Field(name="Pricebook2Id")
      */
     protected $pricebook2Id;
 
@@ -257,7 +259,7 @@ class Opportunity extends AbstractModel
      * @var string
      * @Salesforce\Field(name="RecordTypeId")
      */
-    protected $recordTypeId;
+    //protected $recordTypeId;
 
     /**
      * @var tnsQueryResult
@@ -624,16 +626,16 @@ class Opportunity extends AbstractModel
         return $this;
     }
 
-    public function getOpportunityLineItems()
-    {
-        return $this->opportunityLineItems;
-    }
-
-    public function setOpportunityLineItems($opportunityLineItems)
-    {
-        $this->opportunityLineItems = $opportunityLineItems;
-        return $this;
-    }
+//    public function getOpportunityLineItems()
+//    {
+//        return $this->opportunityLineItems;
+//    }
+//
+//    public function setOpportunityLineItems($opportunityLineItems)
+//    {
+//        $this->opportunityLineItems = $opportunityLineItems;
+//        return $this;
+//    }
 
     public function getOpportunityPartnersFrom()
     {

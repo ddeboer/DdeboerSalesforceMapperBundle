@@ -1015,4 +1015,5 @@ class Contact extends AbstractModel
     {
         $this->title = $title;
     }
+
 }

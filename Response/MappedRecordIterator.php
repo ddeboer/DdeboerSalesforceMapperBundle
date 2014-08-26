@@ -11,7 +11,7 @@ use Phpforce\SoapClient\Result\RecordIterator;
  *
  * @author David de Boer <d.deboer@Ddeboer.nl>
  */
-class MappedRecordIterator implements \OuterIterator, \Countable
+class MappedRecordIterator implements \OuterIterator, \Countable, \ArrayAccess
 {
     /**
      * Record iterator
@@ -137,4 +137,71 @@ class MappedRecordIterator implements \OuterIterator, \Countable
 
         return $this->mapper->mapToDomainObject($sObject, $this->modelClass);
     }
+    
+    /**
+     * Determines whether or not an element exists at a given offset (key/index)
+     * 
+     * @param int $offset
+     *      Key/index to search (generally numeric in this implementation)
+     * @return boolean
+     *      TRUE if the key/index exists; otherwise FALSE
+     */
+    public function offsetExists($offset)
+    {
+        return ($this->recordIterator->seek($offset) !== null);
+    }
+    
+    /**
+     * Gets an element at an offset
+     * 
+     * @param int $offset
+     *      Key/index to search (generally numeric in this implementation)
+     * @return object|null
+     *      Mapped object at the offset if valid; otherwise NULL
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+    
+    /**
+     * Unsupported - set the value of an element
+     * 
+     * @param mixed $offset
+     * @param mixed $value
+     * @return null
+     * @deprecated
+     */
+    public function offsetSet($offset, $value)
+    {
+        // Not supported in this implementation
+    }
+    
+    /**
+     * Unsupported - unset an element
+     * 
+     * @param mixed $offset
+     * @return null
+     * @deprecated
+     */
+    public function offsetUnset($offset)
+    {
+        // Not supported in this implementation
+    }
+    
+    /**
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        $results = array();
+        
+        foreach ($this as $result) {
+            $results[] = $result;
+        }
+        
+        return $results;
+    }
+
 }

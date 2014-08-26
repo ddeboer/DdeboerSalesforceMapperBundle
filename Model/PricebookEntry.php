@@ -3,6 +3,7 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
+use DateTime;
 
 /**
  * Represents a product entry (an association between a Pricebook2 and Product2)
@@ -38,7 +39,30 @@ class PricebookEntry extends AbstractModel
      */
     protected $productId;
 
+    /**
+     * @var Product
+     * @Salesforce\Relation(field="Pricebook2Id", name="Pricebook2",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Pricebook2")
+     */
     protected $pricebook;
+
+    /**
+     * @var string
+     * @Salesforce\Field(name="Pricebook2Id")
+     */
+    protected $pricebookId;
+
+    /**
+     * @var float
+     * @Salesforce\Field(name="UnitPrice")
+     */
+    public $unitPrice;
+
+    /**
+     * @var boolean
+     * @Salesforce\Field(name="UseStandardPrice")
+     */
+    public $useStandardPrice;
 
     public function getName()
     {
@@ -69,4 +93,60 @@ class PricebookEntry extends AbstractModel
     {
         $this->product = $product;
     }
+    
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+        return $this;
+    }
+
+    public function getPricebook()
+    {
+        return $this->pricebook;
+    }
+    
+    public function setPricebook($pricebook)
+    {
+        $this->pricebook = $pricebook;
+        return $this;
+    }
+    
+    public function getPricebookId()
+    {
+        return $this->pricebookId;
+    }
+    
+    public function setPricebookId($pricebookId)
+    {
+        $this->pricebookId = $pricebookId;
+        return $this;
+    }
+
+    public function getUnitPrice()
+    {
+        return $this->unitPrice;
+    }
+    
+    public function setUnitPrice($unitPrice)
+    {
+        $this->unitPrice = $unitPrice;
+        return $this;
+    }
+    
+    public function getUseStandardPrice()
+    {
+        return $this->useStandardPrice;
+    }
+    
+    public function setUseStandardPrice($useStandardPrice)
+    {
+        $this->useStandardPrice = $useStandardPrice;
+        return $this;
+    }
+    
 }

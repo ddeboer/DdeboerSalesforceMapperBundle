@@ -3,6 +3,7 @@
 namespace Ddeboer\Salesforce\MapperBundle\Model;
 
 use Ddeboer\Salesforce\MapperBundle\Annotation as Salesforce;
+use Ddeboer\Salesforce\MapperBundle\Response\MappedRecordIterator;
 
 /**
  * Salesforce standard task object
@@ -36,6 +37,20 @@ class Product extends AbstractModel
      * @Salesforce\Field(name="IsActive")
      */
     protected $isActive;
+
+    /**
+     * @var string
+     * @Salesforce\Field(name="PriceUnit__c")
+     */
+    protected $priceUnit;
+
+    /**
+     * @var MappedRecordIterator
+     * @Salesforce\Relation(name="PricebookEntries",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\PricebookEntry")
+     */
+    protected $pricebookEntries;
+
 
     public function getName()
     {
@@ -81,4 +96,24 @@ class Product extends AbstractModel
     {
         $this->isActive = $isActive;
     }
+
+    public function getPriceUnit() {
+        return $this->priceUnit;
+    }
+
+    public function setPriceUnit($priceUnit) {
+        $this->priceUnit = $priceUnit;
+    }
+
+    public function getPricebookEntries()
+    {
+        return $this->pricebookEntries;
+    }
+    
+    public function setPricebookEntries($pricebookEntries)
+    {
+        $this->pricebookEntries = $pricebookEntries;
+        return $this;
+    }
+
 }

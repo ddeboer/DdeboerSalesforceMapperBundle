@@ -55,6 +55,19 @@ class OpportunityLineItem extends AbstractModel
     protected $pricebookEntryId;
     
     /**
+     * @var PricebookEntry
+     * @Salesforce\Relation(field="Product2Id", name="Product2",
+     *                      class="Ddeboer\Salesforce\MapperBundle\Model\Product")
+     */
+    protected $product;
+    
+    /**
+     * @var string
+     * @Salesforce\Field(name="Product2Id")
+     */
+    protected $Product2Id;
+    
+    /**
      * @var double
      * @Salesforce\Field(name="Quantity")
      */
@@ -148,6 +161,17 @@ class OpportunityLineItem extends AbstractModel
         return $this->pricebookEntryId;
     }
 
+    public function getProduct()
+    {
+        return $this->product;
+    }
+    
+    public function setProduct($product)
+    {
+        $this->product = $product;
+        return $this;
+    }
+    
     public function setPricebookEntryId($pricebookEntryId)
     {
         $this->pricebookEntryId = $pricebookEntryId;

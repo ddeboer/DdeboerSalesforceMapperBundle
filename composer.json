@@ -11,9 +11,28 @@
             "email": "david@ddeboer.nl"
         }
     ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "version": "dev-master",
+                "name": "byng-systems/phpforce-soap-client",
+                "source": {
+                    "url": "https://github.com/byng-systems/soap-client.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "Phpforce\\SoapClient": "src/"
+                    }
+                }
+            }
+        }
+    ],
     "require": {
         "php": ">=5.3.2",
-        "phpforce/salesforce-bundle": "dev-master",
+        "byng-systems/phpforce-salesforce-bundle": "dev-master",
         "doctrine/common": "*"
     },
     "suggest": {
