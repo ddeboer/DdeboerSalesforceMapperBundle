@@ -2,10 +2,10 @@
 
 namespace Ddeboer\Salesforce\MapperBundle\Request\ParamConverter;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Ddeboer\Salesforce\MapperBundle\Mapper;
 
 /**
@@ -40,7 +40,7 @@ class SalesforceParamConverter implements ParamConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(Request $request, ConfigurationInterface $configuration)
+    public function apply(Request $request, ParamConverter $configuration)
     {
         // @todo Is it smart to do this based on variable name? Perhaps it's
         // better to, here also, look at class name?
@@ -63,9 +63,8 @@ class SalesforceParamConverter implements ParamConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(ConfigurationInterface $configuration)
+    public function supports(ParamConverter $configuration)
     {
         return in_array($configuration->getClass(), $this->mappings);
     }
 }
-
