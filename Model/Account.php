@@ -22,12 +22,6 @@ class Account extends AbstractModel
     protected $accountContactRoles;
 
     /**
-     * @var string
-     * @Salesforce\Field(name="AccountNumber")
-     */
-    protected $accountNumber;
-    
-    /**
      * @var float
      * @Salesforce\Field(name="AnnualRevenue")
      */
